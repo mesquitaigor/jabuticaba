@@ -25,4 +25,37 @@ export class GroceryItemApiService {
       return of(null);
     }
   }
+  public updateRecord(
+    uuid: string,
+    payload: Partial<GroceryItemCreatePayload>,
+  ): Observable<GroceryItemResponse[] | null> {
+    if (this.supabaseService.client) {
+      const promise = this.supabaseService.update<GroceryItemResponse>(
+        this.tableName,
+        uuid,
+        payload,
+      );
+      return from(promise).pipe(map((response) => response?.data || null));
+    } else {
+      return of(null);
+    }
+  }
+  public deleteRecord(uuid: string): Observable<null> {
+    if (this.supabaseService.client) {
+      const promise = this.supabaseService.delete(this.tableName, uuid);
+      return from(promise).pipe(map((response) => response?.data || null));
+    } else {
+      return of(null);
+    }
+  }
+  public getAll(): Observable<GroceryItemResponse[] | null> {
+    if (this.supabaseService.client) {
+      const promise = this.supabaseService.select<GroceryItemResponse>(
+        this.tableName,
+      );
+      return from(promise).pipe(map((response) => response?.data || null));
+    } else {
+      return of(null);
+    }
+  }
 }

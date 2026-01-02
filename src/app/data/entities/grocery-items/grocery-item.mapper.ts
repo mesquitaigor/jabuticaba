@@ -4,7 +4,7 @@ import GroceryItem from './grocery-item.model';
 export default class GroceryItemMapper {
   public static apiToModel(data: GroceryItemResponse): GroceryItem {
     const groceryItem = new GroceryItem(data.uuid);
-    groceryItem.item_name = data.name;
+    groceryItem.name = data.name;
     groceryItem.missing = data.missing;
     groceryItem.created_at = new Date(data.created_at);
     groceryItem.updated_at = new Date(data.updated_at);

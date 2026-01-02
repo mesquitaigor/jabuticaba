@@ -1,5 +1,5 @@
 export default class GroceryItemModel {
-  item_name?: string;
+  name?: string;
   missing = false;
   created_at?: Date;
   updated_at?: Date;

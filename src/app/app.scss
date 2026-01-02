@@ -3,3 +3,33 @@
   gap: 0.5rem;
   padding: 0.5rem;
 }
+.grocery-item-list {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  .grocery-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    p {
+      margin: 0;
+      padding: 0.5rem;
+      display: inline-block;
+      width: calc(100% - 3rem);
+      cursor: text;
+    }
+    input {
+      background: transparent;
+      border: transparent;
+      padding: 0.5rem;
+    }
+    .pi-times {
+      cursor: pointer;
+      color: red;
+      padding: 0.5rem;
+    }
+  }
+}

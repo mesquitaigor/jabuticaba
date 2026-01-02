@@ -2,3 +2,35 @@
   <input type="text" pInputText [(ngModel)]="itemName" />
   <p-button (click)="handleCreateNote()" label="Criar" /> <router-outlet />
 </div>
+<div class="grocery-item-list">
+  @for (item of itemsList(); track item) {
+    <div class="grocery-item">
+      @if (!item.editing) {
+        <p
+          (click)="handleEditItem(item)"
+          (keyup.enter)="handleEditItem(item)"
+          tabindex="0"
+          role="button"
+        >
+          {{ item.data.name }}
+        </p>
+      } @else {
+        <input
+          (jbtOnRender)="handleGetInputElement($event, item)"
+          type="text"
+          pInputText
+          [(ngModel)]="item.data.name"
+          (blur)="handleFinalizeEditionItem(item)"
+          (keydown.enter)="handleFinalizeEditionItem(item)"
+        />
+      }
+      <i
+        class="pi pi-times"
+        (click)="item.data.uuid && handleDeleteItem(item.data.uuid)"
+        (keyup.enter)="item.data.uuid && handleDeleteItem(item.data.uuid)"
+        tabindex="0"
+        role="button"
+      ></i>
+    </div>
+  }
+</div>

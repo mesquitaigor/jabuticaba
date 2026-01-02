@@ -3,6 +3,7 @@ import {
   createClient,
   SupabaseClient,
   PostgrestResponse,
+  PostgrestSingleResponse,
 } from '@supabase/supabase-js';
 import { environment } from '../../../../environments/environment';
 
@@ -25,5 +26,27 @@ export class SupabaseService {
     tableName: string,
   ): Promise<PostgrestResponse<T> | undefined> {
     return await this.client?.from(tableName).insert(data).select();
+  }
+  public async select<T>(
+    tableName: string,
+  ): Promise<PostgrestResponse<T> | undefined> {
+    return await this.client?.from(tableName).select();
+  }
+  public async delete(
+    tableName: string,
+    uuid: string,
+  ): Promise<PostgrestSingleResponse<null> | undefined> {
+    return await this.client?.from(tableName).delete().eq('uuid', uuid);
+  }
+  public async update<T>(
+    tableName: string,
+    uuid: string,
+    data: unknown,
+  ): Promise<PostgrestResponse<T> | undefined> {
+    return await this.client
+      ?.from(tableName)
+      .update(data)
+      .eq('uuid', uuid)
+      .select();
   }
 }
