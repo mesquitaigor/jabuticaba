@@ -19,7 +19,7 @@ module.exports = defineConfig([
         "error",
         {
           type: "attribute",
-          prefix: "app",
+          prefix: "jbt",
           style: "camelCase",
         },
       ],
@@ -27,10 +27,16 @@ module.exports = defineConfig([
         "error",
         {
           type: "element",
-          prefix: "app",
+          prefix: "jbt",
           style: "kebab-case",
         },
       ],
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/explicit-function-return-type": "error",
+      "@angular-eslint/no-conflicting-lifecycle": "error",
+      "@angular-eslint/no-output-on-prefix": "error",
+      "@angular-eslint/use-lifecycle-interface": "error",
+      "no-console": "warn"
     },
   },
   {
