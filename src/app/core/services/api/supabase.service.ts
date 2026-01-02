@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import {
+  createClient,
+  SupabaseClient,
+  PostgrestResponse,
+} from '@supabase/supabase-js';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -15,5 +19,11 @@ export class SupabaseService {
       environment.supabaseUrl,
       environment.supabaseKey,
     );
+  }
+  public async insert<T>(
+    data: unknown,
+    tableName: string,
+  ): Promise<PostgrestResponse<T> | undefined> {
+    return await this.client?.from(tableName).insert(data).select();
   }
 }
