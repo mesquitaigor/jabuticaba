@@ -20,6 +20,7 @@
             "outputPath": {
               "base": "dist/jabuticaba"
             },
+            "polyfills": ["zone.js"],
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
