@@ -20,7 +20,9 @@ export class AppComponent implements OnInit {
   public itemName = '';
   ngOnInit(): void {
     this.supabaseService.init();
-    this.shoppingListItemsService.create('Test Item').subscribe((data) => {
+  }
+  public handleCreateNote(): void {
+    this.shoppingListItemsService.create(this.itemName).subscribe((data) => {
       console.log('Item created:', data);
     });
   }

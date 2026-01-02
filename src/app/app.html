@@ -1,4 +1,4 @@
 <div class="create-item-form">
   <input type="text" pInputText [(ngModel)]="itemName" />
-  <p-button label="Criar" /> <router-outlet />
+  <p-button (click)="handleCreateNote()" label="Criar" /> <router-outlet />
 </div>
