@@ -1,59 +1,136 @@
-# LokysFront
+# Jabuticaba
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
+Sistema para ajudar no planejamento pessoal, incluindo lista de compras do supermercado, finanças e outras funcionalidades de organização.
 
-## Development server
+## 🚀 Tecnologias
 
-To start a local development server, run:
+- Angular
+- TypeScript
+- ESLint
+- Prettier
+
+## 📋 Pré-requisitos
+
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+- Angular CLI
+
+## 🔧 Instalação
+
+1. Clone o repositório:
+
+```bash
+git clone <url-do-repositorio>
+cd jabuticaba
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+```
+
+3. Instale o Angular CLI globalmente (se ainda não tiver):
+
+```bash
+npm install -g @angular/cli
+```
+
+## 🏃‍♂️ Executando o projeto
+
+Para iniciar o servidor de desenvolvimento:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O aplicativo estará disponível em `http://localhost:4200/`.
 
-## Code scaffolding
+### Outros comandos úteis:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- `ng build` - Compila o projeto
+- `ng test` - Executa os testes unitários
+- `ng lint` - Executa o linting do código
 
-```bash
-ng generate component component-name
+## 🛠️ Configuração do Ambiente de Desenvolvimento
+
+### Plugins VS Code Obrigatórios
+
+Instale os seguintes plugins no VS Code:
+
+1. **Prettier - Code formatter**
+   - ID: `esbenp.prettier-vscode`
+   - Link: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+
+2. **ESLint**
+   - ID: `dbaeumer.vscode-eslint`
+   - Link: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+
+### Configuração VS Code
+
+Crie ou edite o arquivo `.vscode/settings.json` na raiz do projeto com as seguintes configurações:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### ESLint e Prettier
+
+O projeto já está configurado com ESLint e Prettier. As configurações incluem:
+
+- **ESLint**: Linting para TypeScript e Angular
+- **Prettier**: Formatação automática de código
+- Integração entre ESLint e Prettier para evitar conflitos
+
+#### Scripts disponíveis:
 
 ```bash
-ng generate --help
+# Verificar problemas de linting
+npm run lint
+
+# Corrigir problemas de linting automaticamente
+npm run lint:fix
+
+# Formatar código com Prettier
+npm run format
 ```
 
-## Building
+## 📁 Estrutura do Projeto
 
-To build the project run:
-
-```bash
-ng build
+```
+src/
+├── app/
+│   ├── components/     # Componentes reutilizáveis
+│   ├── pages/         # Páginas da aplicação
+│   ├── services/      # Serviços
+│   ├── models/        # Interfaces e modelos
+│   └── shared/        # Módulos compartilhados
+├── assets/            # Recursos estáticos
+└── environments/      # Configurações de ambiente
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🤝 Contribuindo
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
