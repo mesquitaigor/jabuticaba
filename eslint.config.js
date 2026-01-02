@@ -5,7 +5,6 @@ const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
 const prettierConfig = require("eslint-config-prettier");
 
-
 module.exports = defineConfig([
   {
     files: ["**/*.ts"],
@@ -39,7 +38,7 @@ module.exports = defineConfig([
       "@angular-eslint/no-conflicting-lifecycle": "error",
       "@angular-eslint/no-output-on-prefix": "error",
       "@angular-eslint/use-lifecycle-interface": "error",
-      "no-console": "warn"
+      "no-console": "warn",
     },
   },
   {
@@ -49,5 +48,5 @@ module.exports = defineConfig([
       angular.configs.templateAccessibility,
     ],
     rules: {},
-  }
+  },
 ]);
