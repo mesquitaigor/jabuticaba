@@ -3,6 +3,8 @@ const eslint = require("@eslint/js");
 const { defineConfig } = require("eslint/config");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
+const prettierConfig = require("eslint-config-prettier");
+
 
 module.exports = defineConfig([
   {
@@ -12,10 +14,10 @@ module.exports = defineConfig([
       tseslint.configs.recommended,
       tseslint.configs.stylistic,
       angular.configs.tsRecommended,
-      "prettier"
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      ...prettierConfig.rules,
       "@angular-eslint/directive-selector": [
         "error",
         {

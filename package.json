@@ -1,5 +1,5 @@
 {
-  "name": "lokys-front",
+  "name": "jabuticaba-front",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint:fix": "ng lint --fix"
   },
   "prettier": {
     "overrides": [
