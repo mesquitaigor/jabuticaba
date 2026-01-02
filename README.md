@@ -118,6 +118,59 @@ O projeto utiliza ferramentas para garantir a qualidade do código:
 
 #### Scripts disponíveis:
 
+````bash
+# Verificar problemas de linting
+npm run lint
+
+# Corrigir problemas de linting automaticamente
+npm run lint:fix
+
+# Formatar código com Prettier### Git Hooks e Qualidade de Código
+
+O projeto utiliza ferramentas para garantir a qualidade do código:
+
+- **Husky**: Gerencia git hooks para executar scripts antes de commits e pushes
+- **lint-staged**: Executa linters apenas nos arquivos que foram modificados
+- **Commitlint**: Valida mensagens de commit seguindo o padrão Conventional Commits
+- **Commitizen**: Ferramenta interativa para criar commits seguindo o padrão Conventional Commits
+
+#### Git Hooks configurados:
+
+- **pre-commit**: Executa linting e formatação nos arquivos modificados
+- **commit-msg**: Valida o formato da mensagem de commit
+
+#### Como fazer commits:
+
+Para garantir que suas mensagens de commit sigam o padrão Conventional Commits, utilize o Commitizen:
+
+```bash
+# Ao invés de usar 'git commit', use:
+npm run commit
+````
+
+O Commitizen irá guiá-lo através de um processo interativo para criar commits padronizados, perguntando sobre:
+
+- **Tipo do commit** (feat, fix, docs, style, refactor, test, chore, etc.)
+- **Escopo** (opcional - parte do projeto afetada)
+- **Descrição curta** (obrigatória)
+- **Descrição longa** (opcional)
+- **Breaking changes** (opcional)
+- **Issues fechadas** (opcional)
+
+#### Exemplos de mensagens de commit geradas:
+
+```
+feat(auth): add login functionality
+fix(shopping-list): resolve item duplication bug
+docs: update README with Commitizen instructions
+style: format code with Prettier
+refactor(api): restructure service layer
+test(components): add unit tests for shopping list
+chore(deps): update Angular to v20
+```
+
+#### Scripts disponíveis:
+
 ```bash
 # Verificar problemas de linting
 npm run lint
@@ -127,6 +180,9 @@ npm run lint:fix
 
 # Formatar código com Prettier
 npm run format
+
+# Fazer commit interativo com Commitizen
+npm run commit
 
 # Preparar Husky hooks (executado automaticamente após npm install)
 npm run prepare
@@ -138,16 +194,36 @@ npm run commitlint
 npm run lint-staged
 ```
 
+npm run format
+
+# Preparar Husky hooks (executado automaticamente após npm install)
+
+npm run prepare
+
+# Verificar formato das mensagens de commit
+
+npm run commitlint
+
+# Executar lint-staged manualmente
+
+npm run lint-staged
+
+```
+
 ## 📁 Estrutura do Projeto
 
 ```
+
 src/
 ├── app/
-│   ├── components/     # Componentes reutilizáveis
-│   ├── pages/         # Páginas da aplicação
-│   ├── services/      # Serviços
-│   ├── models/        # Interfaces e modelos
-│   └── shared/        # Módulos compartilhados
-├── assets/            # Recursos estáticos
-└── environments/      # Configurações de ambiente
+│ ├── components/ # Componentes reutilizáveis
+│ ├── pages/ # Páginas da aplicação
+│ ├── services/ # Serviços
+│ ├── models/ # Interfaces e modelos
+│ └── shared/ # Módulos compartilhados
+├── assets/ # Recursos estáticos
+└── environments/ # Configurações de ambiente
+
+```
+
 ```
