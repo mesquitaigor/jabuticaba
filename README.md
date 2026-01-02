@@ -8,6 +8,9 @@ Sistema para ajudar no planejamento pessoal, incluindo lista de compras do super
 - TypeScript
 - ESLint
 - Prettier
+- Husky
+- lint-staged
+- Commitlint
 
 ## 📋 Pré-requisitos
 
@@ -100,6 +103,19 @@ O projeto já está configurado com ESLint e Prettier. As configurações inclue
 - **Prettier**: Formatação automática de código
 - Integração entre ESLint e Prettier para evitar conflitos
 
+### Git Hooks e Qualidade de Código
+
+O projeto utiliza ferramentas para garantir a qualidade do código:
+
+- **Husky**: Gerencia git hooks para executar scripts antes de commits e pushes
+- **lint-staged**: Executa linters apenas nos arquivos que foram modificados
+- **Commitlint**: Valida mensagens de commit seguindo o padrão Conventional Commits
+
+#### Git Hooks configurados:
+
+- **pre-commit**: Executa linting e formatação nos arquivos modificados
+- **commit-msg**: Valida o formato da mensagem de commit
+
 #### Scripts disponíveis:
 
 ```bash
@@ -111,6 +127,15 @@ npm run lint:fix
 
 # Formatar código com Prettier
 npm run format
+
+# Preparar Husky hooks (executado automaticamente após npm install)
+npm run prepare
+
+# Verificar formato das mensagens de commit
+npm run commitlint
+
+# Executar lint-staged manualmente
+npm run lint-staged
 ```
 
 ## 📁 Estrutura do Projeto
@@ -126,11 +151,3 @@ src/
 ├── assets/            # Recursos estáticos
 └── environments/      # Configurações de ambiente
 ```
-
-## 🤝 Contribuindo
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
