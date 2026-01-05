@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import GroceryItemModel from './data/entities/grocery-items/grocery-item.model';
 import { OnRenderDirective } from './shared/directives/on-render.directive';
+import { CheckboxModule } from 'primeng/checkbox';
 
 interface GroceryTemplateItem {
   data: GroceryItemModel;
@@ -24,6 +25,7 @@ interface GroceryTemplateItem {
     InputTextModule,
     FormsModule,
     OnRenderDirective,
+    CheckboxModule,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -53,6 +55,9 @@ export class AppComponent implements OnInit {
     event.focus();
     item.inputRef = event as HTMLInputElement;
   }
+  public handleChangeMissingItem(item: GroceryTemplateItem): void {
+    this.groceryItemService.updateMissing(item.data).subscribe();
+  }
   public handleCreateNote(): void {
     this.groceryItemService.create(this.itemName).subscribe((data) => {
       const groceryItemList = this.itemsList();
@@ -75,7 +80,7 @@ export class AppComponent implements OnInit {
     if (item.editing && item.initialValue !== (item.inputRef?.value || '')) {
       item.editing = false;
       item.data.name = item.inputRef?.value || '';
-      this.groceryItemService.update(item.data).subscribe(() => {
+      this.groceryItemService.updateName(item.data).subscribe(() => {
         item.initialValue = item.data.name || '';
       });
     }

@@ -1,11 +1,16 @@
 <div class="create-item-form">
   <input type="text" pInputText [(ngModel)]="itemName" />
-  <p-button (click)="handleCreateNote()" label="Criar" /> <router-outlet />
+  <p-button (click)="handleCreateNote()" label="Criar" />
 </div>
 <div class="grocery-item-list">
   @for (item of itemsList(); track item) {
     <div class="grocery-item">
       <div class="left-card-side">
+        <p-checkbox
+          (onChange)="handleChangeMissingItem(item)"
+          [(ngModel)]="item.data.missing"
+          [binary]="true"
+        />
         <i class="item-icon pi pi-shopping-bag"></i>
         @if (!item.editing) {
           <p
@@ -37,3 +42,4 @@
     </div>
   }
 </div>
+<router-outlet />

@@ -1,8 +1,4 @@
-export interface GroceryItemCreatePayload {
-  name: string;
-}
-
-export interface GroceryItemResponse {
+export interface IGroceryItemApi {
   created_at: string;
   deleted_at: string | null;
   name: string;

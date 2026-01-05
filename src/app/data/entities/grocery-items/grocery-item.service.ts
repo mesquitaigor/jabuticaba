@@ -4,6 +4,7 @@ import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
 import GroceryItem from './grocery-item.model';
 import GroceryItemModel from './grocery-item.model';
+import { IGroceryItemApi } from './grocery-item.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -36,19 +37,26 @@ export class GroceryItemService {
       }),
     );
   }
-  public update(item: GroceryItemModel): Observable<GroceryItem | null> {
-    return this.groceryItemApiService
-      .updateRecord(item.uuid || '', { name: item.name })
-      .pipe(
-        map((response) => {
-          if (response?.length) {
-            return response.map((data) => {
-              return ShoppingListItemMapper.apiToModel(data);
-            })[0];
-          }
-          return null;
-        }),
-      );
+  public updateName(item: GroceryItemModel): Observable<GroceryItem | null> {
+    return this.updateModel(item.uuid || '', { name: item.name });
+  }
+  public updateMissing(item: GroceryItemModel): Observable<GroceryItem | null> {
+    return this.updateModel(item.uuid || '', { missing: item.missing });
+  }
+  private updateModel(
+    uuid: string,
+    model: Partial<IGroceryItemApi>,
+  ): Observable<GroceryItem | null> {
+    return this.groceryItemApiService.updateRecord(uuid, model).pipe(
+      map((response) => {
+        if (response?.length) {
+          return response.map((data) => {
+            return ShoppingListItemMapper.apiToModel(data);
+          })[0];
+        }
+        return null;
+      }),
+    );
   }
   public delete(uuid: string): Observable<null> {
     return this.groceryItemApiService.deleteRecord(uuid);

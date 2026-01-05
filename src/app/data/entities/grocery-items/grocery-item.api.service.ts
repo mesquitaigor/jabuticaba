@@ -1,10 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from '../../../core/services/api/supabase.service';
 import { from, map, Observable, of } from 'rxjs';
-import {
-  GroceryItemResponse,
-  GroceryItemCreatePayload,
-} from './grocery-item.dto';
+import { IGroceryItemApi } from './grocery-item.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +10,10 @@ export class GroceryItemApiService {
   private readonly tableName = 'grocery_item';
   private readonly supabaseService: SupabaseService = inject(SupabaseService);
   public create(
-    payload: GroceryItemCreatePayload,
-  ): Observable<GroceryItemResponse[] | null> {
+    payload: Pick<IGroceryItemApi, 'name'>,
+  ): Observable<IGroceryItemApi[] | null> {
     if (this.supabaseService.client) {
-      const promise = this.supabaseService.insert<GroceryItemResponse>(
+      const promise = this.supabaseService.insert<IGroceryItemApi>(
         payload,
         this.tableName,
       );
@@ -27,10 +24,10 @@ export class GroceryItemApiService {
   }
   public updateRecord(
     uuid: string,
-    payload: Partial<GroceryItemCreatePayload>,
-  ): Observable<GroceryItemResponse[] | null> {
+    payload: Partial<IGroceryItemApi>,
+  ): Observable<IGroceryItemApi[] | null> {
     if (this.supabaseService.client) {
-      const promise = this.supabaseService.update<GroceryItemResponse>(
+      const promise = this.supabaseService.update<IGroceryItemApi>(
         this.tableName,
         uuid,
         payload,
@@ -48,9 +45,9 @@ export class GroceryItemApiService {
       return of(null);
     }
   }
-  public getAll(): Observable<GroceryItemResponse[] | null> {
+  public getAll(): Observable<IGroceryItemApi[] | null> {
     if (this.supabaseService.client) {
-      const promise = this.supabaseService.select<GroceryItemResponse>(
+      const promise = this.supabaseService.select<IGroceryItemApi>(
         this.tableName,
       );
       return from(promise).pipe(map((response) => response?.data || null));
