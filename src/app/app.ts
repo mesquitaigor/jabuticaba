@@ -3,13 +3,16 @@ import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { GroceryItemService } from './data/entities/grocery-items/grocery-item.service';
 import { SupabaseService } from './core/services/api/supabase.service';
-import { GroceryTemplateItem } from './shared/components/molecules/grocery-item-box/grocery-item-box.component';
+import {
+  GroceryItemBoxComponent,
+  GroceryTemplateItem,
+} from './shared/components/molecules/grocery-item-box/grocery-item-box.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-root',
-  imports: [RouterOutlet, ButtonModule, FormsModule],
+  imports: [RouterOutlet, ButtonModule, FormsModule, GroceryItemBoxComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -30,6 +33,12 @@ export class AppComponent implements OnInit {
         })) ?? [],
       );
     });
+  }
+  public handleDeletedItem(groceryItem: GroceryTemplateItem): void {
+    const updatedList = this.itemsList().filter(
+      (itemList) => itemList.data.uuid !== groceryItem.data.uuid,
+    );
+    this.itemsList.set(updatedList);
   }
   public handleCreateNote(): void {
     this.groceryItemService.create(this.itemName).subscribe((data) => {

@@ -1,5 +1,5 @@
-@if (item(); as itemObj) {
-  <div class="grocery-item">
+@if (groceryItem(); as itemObj) {
+  <div class="grocery-item-box">
     <div class="left-card-side">
       <p-checkbox
         (onChange)="handleChangeMissingItem(itemObj)"

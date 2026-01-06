@@ -3,6 +3,11 @@
   <p-button (click)="handleCreateNote()" label="Criar" />
 </div>
 <div class="grocery-item-list">
-  @for (item of itemsList(); track item) {}
+  @for (item of itemsList(); track item) {
+    <jbt-grocery-item-box
+      [item]="item.data"
+      (deletedItem)="handleDeletedItem(item)"
+    ></jbt-grocery-item-box>
+  }
 </div>
 <router-outlet />

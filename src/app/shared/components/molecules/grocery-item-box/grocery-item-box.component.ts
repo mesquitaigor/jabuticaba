@@ -1,4 +1,11 @@
-import { Component, inject, input, output } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { OnRenderDirective } from '../../../directives/on-render.directive';
 import { InputTextModule } from 'primeng/inputtext';
@@ -28,10 +35,23 @@ export interface GroceryTemplateItem {
   standalone: true,
 })
 export class GroceryItemBoxComponent {
-  public item = input<GroceryTemplateItem>();
-  public deletedItem = output<GroceryTemplateItem>();
+  public item = input<GroceryItemModel>();
+  public deletedItem = output<GroceryItemModel>();
+  public groceryItem = signal<GroceryTemplateItem | null>(null);
   private readonly groceryItemService: GroceryItemService =
     inject(GroceryItemService);
+  constructor() {
+    effect(() => {
+      const currentItem = this.item();
+      if (currentItem) {
+        this.groceryItem.set({
+          data: currentItem,
+          editing: false,
+          initialValue: currentItem.name || '',
+        });
+      }
+    });
+  }
   public handleChangeMissingItem(item: GroceryTemplateItem): void {
     this.groceryItemService.updateMissing(item.data).subscribe();
   }
@@ -57,11 +77,10 @@ export class GroceryItemBoxComponent {
   }
   public handleDeleteItem(uuid: string): void {
     this.groceryItemService.delete(uuid).subscribe(() => {
-      this.deletedItem.emit(this.item()!);
-      // const updatedList = this.itemsList().filter(
-      //   (item) => item.data.uuid !== uuid,
-      // );
-      // this.itemsList.set(updatedList);
+      const groceryItem = this.groceryItem();
+      if (groceryItem) {
+        this.deletedItem.emit(groceryItem.data);
+      }
     });
   }
 }
