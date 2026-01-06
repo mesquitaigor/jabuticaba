@@ -57,6 +57,7 @@ export class GroceryItemBoxComponent {
   public handleEditItem(item: GroceryTemplateItem): void {
     item.editing = true;
     item.initialValue = item.data.name || '';
+    this.groceryItem.set({ ...item });
   }
   public handleGetInputElement(event: HTMLElement): void {
     event.focus();
@@ -66,7 +67,11 @@ export class GroceryItemBoxComponent {
       item.editing = false;
       this.groceryItemService.updateName(item.data).subscribe(() => {
         item.initialValue = item.data.name || '';
+        this.groceryItem.set({ ...item });
       });
+    } else if (item.editing) {
+      item.editing = false;
+      this.groceryItem.set({ ...item });
     }
   }
   public handleDeleteItem(uuid: string): void {
