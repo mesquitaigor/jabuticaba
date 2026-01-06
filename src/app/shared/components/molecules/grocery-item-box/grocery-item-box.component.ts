@@ -35,6 +35,7 @@ export interface GroceryTemplateItem {
 })
 export class GroceryItemBoxComponent {
   public item = input<GroceryItemModel>();
+  public predefinedMissingValue = input<boolean | null>(null);
   public deletedItem = output<GroceryItemModel>();
   public groceryItem = signal<GroceryTemplateItem | null>(null);
   private readonly groceryItemService: GroceryItemService =
@@ -43,6 +44,9 @@ export class GroceryItemBoxComponent {
     effect(() => {
       const currentItem = this.item();
       if (currentItem) {
+        if (this.predefinedMissingValue() !== null) {
+          currentItem.missing = this.predefinedMissingValue() as boolean;
+        }
         this.groceryItem.set({
           data: currentItem,
           editing: false,

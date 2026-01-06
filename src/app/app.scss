@@ -1,16 +1,10 @@
 .create-item-form {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  flex: 1;
   gap: 0.5rem;
   padding: 0.5rem;
   input {
     flex: 1;
   }
-}
-.grocery-item-list {
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }

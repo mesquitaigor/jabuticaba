@@ -3,11 +3,21 @@
   <p-button (click)="handleCreateNote()" label="Criar" />
 </div>
 <div class="grocery-item-list">
-  @for (item of itemsList(); track item) {
-    <jbt-grocery-item-box
-      [item]="item.data"
-      (deletedItem)="handleDeletedItem(item)"
-    ></jbt-grocery-item-box>
-  }
+  <jbt-grocery-items-list></jbt-grocery-items-list>
+</div>
+<div class="float-button-content">
+  <p-button (click)="visibleShoppingDrawer = true" label="Iniciar compras" />
+</div>
+<div class="card flex justify-center">
+  <p-drawer
+    [(visible)]="visibleShoppingDrawer"
+    header="Items faltantes"
+    position="bottom"
+    [style]="{ height: '100dvh' }"
+  >
+    <jbt-grocery-items-list
+      [predefinedMissingValue]="false"
+    ></jbt-grocery-items-list>
+  </p-drawer>
 </div>
 <router-outlet />

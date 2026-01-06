@@ -1,18 +1,22 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { GroceryItemService } from './data/entities/grocery-items/grocery-item.service';
 import { SupabaseService } from './core/services/api/supabase.service';
-import {
-  GroceryItemBoxComponent,
-  GroceryTemplateItem,
-} from './shared/components/molecules/grocery-item-box/grocery-item-box.component';
 import { FormsModule } from '@angular/forms';
+import { DrawerModule } from 'primeng/drawer';
+import { GroceryItemsListComponent } from './shared/components/organisms/grocery-items-list/grocery-items-list.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-root',
-  imports: [RouterOutlet, ButtonModule, FormsModule, GroceryItemBoxComponent],
+  imports: [
+    RouterOutlet,
+    ButtonModule,
+    FormsModule,
+    DrawerModule,
+    GroceryItemsListComponent,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -21,37 +25,18 @@ export class AppComponent implements OnInit {
     inject(GroceryItemService);
   private readonly supabaseService = inject(SupabaseService);
   public itemName = '';
-  public itemsList = signal<GroceryTemplateItem[]>([]);
+  public groceryListElement = viewChild(GroceryItemsListComponent);
+  public visibleShoppingDrawer = false;
   ngOnInit(): void {
     this.supabaseService.init();
-    this.groceryItemService.getAll().subscribe((data) => {
-      this.itemsList.set(
-        data.map((item) => ({
-          data: item,
-          editing: false,
-          initialValue: item.name || '',
-        })) ?? [],
-      );
-    });
-  }
-  public handleDeletedItem(groceryItem: GroceryTemplateItem): void {
-    const updatedList = this.itemsList().filter(
-      (itemList) => itemList.data.uuid !== groceryItem.data.uuid,
-    );
-    this.itemsList.set(updatedList);
   }
   public handleCreateNote(): void {
     this.groceryItemService.create(this.itemName).subscribe((data) => {
-      const groceryItemList = this.itemsList();
-      if (data) {
-        groceryItemList.push({
-          data,
-          editing: false,
-          initialValue: data.name || '',
-        });
-        this.itemsList.set(groceryItemList);
-        this.itemName = '';
+      const listComponent = this.groceryListElement();
+      if (data && listComponent) {
+        listComponent.addToList(data);
       }
+      this.itemName = '';
     });
   }
 }
