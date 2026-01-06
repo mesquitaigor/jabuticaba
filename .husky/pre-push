@@ -1,0 +1,11 @@
+
+# Execute todos os testes antes de fazer push
+echo "🧪 Executando todos os testes antes do push..."
+npm run test:ci
+
+if [ $? -ne 0 ]; then
+  echo "❌ Os testes falharam! Push cancelado."
+  exit 1
+fi
+
+echo "✅ Todos os testes passaram! Continuando com o push..."
