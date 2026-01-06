@@ -18,7 +18,6 @@ export interface GroceryTemplateItem {
   data: GroceryItemModel;
   editing: boolean;
   initialValue: string;
-  inputRef?: HTMLInputElement;
 }
 
 @Component({
@@ -59,17 +58,12 @@ export class GroceryItemBoxComponent {
     item.editing = true;
     item.initialValue = item.data.name || '';
   }
-  public handleGetInputElement(
-    event: HTMLElement,
-    item: GroceryTemplateItem,
-  ): void {
+  public handleGetInputElement(event: HTMLElement): void {
     event.focus();
-    item.inputRef = event as HTMLInputElement;
   }
   public handleFinalizeEditionItem(item: GroceryTemplateItem): void {
-    if (item.editing && item.initialValue !== (item.inputRef?.value || '')) {
+    if (item.editing && item.initialValue !== item.data.name) {
       item.editing = false;
-      item.data.name = item.inputRef?.value || '';
       this.groceryItemService.updateName(item.data).subscribe(() => {
         item.initialValue = item.data.name || '';
       });

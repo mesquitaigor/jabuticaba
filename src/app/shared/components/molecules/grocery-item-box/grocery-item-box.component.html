@@ -18,7 +18,7 @@
         </p>
       } @else {
         <input
-          (jbtOnRender)="handleGetInputElement($event, itemObj)"
+          (jbtOnRender)="handleGetInputElement($event)"
           type="text"
           pInputText
           [(ngModel)]="itemObj.data.name"
