@@ -3,30 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { GroceryItemService } from './data/entities/grocery-items/grocery-item.service';
 import { SupabaseService } from './core/services/api/supabase.service';
-import { InputTextModule } from 'primeng/inputtext';
+import { GroceryTemplateItem } from './shared/components/molecules/grocery-item-box/grocery-item-box.component';
 import { FormsModule } from '@angular/forms';
-import GroceryItemModel from './data/entities/grocery-items/grocery-item.model';
-import { OnRenderDirective } from './shared/directives/on-render.directive';
-import { CheckboxModule } from 'primeng/checkbox';
-
-interface GroceryTemplateItem {
-  data: GroceryItemModel;
-  editing: boolean;
-  initialValue: string;
-  inputRef?: HTMLInputElement;
-}
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    ButtonModule,
-    InputTextModule,
-    FormsModule,
-    OnRenderDirective,
-    CheckboxModule,
-  ],
+  imports: [RouterOutlet, ButtonModule, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -48,16 +31,6 @@ export class AppComponent implements OnInit {
       );
     });
   }
-  public handleGetInputElement(
-    event: HTMLElement,
-    item: GroceryTemplateItem,
-  ): void {
-    event.focus();
-    item.inputRef = event as HTMLInputElement;
-  }
-  public handleChangeMissingItem(item: GroceryTemplateItem): void {
-    this.groceryItemService.updateMissing(item.data).subscribe();
-  }
   public handleCreateNote(): void {
     this.groceryItemService.create(this.itemName).subscribe((data) => {
       const groceryItemList = this.itemsList();
@@ -70,27 +43,6 @@ export class AppComponent implements OnInit {
         this.itemsList.set(groceryItemList);
         this.itemName = '';
       }
-    });
-  }
-  public handleEditItem(item: GroceryTemplateItem): void {
-    item.editing = true;
-    item.initialValue = item.data.name || '';
-  }
-  public handleFinalizeEditionItem(item: GroceryTemplateItem): void {
-    if (item.editing && item.initialValue !== (item.inputRef?.value || '')) {
-      item.editing = false;
-      item.data.name = item.inputRef?.value || '';
-      this.groceryItemService.updateName(item.data).subscribe(() => {
-        item.initialValue = item.data.name || '';
-      });
-    }
-  }
-  public handleDeleteItem(uuid: string): void {
-    this.groceryItemService.delete(uuid).subscribe(() => {
-      const updatedList = this.itemsList().filter(
-        (item) => item.data.uuid !== uuid,
-      );
-      this.itemsList.set(updatedList);
     });
   }
 }

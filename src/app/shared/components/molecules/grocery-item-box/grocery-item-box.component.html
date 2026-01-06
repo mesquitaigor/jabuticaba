@@ -1,36 +1,38 @@
-<div class="grocery-item">
-  <div class="left-card-side">
-    <p-checkbox
-      (onChange)="handleChangeMissingItem(item)"
-      [(ngModel)]="item.data.missing"
-      [binary]="true"
-    />
-    <i class="item-icon pi pi-shopping-bag"></i>
-    @if (!item.editing) {
-      <p
-        (click)="handleEditItem(item)"
-        (keyup.enter)="handleEditItem(item)"
-        tabindex="0"
-        role="button"
-      >
-        {{ item.data.name }}
-      </p>
-    } @else {
-      <input
-        (jbtOnRender)="handleGetInputElement($event, item)"
-        type="text"
-        pInputText
-        [(ngModel)]="item.data.name"
-        (blur)="handleFinalizeEditionItem(item)"
-        (keydown.enter)="handleFinalizeEditionItem(item)"
+@if (item(); as itemObj) {
+  <div class="grocery-item">
+    <div class="left-card-side">
+      <p-checkbox
+        (onChange)="handleChangeMissingItem(itemObj)"
+        [(ngModel)]="itemObj.data.missing"
+        [binary]="true"
       />
-    }
+      <i class="item-icon pi pi-shopping-bag"></i>
+      @if (!itemObj.editing) {
+        <p
+          (click)="handleEditItem(itemObj)"
+          (keyup.enter)="handleEditItem(itemObj)"
+          tabindex="0"
+          role="button"
+        >
+          {{ itemObj.data.name }}
+        </p>
+      } @else {
+        <input
+          (jbtOnRender)="handleGetInputElement($event, itemObj)"
+          type="text"
+          pInputText
+          [(ngModel)]="itemObj.data.name"
+          (blur)="handleFinalizeEditionItem(itemObj)"
+          (keyup.enter)="handleFinalizeEditionItem(itemObj)"
+        />
+      }
+    </div>
+    <i
+      class="pi pi-times"
+      (click)="itemObj.data.uuid && handleDeleteItem(itemObj.data.uuid)"
+      (keyup.enter)="itemObj.data.uuid && handleDeleteItem(itemObj.data.uuid)"
+      tabindex="0"
+      role="button"
+    ></i>
   </div>
-  <i
-    class="pi pi-times"
-    (click)="item.data.uuid && handleDeleteItem(item.data.uuid)"
-    (keyup.enter)="item.data.uuid && handleDeleteItem(item.data.uuid)"
-    tabindex="0"
-    role="button"
-  ></i>
-</div>
+}
