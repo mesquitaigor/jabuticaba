@@ -1,8 +1,8 @@
-import { GroceryItemResponse } from './grocery-item.dto';
+import { IGroceryItemApi } from './grocery-item.dto';
 import GroceryItem from './grocery-item.model';
 
 export default class GroceryItemMapper {
-  public static apiToModel(data: GroceryItemResponse): GroceryItem {
+  public static apiToModel(data: IGroceryItemApi): GroceryItem {
     const groceryItem = new GroceryItem(data.uuid);
     groceryItem.name = data.name;
     groceryItem.missing = data.missing;
