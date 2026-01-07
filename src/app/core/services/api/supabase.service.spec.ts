@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase.service';
+import { PostgresMockHelper } from '../../../tests/helpers/PostgresMock.helper.spec';
 
 describe('SupabaseService', () => {
   let service: SupabaseService;
@@ -13,13 +14,15 @@ describe('SupabaseService', () => {
   let mockEq: jasmine.Spy;
 
   beforeEach(() => {
-    mockInsert = jasmine.createSpy('insert');
-    mockSelect = jasmine.createSpy('select');
-    mockDelete = jasmine.createSpy('delete');
-    mockUpdate = jasmine.createSpy('update');
-    mockEq = jasmine.createSpy('eq');
+    const mocks = PostgresMockHelper.createOperationMocks();
+    mockInsert = mocks.mockInsert;
+    mockSelect = mocks.mockSelect;
+    mockDelete = mocks.mockDelete;
+    mockUpdate = mocks.mockUpdate;
+    mockEq = mocks.mockEq;
+    mockFrom = mocks.mockFrom;
 
-    mockFrom = jasmine.createSpy('from').and.returnValue({
+    mockFrom.and.returnValue({
       insert: mockInsert,
       select: mockSelect,
       delete: mockDelete,
