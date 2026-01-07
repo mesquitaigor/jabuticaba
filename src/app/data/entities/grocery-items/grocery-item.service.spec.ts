@@ -152,6 +152,36 @@ describe(GroceryItemService.name, () => {
         done();
       });
     });
+
+    it('should not call API when BehaviorSubject already has data', (done) => {
+      // Given - First populate the BehaviorSubject
+      const mockItem = createGroceryItemModelMock();
+      service['groceryItemsSubject'].next([mockItem]);
+      mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
+
+      // When
+      service.getAll().subscribe((result) => {
+        // Then
+        expect(result.length).toBe(1);
+        expect(result[0].uuid).toBe(mockItem.uuid);
+        expect(mockGroceryItemApiService.getAll).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    it('should call API only when BehaviorSubject is empty', (done) => {
+      // Given - Ensure BehaviorSubject is empty
+      service['groceryItemsSubject'].next([]);
+      mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
+
+      // When
+      service.getAll().subscribe((result) => {
+        // Then
+        expect(result.length).toBe(1);
+        expect(mockGroceryItemApiService.getAll).toHaveBeenCalled();
+        done();
+      });
+    });
   });
 
   describe('when updating grocery item name', () => {

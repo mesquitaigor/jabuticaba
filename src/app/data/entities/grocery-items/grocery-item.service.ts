@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap, of } from 'rxjs';
 import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
 import GroceryItem from './grocery-item.model';
@@ -35,6 +35,12 @@ export class GroceryItemService {
     );
   }
   public getAll(): Observable<GroceryItem[]> {
+    // Only load from API if BehaviorSubject is empty
+    const currentItems = this.groceryItemsSubject.value;
+    if (currentItems.length > 0) {
+      return of(currentItems);
+    }
+
     return this.groceryItemApiService.getAll().pipe(
       map((response) => {
         if (response?.length) {
