@@ -14,6 +14,8 @@ Sempre que gerar testes para este projeto, siga estas diretrizes:
 - Use `beforeEach` para configurar o estado inicial comum a vários testes.
 - Use `afterEach` para limpar ou resetar estados após os testes, se necessário.
 - fixture.detectChanges() deve ser chamado apenas quando necessário para atualizar a view e não no beforeEach.
+- Apenas 2 níveis de describe por arquivo de teste, a menos que esteja testando uma classe com muitas responsabilidades.
+- Describes não podem ter descrições baseadas em métodos (ex: `describe('meuMetodo()')`), foque no comportamento (ex: `describe('quando o usuário está logado')`).
 
 ## Boas Práticas
 
