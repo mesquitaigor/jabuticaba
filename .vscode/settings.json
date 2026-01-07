@@ -18,5 +18,6 @@
   },
   "github.copilot.chat.commitMessageGeneration.instructions": [
     { "file": ".github/guidelines/commits.md" }
-  ]
+  ],
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true
 }
