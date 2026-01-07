@@ -3,8 +3,14 @@
   justify-content: space-between;
   flex: 1;
   gap: 0.5rem;
-  padding: 0.5rem;
+  padding: 1rem;
   input {
     flex: 1;
   }
+}
+.float-button-content {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
 }

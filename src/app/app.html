@@ -6,7 +6,12 @@
   <jbt-grocery-items-list></jbt-grocery-items-list>
 </div>
 <div class="float-button-content">
-  <p-button (click)="visibleShoppingDrawer = true" label="Iniciar compras" />
+  <p-button
+    [style]="{ width: '100%' }"
+    size="large"
+    (click)="visibleShoppingDrawer = true"
+    label="Iniciar compras"
+  />
 </div>
 <div class="card flex justify-center">
   <p-drawer
