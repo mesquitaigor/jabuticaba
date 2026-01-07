@@ -194,21 +194,34 @@ npm run commitlint
 npm run lint-staged
 ```
 
-npm run format
+### Diretrizes para Mensagens de Commit
 
-# Preparar Husky hooks (executado automaticamente após npm install)
+Para manter a consistência e qualidade das mensagens de commit no projeto, consulte o arquivo de [diretrizes de commit](.github/guidelines/commits.md). Esse arquivo contém:
 
-npm run prepare
+- Formato estrutural obrigatório (Conventional Commits)
+- Regras de conteúdo e estilo
+- Restrições e boas práticas
+- Exemplos de uso
 
-# Verificar formato das mensagens de commit
+### Configuração do GitHub Copilot para Commits
 
-npm run commitlint
+Se você usa o GitHub Copilot no VS Code, pode configurá-lo para gerar mensagens de commit automaticamente seguindo nossas diretrizes:
 
-# Executar lint-staged manualmente
+1. **Certifique-se de que o GitHub Copilot está instalado** no VS Code
+2. **Adicione a configuração no settings.json**: O arquivo `.vscode/settings.json` já contém a configuração necessária:
 
-npm run lint-staged
-
+```json
+{
+  "github.copilot.chat.commitMessageGeneration.instructions": [{ "file": ".github/guidelines/commits.md" }]
+}
 ```
+
+3. **Como usar**: No controle de versão (Source Control) do VS Code:
+   - Faça suas alterações e adicione-as ao stage
+   - Clique no ícone ✨ (sparkles) no campo de mensagem de commit
+   - O Copilot gerará uma mensagem seguindo nossas diretrizes automaticamente
+
+Esta configuração faz com que o GitHub Copilot use nossas diretrizes como base para gerar mensagens de commit apropriadas, mantendo a consistência em todo o projeto.
 
 ## 📁 Estrutura do Projeto
 
@@ -223,6 +236,8 @@ src/
 │ └── shared/ # Módulos compartilhados
 ├── assets/ # Recursos estáticos
 └── environments/ # Configurações de ambiente
+
+```
 
 ```
 
