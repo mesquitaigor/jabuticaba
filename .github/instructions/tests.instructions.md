@@ -6,6 +6,10 @@ applyTo: **/*spec.ts
 
 Sempre que gerar testes para este projeto, siga estas diretrizes:
 
+## Framework e Ferramentas
+
+- Use **Jasmine** como runner de testes.
+
 ## Estrutura do Teste
 
 - Use o padrão **AAA** (Arrange, Act, Assert).
@@ -25,3 +29,4 @@ Sempre que gerar testes para este projeto, siga estas diretrizes:
 - Mantenha os testes pequenos e focados.
 - O nome do teste deve descrever claramente o comportamento esperado (ex: `it('precisa renderizar mensagem de erro quando o login falha', ...)`).
 - Utilize a pasta src/app/tests para criar mocks e helpers reutilizáveis.
+- Não use any em testes, crie mocks ou spies tipados.
