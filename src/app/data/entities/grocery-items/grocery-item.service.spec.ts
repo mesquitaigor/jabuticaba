@@ -40,8 +40,8 @@ describe(GroceryItemService.name, () => {
     ) as jasmine.SpyObj<GroceryItemApiService>;
   });
 
-  describe('when initializing the service', () => {
-    it('should expose an observable for grocery items', (done) => {
+  describe('ao inicializar o service', () => {
+    it('deve expor um observable para os itens da lista', (done) => {
       // Given & When
       service.groceryItems$.subscribe((items) => {
         // Then
@@ -51,8 +51,8 @@ describe(GroceryItemService.name, () => {
     });
   });
 
-  describe('when creating a grocery item', () => {
-    it('should return a mapped grocery item when API returns data', (done) => {
+  describe('ao criar um item da lista', () => {
+    it('deve retornar um item mapeado quando API retorna dados', (done) => {
       // Given
       const itemName = 'New Grocery Item';
       mockGroceryItemApiService.create.and.returnValue(of([mockApiResponse]));
@@ -89,7 +89,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should return null when API returns null', (done) => {
+    it('deve retornar null quando API retorna null', (done) => {
       // Given
       const itemName = 'New Item';
       mockGroceryItemApiService.create.and.returnValue(of(null));
@@ -103,8 +103,8 @@ describe(GroceryItemService.name, () => {
     });
   });
 
-  describe('when getting all grocery items', () => {
-    it('should return mapped grocery items when API returns data', (done) => {
+  describe('ao buscar todos os itens da lista', () => {
+    it('deve retornar itens mapeados quando API retorna dados', (done) => {
       // Given
       mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
 
@@ -124,7 +124,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should return empty array when API returns empty response', (done) => {
+    it('deve retornar array vazio quando API retorna resposta vazia', (done) => {
       // Given
       mockGroceryItemApiService.getAll.and.returnValue(of([]));
 
@@ -141,7 +141,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should return empty array when API returns null', (done) => {
+    it('deve retornar array vazio quando API retorna null', (done) => {
       // Given
       mockGroceryItemApiService.getAll.and.returnValue(of(null));
 
@@ -153,7 +153,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should not call API when BehaviorSubject already has data', (done) => {
+    it('não deve chamar API quando BehaviorSubject já tem dados', (done) => {
       // Given - First populate the BehaviorSubject
       const mockItem = createGroceryItemModelMock();
       service['groceryItemsSubject'].next([mockItem]);
@@ -169,7 +169,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should call API only when BehaviorSubject is empty', (done) => {
+    it('deve chamar API apenas quando BehaviorSubject está vazio', (done) => {
       // Given - Ensure BehaviorSubject is empty
       service['groceryItemsSubject'].next([]);
       mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
@@ -184,8 +184,8 @@ describe(GroceryItemService.name, () => {
     });
   });
 
-  describe('when updating grocery item name', () => {
-    it('should return updated grocery item when API returns data', (done) => {
+  describe('ao atualizar o nome do item da lista', () => {
+    it('deve retornar item atualizado quando API retorna dados', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock();
       // First populate the BehaviorSubject
@@ -213,7 +213,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should handle empty uuid gracefully', (done) => {
+    it('deve lidar com uuid vazio graciosamente', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock({ uuid: undefined });
       mockGroceryItemApiService.updateRecord.and.returnValue(of(null));
@@ -231,8 +231,8 @@ describe(GroceryItemService.name, () => {
     });
   });
 
-  describe('when updating grocery item missing status', () => {
-    it('should return updated grocery item when API returns data', (done) => {
+  describe('ao atualizar status de falta do item da lista', () => {
+    it('deve retornar item atualizado quando API retorna dados', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock({ missing: true });
       mockGroceryItemApiService.updateRecord.and.returnValue(
@@ -251,7 +251,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('should return null when API returns empty response', (done) => {
+    it('deve retornar null quando API retorna resposta vazia', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock();
       mockGroceryItemApiService.updateRecord.and.returnValue(of([]));
@@ -265,8 +265,8 @@ describe(GroceryItemService.name, () => {
     });
   });
 
-  describe('when deleting a grocery item', () => {
-    it('should call API delete method with correct uuid', (done) => {
+  describe('ao deletar um item da lista', () => {
+    it('deve chamar método delete da API com uuid correto', (done) => {
       // Given
       const uuid = 'test-uuid';
       const mockItem = createGroceryItemModelMock({ uuid });
