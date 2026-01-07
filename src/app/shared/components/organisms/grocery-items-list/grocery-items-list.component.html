@@ -1,6 +1,7 @@
 @for (item of itemsList(); track item) {
   <jbt-grocery-item-box
     [item]="item.data"
+    [ableNameEdit]="ableNameEdit()"
     [predefinedMissingValue]="predefinedMissingCheckboxValue()"
     (deletedItem)="handleDeletedItem(item)"
   ></jbt-grocery-item-box>

@@ -15,6 +15,7 @@ import { GroceryItemService } from '../../../../data/entities/grocery-items/groc
 export class GroceryItemsListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
     inject(GroceryItemService);
+  public ableNameEdit = input<boolean>(true);
   public predefinedMissingCheckboxValue = input<boolean | null>(null);
   public filterList = input<(list: GroceryItemModel[]) => GroceryItemModel[]>();
   public saveMissingChanges = input<boolean>(true);
