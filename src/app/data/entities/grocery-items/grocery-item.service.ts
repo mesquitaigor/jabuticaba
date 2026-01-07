@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
 import GroceryItem from './grocery-item.model';
@@ -13,6 +13,9 @@ export class GroceryItemService {
   private readonly groceryItemApiService: GroceryItemApiService = inject(
     GroceryItemApiService,
   );
+
+  private readonly groceryItemsSubject = new BehaviorSubject<GroceryItem[]>([]);
+  public readonly groceryItems$ = this.groceryItemsSubject.asObservable();
   public create(name: string): Observable<GroceryItem | null> {
     return this.groceryItemApiService.create({ name: name }).pipe(
       map((response) => {
@@ -22,6 +25,12 @@ export class GroceryItemService {
           })[0];
         }
         return null;
+      }),
+      tap((newItem) => {
+        if (newItem) {
+          const currentItems = this.groceryItemsSubject.value;
+          this.groceryItemsSubject.next([...currentItems, newItem]);
+        }
       }),
     );
   }
@@ -34,6 +43,9 @@ export class GroceryItemService {
           });
         }
         return [];
+      }),
+      tap((items) => {
+        this.groceryItemsSubject.next(items);
       }),
     );
   }
@@ -56,9 +68,24 @@ export class GroceryItemService {
         }
         return null;
       }),
+      tap((updatedItem) => {
+        if (updatedItem) {
+          const currentItems = this.groceryItemsSubject.value;
+          const updatedItems = currentItems.map((item) =>
+            item.uuid === updatedItem.uuid ? updatedItem : item,
+          );
+          this.groceryItemsSubject.next(updatedItems);
+        }
+      }),
     );
   }
   public delete(uuid: string): Observable<null> {
-    return this.groceryItemApiService.deleteRecord(uuid);
+    return this.groceryItemApiService.deleteRecord(uuid).pipe(
+      tap(() => {
+        const currentItems = this.groceryItemsSubject.value;
+        const filteredItems = currentItems.filter((item) => item.uuid !== uuid);
+        this.groceryItemsSubject.next(filteredItems);
+      }),
+    );
   }
 }

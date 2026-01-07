@@ -40,6 +40,17 @@ describe(GroceryItemService.name, () => {
     ) as jasmine.SpyObj<GroceryItemApiService>;
   });
 
+  describe('when initializing the service', () => {
+    it('should expose an observable for grocery items', (done) => {
+      // Given & When
+      service.groceryItems$.subscribe((items) => {
+        // Then
+        expect(items).toEqual([]);
+        done();
+      });
+    });
+  });
+
   describe('when creating a grocery item', () => {
     it('should return a mapped grocery item when API returns data', (done) => {
       // Given
@@ -55,7 +66,13 @@ describe(GroceryItemService.name, () => {
         expect(mockGroceryItemApiService.create).toHaveBeenCalledWith({
           name: itemName,
         });
-        done();
+
+        // Verify BehaviorSubject is updated
+        service.groceryItems$.subscribe((items) => {
+          expect(items.length).toBe(1);
+          expect(items[0].uuid).toBe(uuidTestValue);
+          done();
+        });
       });
     });
 
@@ -97,7 +114,13 @@ describe(GroceryItemService.name, () => {
         expect(result.length).toBe(1);
         expect(result[0].uuid).toBe(uuidTestValue);
         expect(result[0].name).toBe(nameTestValue);
-        done();
+
+        // Verify BehaviorSubject is updated
+        service.groceryItems$.subscribe((items) => {
+          expect(items.length).toBe(1);
+          expect(items[0].uuid).toBe(uuidTestValue);
+          done();
+        });
       });
     });
 
@@ -109,7 +132,12 @@ describe(GroceryItemService.name, () => {
       service.getAll().subscribe((result) => {
         // Then
         expect(result).toEqual([]);
-        done();
+
+        // Verify BehaviorSubject is updated
+        service.groceryItems$.subscribe((items) => {
+          expect(items).toEqual([]);
+          done();
+        });
       });
     });
 
@@ -130,6 +158,8 @@ describe(GroceryItemService.name, () => {
     it('should return updated grocery item when API returns data', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock();
+      // First populate the BehaviorSubject
+      service['groceryItemsSubject'].next([mockItem]);
       mockGroceryItemApiService.updateRecord.and.returnValue(
         of([mockApiResponse]),
       );
@@ -143,7 +173,13 @@ describe(GroceryItemService.name, () => {
           mockItem.uuid || '',
           { name: mockItem.name },
         );
-        done();
+
+        // Verify BehaviorSubject is updated
+        service.groceryItems$.subscribe((items) => {
+          expect(items.length).toBe(1);
+          expect(items[0].uuid).toBe(uuidTestValue);
+          done();
+        });
       });
     });
 
@@ -203,6 +239,9 @@ describe(GroceryItemService.name, () => {
     it('should call API delete method with correct uuid', (done) => {
       // Given
       const uuid = 'test-uuid';
+      const mockItem = createGroceryItemModelMock({ uuid });
+      // First populate the BehaviorSubject
+      service['groceryItemsSubject'].next([mockItem]);
       mockGroceryItemApiService.deleteRecord.and.returnValue(of(null));
 
       // When
@@ -212,7 +251,12 @@ describe(GroceryItemService.name, () => {
         expect(mockGroceryItemApiService.deleteRecord).toHaveBeenCalledWith(
           uuid,
         );
-        done();
+
+        // Verify BehaviorSubject is updated (item removed)
+        service.groceryItems$.subscribe((items) => {
+          expect(items.length).toBe(0);
+          done();
+        });
       });
     });
   });
