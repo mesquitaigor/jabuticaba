@@ -223,6 +223,18 @@ Se você usa o GitHub Copilot no VS Code, pode configurá-lo para gerar mensagen
 
 Esta configuração faz com que o GitHub Copilot use nossas diretrizes como base para gerar mensagens de commit apropriadas, mantendo a consistência em todo o projeto.
 
+## 🧪 Diretrizes de Testes
+
+Para manter a qualidade e consistência dos testes unitários no projeto, consulte o arquivo de [instruções de testes](.github/instructions/tests.instructions.md). Este arquivo contém:
+
+- Boas práticas para escrita de testes
+- Convenções de nomenclatura
+- Localização de mocks e helpers reutilizáveis
+
+### Configuração do GitHub Copilot para Testes
+
+O arquivo de instruções está configurado para ser aplicado automaticamente a todos os arquivos `*.spec.ts`, garantindo que o GitHub Copilot gere testes seguindo nossos padrões estabelecidos.
+
 ## 📁 Estrutura do Projeto
 
 ```
