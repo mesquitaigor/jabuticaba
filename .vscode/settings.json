@@ -17,8 +17,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "github.copilot.chat.commitMessageGeneration.instructions": [
-    {
-      "file": ".github/commit-instructions.md"
-    }
+    { "file": ".github/guidelines/commits.md" }
   ]
 }
