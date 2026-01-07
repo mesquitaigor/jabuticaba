@@ -35,6 +35,7 @@ export interface GroceryTemplateItem {
 })
 export class GroceryItemBoxComponent {
   public item = input<GroceryItemModel>();
+  public ableNameEdit = input<boolean>(true);
   public predefinedMissingValue = input<boolean | null>(null);
   public deletedItem = output<GroceryItemModel>();
   public groceryItem = signal<GroceryTemplateItem | null>(null);
@@ -59,9 +60,11 @@ export class GroceryItemBoxComponent {
     this.groceryItemService.updateMissing(item.data).subscribe();
   }
   public handleEditItem(item: GroceryTemplateItem): void {
-    item.editing = true;
-    item.initialValue = item.data.name || '';
-    this.groceryItem.set({ ...item });
+    if (this.ableNameEdit()) {
+      item.editing = true;
+      item.initialValue = item.data.name || '';
+      this.groceryItem.set({ ...item });
+    }
   }
   public handleGetInputElement(event: HTMLElement): void {
     event.focus();

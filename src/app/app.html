@@ -16,7 +16,9 @@
     [style]="{ height: '100dvh' }"
   >
     <jbt-grocery-items-list
-      [predefinedMissingValue]="false"
+      [predefinedMissingCheckboxValue]="false"
+      [filterList]="handleFilterList"
+      [saveMissingChanges]="false"
     ></jbt-grocery-items-list>
   </p-drawer>
 </div>

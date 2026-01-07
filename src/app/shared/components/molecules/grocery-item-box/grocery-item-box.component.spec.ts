@@ -71,6 +71,19 @@ describe(GroceryItemBoxComponent.name, () => {
       const groceryItem = component.groceryItem();
       expect(groceryItem?.data.missing).toBe(true);
     });
+    it('deve bloquear a edição do nome do item quando configuração for definida', () => {
+      fixture.componentRef.setInput('ableNameEdit', false);
+      fixture.detectChanges();
+
+      const nameElement = elementGetter.getByTestId('grocery_item_box_p_name');
+      nameElement?.nativeElement.click();
+      fixture.detectChanges();
+
+      const inputElement = elementGetter.getByTestId(
+        'grocery_item_box_input_name',
+      );
+      expect(inputElement).toBeNull();
+    });
   });
 
   describe('Quando o usuário quer editar um item', () => {

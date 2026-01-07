@@ -6,6 +6,7 @@ import { SupabaseService } from './core/services/api/supabase.service';
 import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
 import { GroceryItemsListComponent } from './shared/components/organisms/grocery-items-list/grocery-items-list.component';
+import GroceryItemModel from './data/entities/grocery-items/grocery-item.model';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -38,5 +39,8 @@ export class AppComponent implements OnInit {
       }
       this.itemName = '';
     });
+  }
+  public handleFilterList(list: GroceryItemModel[]): GroceryItemModel[] {
+    return list.filter((item) => item.missing);
   }
 }

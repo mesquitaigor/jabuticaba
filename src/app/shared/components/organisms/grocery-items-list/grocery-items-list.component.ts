@@ -15,17 +15,22 @@ import { GroceryItemService } from '../../../../data/entities/grocery-items/groc
 export class GroceryItemsListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
     inject(GroceryItemService);
-  public predefinedMissingValue = input<boolean | null>(null);
+  public predefinedMissingCheckboxValue = input<boolean | null>(null);
+  public filterList = input<(list: GroceryItemModel[]) => GroceryItemModel[]>();
+  public saveMissingChanges = input<boolean>(true);
   public itemsList = signal<GroceryTemplateItem[]>([]);
   public ngOnInit(): void {
     this.groceryItemService.getAll().subscribe((data) => {
-      this.itemsList.set(
-        data.map((item) => ({
-          data: item,
-          editing: false,
-          initialValue: item.name || '',
-        })) ?? [],
-      );
+      const filter = this.filterList();
+      if (filter) {
+        data = filter(data);
+      }
+      const list = data.map((item) => ({
+        data: item,
+        editing: false,
+        initialValue: item.name || '',
+      }));
+      this.itemsList.set(list ?? []);
     });
   }
   public handleDeletedItem(groceryItem: GroceryTemplateItem): void {
