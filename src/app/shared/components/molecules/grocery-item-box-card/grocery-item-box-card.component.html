@@ -8,6 +8,16 @@
     (click)="!isEditing() && toggleMissingStatus()"
   >
     <div class="flex items-center gap-4 relative p-2">
+      @if (!isEditing()) {
+        <p-checkbox
+          data-testid="missing-checkbox"
+          [ngModel]="groceryItem.missing"
+          [binary]="true"
+          (onChange)="toggleMissingStatus()"
+          class="flex-shrink-0"
+        ></p-checkbox>
+      }
+
       <div
         data-testid="icon-container"
         class="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden"
@@ -21,12 +31,24 @@
       </div>
 
       <div class="flex-1 min-w-0">
-        <h3
-          data-testid="item-name"
-          class="text-base font-semibold text-gray-700 leading-5 break-words m-0"
-        >
-          {{ groceryItem.name || "Item sem nome" }}
-        </h3>
+        @if (!isEditing()) {
+          <h3
+            data-testid="item-name"
+            class="text-base font-semibold text-gray-700 leading-5 break-words m-0"
+          >
+            {{ groceryItem.name || "Item sem nome" }}
+          </h3>
+        } @else {
+          <input
+            data-testid="name-input"
+            pInputText
+            type="text"
+            [ngModel]="editableName()"
+            (ngModelChange)="editableName.set($event)"
+            class="w-full text-base font-semibold text-gray-700"
+            #nameInput
+          />
+        }
       </div>
 
       <div class="flex gap-2">
