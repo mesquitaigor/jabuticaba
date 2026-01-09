@@ -286,14 +286,16 @@ describe('GroceryItemBoxCardComponent', () => {
         );
       });
 
-      xit('precisa ficar opaco quando checkbox é clicado', () => {
+      it('precisa ficar opaco quando checkbox é clicado', () => {
         spyOn(component, 'toggleMissingStatus');
         fixture.detectChanges();
 
         const checkbox = fixture.debugElement.query(
           By.css('[data-testid="missing-checkbox"]'),
         );
-        checkbox.nativeElement.change();
+
+        // Trigger the onChange event directly on the PrimeNG checkbox component
+        checkbox.triggerEventHandler('onChange', null);
 
         expect(component.toggleMissingStatus).toHaveBeenCalled();
       });
