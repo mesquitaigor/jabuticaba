@@ -1,0 +1,68 @@
+@if (groceryItem(); as groceryItem) {
+  <p-card
+    data-testid="grocery-item-card"
+    styleClass="h-full shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300"
+  >
+    <div class="flex items-center gap-4 relative p-2">
+      <div
+        data-testid="icon-container"
+        class="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden"
+      >
+        <img
+          data-testid="item-icon"
+          [src]="getIconUrl()"
+          [alt]="groceryItem.name || 'Item'"
+          class="w-8 h-8 object-contain"
+        />
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <h3
+          data-testid="item-name"
+          class="text-base font-semibold text-gray-700 leading-5 break-words m-0"
+        >
+          {{ groceryItem.name || "Item sem nome" }}
+        </h3>
+      </div>
+
+      <div class="flex gap-2">
+        @if (!isEditing()) {
+          <p-button
+            data-testid="edit-button"
+            icon="pi pi-pencil"
+            [text]="true"
+            [rounded]="true"
+            severity="secondary"
+            size="small"
+            [ariaLabel]="'Editar ' + (groceryItem.name || 'item')"
+            pTooltip="Editar item"
+            (click)="onEdit()"
+          />
+        } @else {
+          <p-button
+            data-testid="delete-button"
+            icon="pi pi-trash"
+            [text]="true"
+            [rounded]="true"
+            severity="danger"
+            size="small"
+            [ariaLabel]="'Excluir ' + (groceryItem.name || 'item')"
+            pTooltip="Excluir item"
+            (click)="onDelete()"
+          />
+          <p-button
+            data-testid="cancel-button"
+            icon="pi pi-times"
+            [text]="true"
+            [rounded]="true"
+            severity="secondary"
+            size="small"
+            ariaLabel="Cancelar"
+            pTooltip="Cancelar"
+            (click)="onCancelEdit()"
+          />
+        }
+      </div>
+    </div>
+  </p-card>
+}

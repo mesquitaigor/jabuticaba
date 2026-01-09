@@ -1,14 +1,12 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
-import {
-  GroceryItemBoxComponent,
-  GroceryTemplateItem,
-} from '../../molecules/grocery-item-box/grocery-item-box.component';
+import { GroceryTemplateItem } from '../../molecules/grocery-item-box/grocery-item-box.component';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemService } from '../../../../data/entities/grocery-items/grocery-item.service';
+import { GroceryItemBoxCardComponent } from '../../molecules/grocery-item-box-card/grocery-item-box-card.component';
 
 @Component({
   selector: 'jbt-grocery-items-list',
-  imports: [GroceryItemBoxComponent],
+  imports: [GroceryItemBoxCardComponent],
   templateUrl: './grocery-items-list.component.html',
   styleUrl: './grocery-items-list.component.scss',
 })
