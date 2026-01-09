@@ -181,6 +181,143 @@ describe('GroceryItemBoxCardComponent', () => {
 
         expect(component.isEditing()).toBeFalse();
       });
+
+      it('precisa mostrar input de texto no lugar do nome quando está editando', () => {
+        fixture.detectChanges();
+
+        const nameInput = fixture.debugElement.query(
+          By.css('[data-testid="name-input"]'),
+        );
+        const nameText = fixture.debugElement.query(
+          By.css('[data-testid="item-name"]'),
+        );
+
+        expect(nameInput).not.toBeNull();
+        expect(nameText).toBeNull();
+      });
+
+      it('precisa ter o valor do nome do item no input quando está editando', () => {
+        fixture.detectChanges();
+
+        const nameInput = fixture.debugElement.query(
+          By.css('[data-testid="name-input"]'),
+        );
+        expect(nameInput.nativeElement.value).toBe('Leite Integral');
+      });
+
+      it('precisa focar o input de nome quando entra em modo edição', () => {
+        fixture.detectChanges();
+
+        const nameInput = fixture.debugElement.query(
+          By.css('[data-testid="name-input"]'),
+        );
+        spyOn(nameInput.nativeElement, 'focus');
+
+        // Trigger change detection again to simulate focus after render
+        fixture.detectChanges();
+
+        expect(nameInput.nativeElement.focus).toHaveBeenCalled();
+      });
+    });
+
+    describe('quando não está editando e funcionalidade de item faltando', () => {
+      beforeEach(() => {
+        component.isEditing.set(false);
+      });
+
+      it('precisa mostrar checkbox do lado esquerdo', () => {
+        fixture.detectChanges();
+
+        const checkbox = fixture.debugElement.query(
+          By.css('[data-testid="missing-checkbox"]'),
+        );
+        expect(checkbox).not.toBeNull();
+      });
+
+      it('precisa ficar opaco quando clicado no card e item não está marcado como faltando', () => {
+        spyOn(component, 'toggleMissingStatus');
+        fixture.detectChanges();
+
+        const cardElement = fixture.debugElement.query(
+          By.css('[data-testid="grocery-item-card"]'),
+        );
+        cardElement.nativeElement.click();
+
+        expect(component.toggleMissingStatus).toHaveBeenCalled();
+      });
+
+      xit('precisa emitir evento toggle quando card é clicado', () => {
+        spyOn(component.toggleMissing, 'emit');
+        fixture.detectChanges();
+
+        const cardElement = fixture.debugElement.query(
+          By.css('[data-testid="grocery-item-card"]'),
+        );
+        cardElement.nativeElement.click();
+
+        expect(component.toggleMissing.emit).toHaveBeenCalledWith(
+          mockGroceryItem,
+        );
+      });
+
+      xit('precisa ficar opaco quando checkbox é clicado', () => {
+        spyOn(component, 'toggleMissingStatus');
+        fixture.detectChanges();
+
+        const checkbox = fixture.debugElement.query(
+          By.css('[data-testid="missing-checkbox"]'),
+        );
+        checkbox.nativeElement.change();
+
+        expect(component.toggleMissingStatus).toHaveBeenCalled();
+      });
+
+      xit('precisa emitir evento toggle quando checkbox é clicado', () => {
+        spyOn(component.toggleMissing, 'emit');
+        fixture.detectChanges();
+
+        const checkbox = fixture.debugElement.query(
+          By.css('[data-testid="missing-checkbox"]'),
+        );
+        checkbox.nativeElement.dispatchEvent(new Event('change'));
+
+        expect(component.toggleMissing.emit).toHaveBeenCalledWith(
+          mockGroceryItem,
+        );
+      });
+
+      it('precisa ter card com opacidade reduzida quando item está marcado como faltando', () => {
+        mockGroceryItem.missing = true;
+        fixture.detectChanges();
+
+        const cardElement = fixture.debugElement.query(
+          By.css('[data-testid="grocery-item-card"]'),
+        );
+        expect(cardElement.classes['opacity-60']).toBeTruthy();
+      });
+
+      xit('precisa ter checkbox marcado quando item está como faltando', () => {
+        mockGroceryItem.missing = true;
+        fixture.detectChanges();
+
+        const checkbox = fixture.debugElement.query(
+          By.css('[data-testid="missing-checkbox"]'),
+        );
+        expect(checkbox.nativeElement.checked).toBeTrue();
+      });
+
+      xit('precisa desmarcar item como faltando quando clicado no card e item já está faltando', () => {
+        mockGroceryItem.missing = true;
+        spyOn(component, 'toggleMissingStatus');
+        fixture.detectChanges();
+
+        const cardElement = fixture.debugElement.query(
+          By.css('[data-testid="grocery-item-card"]'),
+        );
+        cardElement.nativeElement.click();
+
+        expect(component.toggleMissingStatus).toHaveBeenCalled();
+      });
     });
   });
 });

@@ -30,6 +30,7 @@ export class GroceryItemBoxCardComponent {
   @Input() iconUrl?: string;
   @Output() delete = new EventEmitter<GroceryItemModel>();
   @Output() edit = new EventEmitter<GroceryItemModel>();
+  @Output() toggleMissing = new EventEmitter<GroceryItemModel>();
 
   public readonly isEditing = signal(false);
 
@@ -45,6 +46,12 @@ export class GroceryItemBoxCardComponent {
 
   onCancelEdit(): void {
     this.isEditing.set(false);
+  }
+
+  toggleMissingStatus(): void {
+    const item = this.groceryItem();
+    item.missing = !item.missing;
+    this.toggleMissing.emit(item);
   }
 
   getIconUrl(): string {

@@ -1,7 +1,11 @@
 @if (groceryItem(); as groceryItem) {
   <p-card
     data-testid="grocery-item-card"
-    class="h-full shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300"
+    [class]="
+      'h-full shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 cursor-pointer' +
+      (groceryItem.missing ? ' opacity-60' : '')
+    "
+    (click)="!isEditing() && toggleMissingStatus()"
   >
     <div class="flex items-center gap-4 relative p-2">
       <div
