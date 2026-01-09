@@ -23,6 +23,8 @@ describe('GroceryItemBoxCardComponent', () => {
     });
 
     it('precisa não renderizar nada quando groceryItem não é fornecido', () => {
+      // Fornecemos undefined ao input required para testar o comportamento do template @if
+      fixture.componentRef.setInput('groceryItem', undefined);
       fixture.detectChanges();
       const cardElement = fixture.debugElement.query(
         By.css('[data-testid="grocery-item-card"]'),
