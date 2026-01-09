@@ -266,15 +266,21 @@ describe('GroceryItemBoxCardComponent', () => {
         expect(component.toggleMissingStatus).toHaveBeenCalled();
       });
 
-      xit('precisa emitir evento toggle quando card é clicado', () => {
+      it('precisa emitir evento toggle quando card é clicado', () => {
         spyOn(component.toggleMissing, 'emit');
+        spyOn(component, 'toggleMissingStatus').and.callThrough();
         fixture.detectChanges();
+
+        // Debug: verify isEditing is false
+        expect(component.isEditing()).toBeFalse();
 
         const cardElement = fixture.debugElement.query(
           By.css('[data-testid="grocery-item-card"]'),
         );
         cardElement.nativeElement.click();
 
+        // Verify the method was called
+        expect(component.toggleMissingStatus).toHaveBeenCalled();
         expect(component.toggleMissing.emit).toHaveBeenCalledWith(
           mockGroceryItem,
         );
