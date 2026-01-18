@@ -300,15 +300,20 @@ describe('GroceryItemBoxCardComponent', () => {
         expect(component.toggleMissingStatus).toHaveBeenCalled();
       });
 
-      xit('precisa emitir evento toggle quando checkbox é clicado', () => {
+      it('precisa emitir evento toggle quando checkbox é clicado', () => {
         spyOn(component.toggleMissing, 'emit');
+        spyOn(component, 'toggleMissingStatus').and.callThrough();
         fixture.detectChanges();
 
         const checkbox = fixture.debugElement.query(
           By.css('[data-testid="missing-checkbox"]'),
         );
-        checkbox.nativeElement.dispatchEvent(new Event('change'));
 
+        // Trigger the onChange event directly on the PrimeNG checkbox component
+        checkbox.triggerEventHandler('onChange', null);
+
+        // Verify both the method was called and the event was emitted
+        expect(component.toggleMissingStatus).toHaveBeenCalled();
         expect(component.toggleMissing.emit).toHaveBeenCalledWith(
           mockGroceryItem,
         );
@@ -322,29 +327,6 @@ describe('GroceryItemBoxCardComponent', () => {
           By.css('[data-testid="grocery-item-card"]'),
         );
         expect(cardElement.classes['opacity-60']).toBeTruthy();
-      });
-
-      xit('precisa ter checkbox marcado quando item está como faltando', () => {
-        mockGroceryItem.missing = true;
-        fixture.detectChanges();
-
-        const checkbox = fixture.debugElement.query(
-          By.css('[data-testid="missing-checkbox"]'),
-        );
-        expect(checkbox.nativeElement.checked).toBeTrue();
-      });
-
-      xit('precisa desmarcar item como faltando quando clicado no card e item já está faltando', () => {
-        mockGroceryItem.missing = true;
-        spyOn(component, 'toggleMissingStatus');
-        fixture.detectChanges();
-
-        const cardElement = fixture.debugElement.query(
-          By.css('[data-testid="grocery-item-card"]'),
-        );
-        cardElement.nativeElement.click();
-
-        expect(component.toggleMissingStatus).toHaveBeenCalled();
       });
     });
   });

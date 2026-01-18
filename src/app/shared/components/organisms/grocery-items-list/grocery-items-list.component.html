@@ -1,5 +1,7 @@
 @for (item of itemsList(); track item) {
   <jbt-grocery-item-box-card
+    class="w-[calc(50%-0.5rem)]"
     [groceryItem]="item.data"
+    (toggleMissing)="handleToggleMissing($event)"
   ></jbt-grocery-item-box-card>
 }

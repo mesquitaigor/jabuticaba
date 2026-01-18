@@ -31,7 +31,6 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
     CheckboxModule,
   ],
   templateUrl: './grocery-item-box-card.component.html',
-  styleUrl: './grocery-item-box-card.component.scss',
 })
 export class GroceryItemBoxCardComponent {
   @ViewChild('nameInput') nameInput?: ElementRef<HTMLInputElement>;
@@ -65,7 +64,8 @@ export class GroceryItemBoxCardComponent {
     this.isEditing.set(false);
   }
 
-  toggleMissingStatus(): void {
+  toggleMissingStatus(event: Event): void {
+    event.stopPropagation();
     const item = this.groceryItem();
     item.missing = !item.missing;
     this.toggleMissing.emit(item);

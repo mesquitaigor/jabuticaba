@@ -9,6 +9,7 @@ import { GroceryItemBoxCardComponent } from '../../molecules/grocery-item-box-ca
   imports: [GroceryItemBoxCardComponent],
   templateUrl: './grocery-items-list.component.html',
   styleUrl: './grocery-items-list.component.scss',
+  host: { class: 'flex flex-wrap gap-4 p-4' },
 })
 export class GroceryItemsListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
@@ -46,5 +47,24 @@ export class GroceryItemsListComponent implements OnInit {
       initialValue: groceryItem.name || '',
     });
     this.itemsList.set(groceryItemList);
+  }
+
+  public handleToggleMissing(groceryItem: GroceryItemModel): void {
+    // Se saveMissingChanges está habilitado, salva no serviço
+    if (this.saveMissingChanges()) {
+      this.groceryItemService.updateMissing(groceryItem).subscribe();
+    }
+
+    // Atualiza a lista local para garantir que a mudança seja refletida
+    const updatedList = this.itemsList().map((item) => {
+      if (item.data.uuid === groceryItem.uuid) {
+        return {
+          ...item,
+          data: { ...groceryItem },
+        };
+      }
+      return item;
+    });
+    this.itemsList.set(updatedList);
   }
 }

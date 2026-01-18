@@ -1,42 +1,45 @@
-@if (groceryItem(); as groceryItem) {
+@if (groceryItem(); as groceryItemData) {
   <p-card
     data-testid="grocery-item-card"
     [class]="
-      'h-full shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 cursor-pointer' +
-      (groceryItem.missing ? ' opacity-60' : '')
+      'h-full flex flex-col shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 cursor-pointer relative aspect-square'
     "
-    (click)="!isEditing() && toggleMissingStatus()"
+    [class.opacity-60]="groceryItemData.missing"
+    (click)="!isEditing() && toggleMissingStatus($event)"
   >
-    <div class="flex items-center gap-4 relative p-2">
-      @if (!isEditing()) {
+    <!-- Checkbox no canto superior esquerdo -->
+    @if (!isEditing()) {
+      <div class="absolute top-2 left-2 z-10">
         <p-checkbox
           data-testid="missing-checkbox"
-          [ngModel]="groceryItem.missing"
+          [ngModel]="groceryItemData.missing"
           [binary]="true"
-          (onChange)="toggleMissingStatus()"
-          class="flex-shrink-0"
+          (click)="toggleMissingStatus($event)"
         ></p-checkbox>
-      }
+      </div>
+    }
 
+    <div class="flex flex-col items-center justify-center flex-1">
+      <!-- Ícone centralizado -->
       <div
         data-testid="icon-container"
-        class="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden"
+        class="flex-shrink-0 w-16 h-16 rounded-lg flex items-center justify-center overflow-hidden mb-2 mt-4"
       >
-        <img
+        <i
           data-testid="item-icon"
-          [src]="getIconUrl()"
-          [alt]="groceryItem.name || 'Item'"
-          class="w-8 h-8 object-contain"
-        />
+          class="pi pi-shopping-cart text-gray-600"
+          style="font-size: 2rem"
+        ></i>
       </div>
 
-      <div class="flex-1 min-w-0">
+      <!-- Nome abaixo do ícone -->
+      <div class="flex-1 min-w-0 text-center mb-4">
         @if (!isEditing()) {
           <h3
             data-testid="item-name"
-            class="text-base font-semibold text-gray-700 leading-5 break-words m-0"
+            class="text-sm font-semibold text-gray-700 leading-5 break-words m-0"
           >
-            {{ groceryItem.name || "Item sem nome" }}
+            {{ groceryItemData.name || "Item sem nome" }}
           </h3>
         } @else {
           <input
@@ -45,13 +48,14 @@
             type="text"
             [ngModel]="editableName()"
             (ngModelChange)="editableName.set($event)"
-            class="w-full text-base font-semibold text-gray-700"
+            class="w-full text-sm font-semibold text-gray-700 text-center border-none outline-none"
             #nameInput
           />
         }
       </div>
 
-      <div class="flex gap-2">
+      <!-- Botões na parte inferior -->
+      <div class="flex gap-2 justify-center absolute top-2 right-2">
         @if (!isEditing()) {
           <p-button
             data-testid="edit-button"
@@ -60,7 +64,7 @@
             [rounded]="true"
             severity="secondary"
             size="small"
-            [ariaLabel]="'Editar ' + (groceryItem.name || 'item')"
+            [ariaLabel]="'Editar ' + (groceryItemData.name || 'item')"
             pTooltip="Editar item"
             (click)="onEdit()"
           />
@@ -72,7 +76,7 @@
             [rounded]="true"
             severity="danger"
             size="small"
-            [ariaLabel]="'Excluir ' + (groceryItem.name || 'item')"
+            [ariaLabel]="'Excluir ' + (groceryItemData.name || 'item')"
             pTooltip="Excluir item"
             (click)="onDelete()"
           />
