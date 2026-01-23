@@ -1,5 +1,22 @@
-<div class="menu-content"></div>
-<div class="logo-content">
+<div class="flex justify-between p-3 align-center">
+  <p-button
+    (click)="openMenu()"
+    icon="pi pi-bars"
+    aria-label="menu"
+    size="small"
+  />
   <img src="icons/logo.svg" alt="Jabuticaba Logo" />
+  <p-avatar
+    label="U"
+    shape="circle"
+    [style]="{ 'background-color': '#DAD85C', color: 'white' }"
+  />
 </div>
-<div class="user-content"></div>
+<p-drawer [(visible)]="menuOpen" header="Drawer">
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.
+  </p>
+</p-drawer>
