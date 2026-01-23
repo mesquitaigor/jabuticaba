@@ -18,7 +18,6 @@ import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
     ButtonModule,
     FormsModule,
     DrawerModule,
-    GroceryItemsListComponent,
     HeaderComponent,
     SidebarComponent,
   ],
