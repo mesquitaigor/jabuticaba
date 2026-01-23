@@ -21,6 +21,12 @@ const MyPreset = definePreset(Aura, {
         },
       },
     },
+    menu: {
+      item: {
+        padding: '1rem 0',
+        gap: '.8rem',
+      },
+    },
   },
   semantic: {
     primary: {

@@ -1,3 +1,17 @@
-<p-drawer [(visible)]="sidebarService.sidebarOpen" [closable]="false">
+<p-drawer
+  #drawerRef
+  [(visible)]="sidebarService.sidebarOpen"
+  [closable]="false"
+>
+  <div class="flex justify-between mb-10">
+    <jbt-logo [showTitle]="true" />
+    <p-button
+      size="small"
+      (click)="closeCallback($event)"
+      icon="pi pi-arrow-left"
+      [rounded]="true"
+      [text]="true"
+    />
+  </div>
   <p-menu [model]="items" [style]="{ border: 'none', padding: 'none' }" />
 </p-drawer>
