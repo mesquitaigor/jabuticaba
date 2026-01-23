@@ -17,9 +17,11 @@ export class SidebarComponent {
   public readonly items: MenuItem[] = [
     {
       label: 'Supermercado',
-      icon: 'my-svg-icon',
+      icon: 'pi pi-shopping-cart',
     },
-    { label: 'Carteira', icon: 'pi pi-search' },
+    { label: 'Carteira', icon: 'pi pi-wallet' },
+    { label: 'Planejamento', icon: 'pi pi-bullseye' },
+    { label: 'Tarefas', icon: 'pi pi-calendar' },
   ];
   public closeCallback(e: Event): void {
     this.drawerRef()?.close(e);
