@@ -8,7 +8,6 @@ import { GroceryItemBoxCardComponent } from '../../molecules/grocery-item-box-ca
   selector: 'jbt-grocery-items-list',
   imports: [GroceryItemBoxCardComponent],
   templateUrl: './grocery-items-list.component.html',
-  styleUrl: './grocery-items-list.component.scss',
   host: { class: 'flex flex-wrap gap-4 p-4' },
 })
 export class GroceryItemsListComponent implements OnInit {
