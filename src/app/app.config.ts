@@ -7,6 +7,21 @@ import { definePreset } from '@primeuix/themes';
 import { routes } from './app.routes';
 
 const MyPreset = definePreset(Aura, {
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          root: {
+            primary: {
+              background: '{primary.400}',
+              hoverBackground: '{primary.500}',
+              borderColor: '{primary.400}',
+            },
+          },
+        },
+      },
+    },
+  },
   semantic: {
     primary: {
       50: '#f0f9f2',
