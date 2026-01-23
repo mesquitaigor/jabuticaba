@@ -8,6 +8,7 @@ import { DrawerModule } from 'primeng/drawer';
 import { GroceryItemsListComponent } from './shared/components/organisms/grocery-items-list/grocery-items-list.component';
 import GroceryItemModel from './data/entities/grocery-items/grocery-item.model';
 import { HeaderComponent } from './core/layout/header/header';
+import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -19,6 +20,7 @@ import { HeaderComponent } from './core/layout/header/header';
     DrawerModule,
     GroceryItemsListComponent,
     HeaderComponent,
+    SidebarComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

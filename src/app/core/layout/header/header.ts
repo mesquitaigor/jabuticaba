@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { DrawerModule } from 'primeng/drawer';
+import { SidebarService } from '../sidebar/sidebar.service';
 
 @Component({
   selector: 'jbt-header',
@@ -9,8 +10,8 @@ import { DrawerModule } from 'primeng/drawer';
   templateUrl: './header.html',
 })
 export class HeaderComponent {
-  public readonly menuOpen = signal(false);
+  private readonly sidebarService = inject(SidebarService);
   public openMenu(): void {
-    this.menuOpen.set(!this.menuOpen());
+    this.sidebarService.sidebarOpen.set(true);
   }
 }
