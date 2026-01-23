@@ -25,6 +25,7 @@ const MyPreset = definePreset(Aura, {
       item: {
         padding: '1rem 0',
         gap: '.8rem',
+        focusBackground: 'none',
       },
     },
   },
@@ -35,7 +36,7 @@ const MyPreset = definePreset(Aura, {
       200: '#bbdfc1',
       300: '#8dc89b',
       400: '#68b07b',
-      500: '#3b8e53', // Esta será sua cor principal
+      500: '#3b8e53',
       600: '#2a7141',
       700: '#225a35',
       800: '#1d482c',

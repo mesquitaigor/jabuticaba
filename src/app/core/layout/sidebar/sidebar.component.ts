@@ -1,4 +1,4 @@
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { Drawer, DrawerModule } from 'primeng/drawer';
 import { SidebarService } from './sidebar.service';
 import { MenuModule } from 'primeng/menu';
@@ -11,18 +11,14 @@ import { ButtonModule } from 'primeng/button';
   imports: [DrawerModule, MenuModule, LogoComponent, ButtonModule],
   templateUrl: './sidebar.component.html',
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   public readonly drawerRef = viewChild<Drawer>('drawerRef');
   public readonly sidebarService = inject(SidebarService);
-  public readonly items: MenuItem[] = [
-    {
-      label: 'Supermercado',
-      icon: 'pi pi-shopping-cart',
-    },
-    { label: 'Carteira', icon: 'pi pi-wallet' },
-    { label: 'Planejamento', icon: 'pi pi-bullseye' },
-    { label: 'Tarefas', icon: 'pi pi-calendar' },
-  ];
+  public items: MenuItem[] = [];
+  public ngOnInit(): void {
+    this.items = this.sidebarService.getMenuItems();
+    this.sidebarService.setCloseOnNavigation();
+  }
   public closeCallback(e: Event): void {
     this.drawerRef()?.close(e);
   }
