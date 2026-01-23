@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
 import { GroceryItemsListComponent } from './shared/components/organisms/grocery-items-list/grocery-items-list.component';
 import GroceryItemModel from './data/entities/grocery-items/grocery-item.model';
+import { HeaderComponent } from './core/layout/header/header';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -17,6 +18,7 @@ import GroceryItemModel from './data/entities/grocery-items/grocery-item.model';
     FormsModule,
     DrawerModule,
     GroceryItemsListComponent,
+    HeaderComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
