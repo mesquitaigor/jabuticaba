@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'jbt-logo.component',
+  selector: 'jbt-logo',
   imports: [],
   template: '<img [src]="logoSrc" [alt]="logoAlt" />',
 })
