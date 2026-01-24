@@ -5,14 +5,19 @@
   class="text-red-100"
 >
   <div class="flex justify-between mb-10">
-    <jbt-logo [showTitle]="true" />
+    <jbt-logo [showTitle]="true" data-testid="sidebar-logo" />
     <p-button
       size="small"
       (click)="closeCallback($event)"
       icon="pi pi-arrow-left"
       [rounded]="true"
       [text]="true"
+      data-testid="sidebar-close-button"
     />
   </div>
-  <p-menu [model]="items" [style]="{ border: 'none', padding: 'none' }" />
+  <p-menu
+    [model]="items"
+    [style]="{ border: 'none', padding: 'none' }"
+    data-testid="sidebar-menu"
+  />
 </p-drawer>

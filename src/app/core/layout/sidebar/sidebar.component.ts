@@ -3,10 +3,10 @@ import { Drawer, DrawerModule } from 'primeng/drawer';
 import { SidebarService } from './sidebar.service';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
-import { LogoComponent } from '../../../shared/components/atoms/logo/logo.component';
 import { ButtonModule } from 'primeng/button';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavigationService } from '../../navigation/navigation.service';
+import { LogoComponent } from '../../../shared/components/atoms/logo/logo.component';
 
 @Component({
   selector: 'jbt-sidebar',
