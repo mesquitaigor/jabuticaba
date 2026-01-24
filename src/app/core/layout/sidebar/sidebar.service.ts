@@ -18,10 +18,12 @@ export class SidebarService {
     });
   }
   public getMenuItems(): MenuItem[] {
-    return this.navigationService.getNavigationItems().map((item) => ({
-      label: item.label,
-      icon: item.icon,
-      routerLink: item.route,
-    }));
+    return this.navigationService.getNavigationItems().map(
+      (item): MenuItem => ({
+        label: item.label,
+        icon: item.icon,
+        routerLink: item.route,
+      }),
+    );
   }
 }
