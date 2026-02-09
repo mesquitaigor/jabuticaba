@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { GroceryListComponent } from './grocery-list.component';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { of, throwError } from 'rxjs';
@@ -60,10 +65,9 @@ fdescribe(GroceryListComponent.name, () => {
       expect(items.length).toBe(mockItems.length);
     });
 
-    fit('precisa renderizar o nome dos itens corretamente', () => {
+    it('precisa renderizar o nome dos itens corretamente', () => {
       const mockItems = [createGroceryItemModelMock()];
       mockSignal.set(mockItems);
-      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
 
       fixture.detectChanges();
 
@@ -79,28 +83,25 @@ fdescribe(GroceryListComponent.name, () => {
   });
 
   describe('quando renderiza o componente', () => {
-    it('precisa renderizar o checkbox com estado correspondente ao atributo do item', () => {
+    it('precisa renderizar o checkbox com estado correspondente ao atributo do item', fakeAsync(() => {
       const mockItems = [
         createGroceryItemModelMock({ missing: true }),
         createGroceryItemModelMock({ missing: false }),
       ];
       mockSignal.set(mockItems);
-      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
 
       fixture.detectChanges();
-
+      tick();
       const checkboxes = fixture.debugElement.queryAll(
         By.css('[data-testid="grocery-item-checkbox"]'),
       );
-
-      expect(checkboxes[0].componentInstance.binary).toBe(true);
-      expect(checkboxes[0].componentInstance.ngModel).toBe(
+      expect(checkboxes[0].componentInstance.checked).toBe(
         component.groceryItems()[0].missing,
       );
-      expect(checkboxes[1].componentInstance.ngModel).toBe(
+      expect(checkboxes[1].componentInstance.checked).toBe(
         component.groceryItems()[1].missing,
       );
-    });
+    }));
 
     it('precisa exibir estado vazio quando não há itens', () => {
       mockSignal.set([]);

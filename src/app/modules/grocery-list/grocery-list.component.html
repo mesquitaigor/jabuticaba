@@ -34,11 +34,11 @@
           item.name
         }}</span>
 
-        <!-- Checkbox -->
         <p-checkbox
           [(ngModel)]="item.missing"
           [binary]="true"
           (onChange)="onItemCheckChange(item)"
+          data-testid="grocery-item-checkbox"
         />
       </div>
     }
