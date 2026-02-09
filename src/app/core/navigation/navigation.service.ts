@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { NAVIGATION_ITEMS } from './navigation-items.cont';
+import { NAVIGATION_ITEMS } from './navigation-items.const';
 import { NavigationItem } from './navigation.types';
 import { Router } from '@angular/router';
 

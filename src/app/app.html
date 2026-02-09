@@ -1,33 +1,3 @@
-<!-- <div class="create-item-form">
-  <input type="text" pInputText [(ngModel)]="itemName" />
-  <p-button (click)="handleCreateNote()" label="Criar" />
-</div>
-<div class="grocery-item-list">
-  <jbt-grocery-items-list></jbt-grocery-items-list>
-</div>
-<div class="float-button-content">
-  <p-button
-    [style]="{ width: '100%' }"
-    size="large"
-    (click)="visibleShoppingDrawer = true"
-    label="Iniciar compras"
-  />
-</div>
-<div class="card flex justify-center">
-  <p-drawer
-    [(visible)]="visibleShoppingDrawer"
-    header="Items faltantes"
-    position="bottom"
-    [style]="{ height: '100dvh' }"
-  >
-    <jbt-grocery-items-list
-      [predefinedMissingCheckboxValue]="false"
-      [filterList]="handleFilterList"
-      [saveMissingChanges]="false"
-      [ableNameEdit]="false"
-    ></jbt-grocery-items-list>
-  </p-drawer>
-</div> -->
 <jbt-header></jbt-header>
 <jbt-sidebar></jbt-sidebar>
 <router-outlet />
