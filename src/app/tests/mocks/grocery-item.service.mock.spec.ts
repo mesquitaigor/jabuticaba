@@ -5,9 +5,10 @@ export const createGroceryItemServiceMock =
   (): jasmine.SpyObj<GroceryItemService> => {
     const mockGroceryItemService = jasmine.createSpyObj(
       GroceryItemService.name,
-      ['updateName', 'updateMissing', 'delete'],
+      ['getAll', 'updateName', 'updateMissing', 'delete'],
     );
 
+    mockGroceryItemService.getAll.and.returnValue(of([]));
     mockGroceryItemService.updateName.and.returnValue(of(null));
     mockGroceryItemService.updateMissing.and.returnValue(of(null));
     mockGroceryItemService.delete.and.returnValue(of(null));

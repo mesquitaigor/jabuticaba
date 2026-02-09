@@ -1,0 +1,51 @@
+<div class="p-4 max-w-4xl mx-auto">
+  <!-- Header Section -->
+  <div
+    class="flex items-center justify-between mb-3 border-b border-gray-200 pb-4"
+  >
+    <h1 class="text-xl font-bold text-gray-800">Seus itens</h1>
+    <div class="flex gap-2">
+      <p-button
+        icon="pi pi-pencil"
+        [outlined]="true"
+        severity="secondary"
+        (onClick)="onEdit()"
+      />
+      <p-button label="Adicionar" severity="primary" (onClick)="onAdd()" />
+    </div>
+  </div>
+
+  <!-- Items List -->
+  <div class="bg-white rounded-lg">
+    <div
+      *ngFor="let item of groceryItems"
+      class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
+    >
+      <!-- Icon -->
+      <div
+        class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+      >
+        <i [class]="item.icon + ' text-lg text-gray-600'"></i>
+      </div>
+
+      <!-- Item Name -->
+      <span class="flex-1 text-gray-800">{{ item.name }}</span>
+
+      <!-- Checkbox -->
+      <p-checkbox
+        [(ngModel)]="item.checked"
+        [binary]="true"
+        (onChange)="onItemCheckChange(item)"
+      />
+    </div>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="groceryItems.length === 0"
+      class="p-8 text-center text-gray-500"
+    >
+      <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
+      <p>Nenhum item cadastrado</p>
+    </div>
+  </div>
+</div>
