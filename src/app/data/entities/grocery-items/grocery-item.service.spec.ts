@@ -41,13 +41,12 @@ describe(GroceryItemService.name, () => {
   });
 
   describe('ao inicializar o service', () => {
-    it('deve expor um observable para os itens da lista', (done) => {
+    it('deve expor um signal para os itens da lista', () => {
       // Given & When
-      service.groceryItems$.subscribe((items) => {
-        // Then
-        expect(items).toEqual([]);
-        done();
-      });
+      const groceryList = service.getGroceryList();
+
+      // Then
+      expect(groceryList()).toEqual([]);
     });
   });
 
@@ -67,12 +66,11 @@ describe(GroceryItemService.name, () => {
           name: itemName,
         });
 
-        // Verify BehaviorSubject is updated
-        service.groceryItems$.subscribe((items) => {
-          expect(items.length).toBe(1);
-          expect(items[0].uuid).toBe(uuidTestValue);
-          done();
-        });
+        // Verify signal is updated
+        const groceryList = service.getGroceryList();
+        expect(groceryList().length).toBe(1);
+        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        done();
       });
     });
 
@@ -115,12 +113,11 @@ describe(GroceryItemService.name, () => {
         expect(result[0].uuid).toBe(uuidTestValue);
         expect(result[0].name).toBe(nameTestValue);
 
-        // Verify BehaviorSubject is updated
-        service.groceryItems$.subscribe((items) => {
-          expect(items.length).toBe(1);
-          expect(items[0].uuid).toBe(uuidTestValue);
-          done();
-        });
+        // Verify signal is updated
+        const groceryList = service.getGroceryList();
+        expect(groceryList().length).toBe(1);
+        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        done();
       });
     });
 
@@ -133,11 +130,10 @@ describe(GroceryItemService.name, () => {
         // Then
         expect(result).toEqual([]);
 
-        // Verify BehaviorSubject is updated
-        service.groceryItems$.subscribe((items) => {
-          expect(items).toEqual([]);
-          done();
-        });
+        // Verify signal is updated
+        const groceryList = service.getGroceryList();
+        expect(groceryList()).toEqual([]);
+        done();
       });
     });
 
@@ -153,10 +149,10 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('não deve chamar API quando BehaviorSubject já tem dados', (done) => {
-      // Given - First populate the BehaviorSubject
+    it('não deve chamar API quando signal já tem dados', (done) => {
+      // Given - First populate the signal
       const mockItem = createGroceryItemModelMock();
-      service['groceryItemsSubject'].next([mockItem]);
+      service['groceryItems$'].set([mockItem]);
       mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
 
       // When
@@ -169,9 +165,9 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('deve chamar API apenas quando BehaviorSubject está vazio', (done) => {
-      // Given - Ensure BehaviorSubject is empty
-      service['groceryItemsSubject'].next([]);
+    it('deve chamar API apenas quando signal está vazio', (done) => {
+      // Given - Ensure signal is empty
+      service['groceryItems$'].set([]);
       mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
 
       // When
@@ -188,8 +184,8 @@ describe(GroceryItemService.name, () => {
     it('deve retornar item atualizado quando API retorna dados', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock();
-      // First populate the BehaviorSubject
-      service['groceryItemsSubject'].next([mockItem]);
+      // First populate the signal
+      service['groceryItems$'].set([mockItem]);
       mockGroceryItemApiService.updateRecord.and.returnValue(
         of([mockApiResponse]),
       );
@@ -204,12 +200,11 @@ describe(GroceryItemService.name, () => {
           { name: mockItem.name },
         );
 
-        // Verify BehaviorSubject is updated
-        service.groceryItems$.subscribe((items) => {
-          expect(items.length).toBe(1);
-          expect(items[0].uuid).toBe(uuidTestValue);
-          done();
-        });
+        // Verify signal is updated
+        const groceryList = service.getGroceryList();
+        expect(groceryList().length).toBe(1);
+        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        done();
       });
     });
 
@@ -270,8 +265,8 @@ describe(GroceryItemService.name, () => {
       // Given
       const uuid = 'test-uuid';
       const mockItem = createGroceryItemModelMock({ uuid });
-      // First populate the BehaviorSubject
-      service['groceryItemsSubject'].next([mockItem]);
+      // First populate the signal
+      service['groceryItems$'].set([mockItem]);
       mockGroceryItemApiService.deleteRecord.and.returnValue(of(null));
 
       // When
@@ -282,11 +277,10 @@ describe(GroceryItemService.name, () => {
           uuid,
         );
 
-        // Verify BehaviorSubject is updated (item removed)
-        service.groceryItems$.subscribe((items) => {
-          expect(items.length).toBe(0);
-          done();
-        });
+        // Verify signal is updated (item removed)
+        const groceryList = service.getGroceryList();
+        expect(groceryList().length).toBe(0);
+        done();
       });
     });
   });

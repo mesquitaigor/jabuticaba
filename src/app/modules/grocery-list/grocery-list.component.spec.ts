@@ -4,16 +4,27 @@ import { GroceryItemService } from '../../data/entities/grocery-items/grocery-it
 import { of, throwError } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.mock.spec';
+import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
+import { signal } from '@angular/core';
 
-describe('GroceryListComponent', () => {
+fdescribe(GroceryListComponent.name, () => {
   let component: GroceryListComponent;
   let fixture: ComponentFixture<GroceryListComponent>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
+  let mockSignal = signal<GroceryItemModel[]>([]);
 
   beforeEach(async () => {
+    mockSignal = signal<GroceryItemModel[]>([]);
+
     mockGroceryItemService = jasmine.createSpyObj('GroceryItemService', [
       'getAll',
+      'getGroceryList',
     ]);
+
+    mockGroceryItemService.getGroceryList.and.returnValue(
+      mockSignal.asReadonly(),
+    );
+    mockGroceryItemService.getAll.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
       imports: [GroceryListComponent],
@@ -28,72 +39,77 @@ describe('GroceryListComponent', () => {
 
   describe('quando o componente é inicializado', () => {
     it('precisa carregar os itens do serviço', () => {
-      const mockItems = [
-        createGroceryItemModelMock(),
-        createGroceryItemModelMock({ name: 'Item 2' }),
-      ];
-      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
-
       fixture.detectChanges();
-
       expect(mockGroceryItemService.getAll).toHaveBeenCalled();
     });
 
     it('precisa listar os itens na interface', () => {
-      mockGroceryItemService.getAll.and.returnValue(of([]));
+      const mockItems = [
+        createGroceryItemModelMock(),
+        createGroceryItemModelMock({ name: 'Item 2' }),
+        createGroceryItemModelMock({ name: 'Item 3' }),
+      ];
+      mockSignal.set(mockItems);
 
       fixture.detectChanges();
 
       const items = fixture.debugElement.queryAll(
-        By.css('[class*="flex items-center gap-4"]'),
+        By.css('[data-testid="grocery-item"]'),
       );
 
-      expect(items.length).toBe(component.groceryItems.length);
+      expect(items.length).toBe(mockItems.length);
     });
 
-    it('precisa renderizar o nome dos itens corretamente', () => {
-      mockGroceryItemService.getAll.and.returnValue(of([]));
+    fit('precisa renderizar o nome dos itens corretamente', () => {
+      const mockItems = [createGroceryItemModelMock()];
+      mockSignal.set(mockItems);
+      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
 
       fixture.detectChanges();
 
       const itemNames = fixture.debugElement.queryAll(
-        By.css('.flex-1.text-gray-800'),
+        By.css('[data-testid="grocery-item-name"]'),
       );
 
       expect(itemNames.length).toBeGreaterThan(0);
       expect(itemNames[0].nativeElement.textContent.trim()).toBe(
-        component.groceryItems[0].name,
+        component.groceryItems()[0].name,
       );
     });
   });
 
   describe('quando renderiza o componente', () => {
     it('precisa renderizar o checkbox com estado correspondente ao atributo do item', () => {
-      component.groceryItems[0].checked = true;
-      component.groceryItems[1].checked = false;
-      mockGroceryItemService.getAll.and.returnValue(of([]));
+      const mockItems = [
+        createGroceryItemModelMock({ missing: true }),
+        createGroceryItemModelMock({ missing: false }),
+      ];
+      mockSignal.set(mockItems);
+      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
 
       fixture.detectChanges();
 
-      const checkboxes = fixture.debugElement.queryAll(By.css('p-checkbox'));
+      const checkboxes = fixture.debugElement.queryAll(
+        By.css('[data-testid="grocery-item-checkbox"]'),
+      );
 
       expect(checkboxes[0].componentInstance.binary).toBe(true);
       expect(checkboxes[0].componentInstance.ngModel).toBe(
-        component.groceryItems[0].checked,
+        component.groceryItems()[0].missing,
       );
       expect(checkboxes[1].componentInstance.ngModel).toBe(
-        component.groceryItems[1].checked,
+        component.groceryItems()[1].missing,
       );
     });
 
     it('precisa exibir estado vazio quando não há itens', () => {
-      component.groceryItems = [];
+      mockSignal.set([]);
       mockGroceryItemService.getAll.and.returnValue(of([]));
 
       fixture.detectChanges();
 
       const emptyState = fixture.debugElement.query(
-        By.css('[class*="p-8 text-center text-gray-500"]'),
+        By.css('[data-testid="empty-state"]'),
       );
 
       expect(emptyState).toBeTruthy();
@@ -151,7 +167,7 @@ describe('GroceryListComponent', () => {
       fixture.detectChanges();
 
       const items = fixture.debugElement.queryAll(
-        By.css('[class*="flex items-center gap-4"]'),
+        By.css('[data-testid="grocery-item"]'),
       );
 
       expect(items.length).toBe(0);
