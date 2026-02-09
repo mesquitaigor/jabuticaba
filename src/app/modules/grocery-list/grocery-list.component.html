@@ -17,35 +17,38 @@
 
   <!-- Items List -->
   <div class="bg-white rounded-lg">
-    <div
-      *ngFor="let item of groceryItems"
-      class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
-    >
-      <!-- Icon -->
+    @for (item of groceryItems(); track item.uuid) {
       <div
-        class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+        class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
+        data-testid="grocery-item"
       >
-        <i [class]="item.icon + ' text-lg text-gray-600'"></i>
+        <!-- Icon -->
+        <div
+          class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+        >
+          <i class="text-lg text-gray-600"></i>
+        </div>
+
+        <!-- Item Name -->
+        <span class="flex-1 text-gray-800" data-testid="grocery-item-name">{{
+          item.name
+        }}</span>
+
+        <!-- Checkbox -->
+        <p-checkbox
+          [(ngModel)]="item.missing"
+          [binary]="true"
+          (onChange)="onItemCheckChange(item)"
+        />
       </div>
-
-      <!-- Item Name -->
-      <span class="flex-1 text-gray-800">{{ item.name }}</span>
-
-      <!-- Checkbox -->
-      <p-checkbox
-        [(ngModel)]="item.checked"
-        [binary]="true"
-        (onChange)="onItemCheckChange(item)"
-      />
-    </div>
+    }
 
     <!-- Empty State -->
-    <div
-      *ngIf="groceryItems.length === 0"
-      class="p-8 text-center text-gray-500"
-    >
-      <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
-      <p>Nenhum item cadastrado</p>
-    </div>
+    @if (groceryItems().length === 0) {
+      <div class="p-8 text-center text-gray-500">
+        <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
+        <p>Nenhum item cadastrado</p>
+      </div>
+    }
   </div>
 </div>

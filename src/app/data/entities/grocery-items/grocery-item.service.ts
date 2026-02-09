@@ -1,5 +1,5 @@
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap, of } from 'rxjs';
+import { inject, Injectable, Signal, signal } from '@angular/core';
+import { map, Observable, tap, of } from 'rxjs';
 import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
 import GroceryItem from './grocery-item.model';
@@ -14,8 +14,7 @@ export class GroceryItemService {
     GroceryItemApiService,
   );
 
-  private readonly groceryItemsSubject = new BehaviorSubject<GroceryItem[]>([]);
-  public readonly groceryItems$ = this.groceryItemsSubject.asObservable();
+  private readonly groceryItems$ = signal<GroceryItem[]>([]);
   public create(name: string): Observable<GroceryItem | null> {
     return this.groceryItemApiService.create({ name: name }).pipe(
       map((response) => {
@@ -28,15 +27,18 @@ export class GroceryItemService {
       }),
       tap((newItem) => {
         if (newItem) {
-          const currentItems = this.groceryItemsSubject.value;
-          this.groceryItemsSubject.next([...currentItems, newItem]);
+          const currentItems = this.groceryItems$();
+          this.groceryItems$.set([...currentItems, newItem]);
         }
       }),
     );
   }
+  public getGroceryList(): Signal<GroceryItem[]> {
+    return this.groceryItems$.asReadonly();
+  }
   public getAll(): Observable<GroceryItem[]> {
     // Only load from API if BehaviorSubject is empty
-    const currentItems = this.groceryItemsSubject.value;
+    const currentItems = this.groceryItems$();
     if (currentItems.length > 0) {
       return of(currentItems);
     }
@@ -51,7 +53,7 @@ export class GroceryItemService {
         return [];
       }),
       tap((items) => {
-        this.groceryItemsSubject.next(items);
+        this.groceryItems$.set(items);
       }),
     );
   }
@@ -76,11 +78,11 @@ export class GroceryItemService {
       }),
       tap((updatedItem) => {
         if (updatedItem) {
-          const currentItems = this.groceryItemsSubject.value;
+          const currentItems = this.groceryItems$();
           const updatedItems = currentItems.map((item) =>
             item.uuid === updatedItem.uuid ? updatedItem : item,
           );
-          this.groceryItemsSubject.next(updatedItems);
+          this.groceryItems$.set(updatedItems);
         }
       }),
     );
@@ -88,9 +90,9 @@ export class GroceryItemService {
   public delete(uuid: string): Observable<null> {
     return this.groceryItemApiService.deleteRecord(uuid).pipe(
       tap(() => {
-        const currentItems = this.groceryItemsSubject.value;
+        const currentItems = this.groceryItems$();
         const filteredItems = currentItems.filter((item) => item.uuid !== uuid);
-        this.groceryItemsSubject.next(filteredItems);
+        this.groceryItems$.set(filteredItems);
       }),
     );
   }
