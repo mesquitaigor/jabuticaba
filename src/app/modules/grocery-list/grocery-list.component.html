@@ -44,10 +44,28 @@
     }
 
     <!-- Empty State -->
-    @if (groceryItems().length === 0) {
-      <div class="p-8 text-center text-gray-500">
+    @if (!hasError && groceryItems().length === 0) {
+      <div class="p-8 text-center text-gray-500" data-testid="empty-state">
         <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
         <p>Nenhum item cadastrado</p>
+      </div>
+    }
+    @if (hasError) {
+      <div class="p-8 text-center text-gray-500" data-testid="error-state">
+        <img
+          src="error.svg"
+          alt="Error"
+          class="w-40 h-40 mb-4 mx-auto translate-5"
+        />
+        <p>Erro ao carregar itens</p>
+        <p-button
+          class="mt-4 inline-block"
+          icon="pi pi-reload"
+          label="Recarregar"
+          [outlined]="true"
+          severity="secondary"
+          (onClick)="loadItems()"
+        ></p-button>
       </div>
     }
   </div>

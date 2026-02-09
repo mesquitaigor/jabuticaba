@@ -5,6 +5,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -16,10 +17,24 @@ export class GroceryListComponent implements OnInit {
     inject(GroceryItemService);
   public groceryItems: Signal<GroceryItemModel[]> =
     this.groceryItemService.getGroceryList();
+  public hasError = false;
+  public loading = false;
 
   ngOnInit(): void {
     this.groceryItemService.getGroceryList();
-    this.groceryItemService.getAll().subscribe();
+    this.loadItems();
+  }
+
+  public loadItems(): void {
+    this.loading = true;
+    this.groceryItemService
+      .getAll()
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        error: () => {
+          this.hasError = true;
+        },
+      });
   }
 
   onEdit(): void {

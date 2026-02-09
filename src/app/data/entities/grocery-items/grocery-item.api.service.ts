@@ -50,7 +50,14 @@ export class GroceryItemApiService {
       const promise = this.supabaseService.select<IGroceryItemApi>(
         this.tableName,
       );
-      return from(promise).pipe(map((response) => response?.data || null));
+      return from(promise).pipe(
+        map((response) => {
+          if (response?.error) {
+            throw response.error;
+          }
+          return response?.data || null;
+        }),
+      );
     } else {
       return of(null);
     }

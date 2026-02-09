@@ -45,6 +45,7 @@ export class GroceryItemService {
 
     return this.groceryItemApiService.getAll().pipe(
       map((response) => {
+        console.log(response);
         if (response?.length) {
           return response.map((data) => {
             return ShoppingListItemMapper.apiToModel(data);
