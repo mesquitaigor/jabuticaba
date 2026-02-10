@@ -7,6 +7,7 @@ describe(GroceryItemMapper.name, () => {
     uuid: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Test Grocery Item',
     missing: true,
+    hidden: false,
     created_at: '2024-01-15T10:30:00Z',
     updated_at: '2024-01-16T14:45:00Z',
     deleted_at: null,

@@ -12,6 +12,7 @@ describe(GroceryItemApiService.name, () => {
     uuid: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Test Item',
     missing: false,
+    hidden: false,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
     deleted_at: null,
