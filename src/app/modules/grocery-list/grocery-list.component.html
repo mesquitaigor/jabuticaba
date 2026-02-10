@@ -102,7 +102,7 @@
       (onClick)="showAddModal = false"
     />
     <p-button
-      [disabled]="addButtonDisabledState"
+      [disabled]="addButtonDisabledState()"
       [label]="adding() ? 'Adicionando...' : 'Adicionar'"
       severity="primary"
       (onClick)="saveNewItem()"

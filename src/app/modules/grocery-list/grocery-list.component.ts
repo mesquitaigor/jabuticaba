@@ -35,11 +35,14 @@ export class GroceryListComponent implements OnInit {
   public hasError = false;
   public loading = false;
   public showAddModal = false;
-  public newItemName = new FormControl('');
+  public newItemName!: FormControl<string | null>;
   public readonly adding = signal(false);
   public readonly addButtonDisabledState = signal(true);
 
   constructor() {
+    // Criar FormControl dentro do constructor
+    this.newItemName = new FormControl('', { updateOn: 'change' });
+
     effect(() => {
       const items = this.groceryItemService.getGroceryList()();
       this.groceryItems.set(
@@ -49,23 +52,27 @@ export class GroceryListComponent implements OnInit {
         }),
       );
     });
+
+    // Configurar valueChanges no constructor
+    this.newItemName.valueChanges.subscribe((value) => {
+      console.log('valueChanges disparado:', value);
+      this.setAddButtonDisabledState();
+    });
+
+    toObservable(this.adding).subscribe(() => {
+      this.setAddButtonDisabledState();
+    });
   }
 
   ngOnInit(): void {
     this.groceryItemService.getGroceryList();
     this.loadItems();
-    toObservable(this.adding).subscribe(() => {
-      this.setAddButtonDisabledState();
-    });
-    this.newItemName.valueChanges.subscribe(() => {
-      console.log('oi');
-      this.setAddButtonDisabledState();
-    });
   }
 
   private setAddButtonDisabledState(): void {
+    console.log(!this.newItemName.value?.trim().length || this.adding());
     this.addButtonDisabledState.set(
-      !this.newItemName.value?.trim().length && !this.adding(),
+      !this.newItemName.value?.trim().length || this.adding(),
     );
   }
 
