@@ -231,7 +231,7 @@ fdescribe(GroceryListComponent.name, () => {
   describe('quando o modal de adicionar está aberto', () => {
     it('precisa manter o botão de salvar desabilitado quando o input está vazio', () => {
       component.showAddModal = true;
-      component.newItemName = '';
+      component.newItemName.setValue('');
 
       fixture.detectChanges();
 
@@ -244,11 +244,11 @@ fdescribe(GroceryListComponent.name, () => {
 
     it('precisa habilitar o botão de salvar quando o usuário digita no input', () => {
       component.showAddModal = true;
-      component.newItemName = '';
+      component.newItemName.setValue('');
 
       fixture.detectChanges();
 
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       fixture.detectChanges();
 
       const saveButton = fixture.debugElement.query(
@@ -260,11 +260,11 @@ fdescribe(GroceryListComponent.name, () => {
 
     fit('precisa desabilitar o botão novamente se o input for esvaziado', () => {
       component.showAddModal = true;
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
 
       fixture.detectChanges();
 
-      component.newItemName = '';
+      component.newItemName.setValue('');
       fixture.detectChanges();
 
       const saveButton = fixture.debugElement.query(
@@ -278,7 +278,7 @@ fdescribe(GroceryListComponent.name, () => {
   describe('quando salvar um novo item', () => {
     it('precisa chamar o método create do service', () => {
       const itemName = 'Novo Item';
-      component.newItemName = itemName;
+      component.newItemName.setValue(itemName);
       fixture.detectChanges();
 
       component.saveNewItem();
@@ -287,7 +287,7 @@ fdescribe(GroceryListComponent.name, () => {
     });
 
     it('precisa definir adding como true ao iniciar a criação', () => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       mockGroceryItemService.create.and.returnValue(of(null).pipe(delay(100)));
 
       component.saveNewItem();
@@ -296,7 +296,7 @@ fdescribe(GroceryListComponent.name, () => {
     });
 
     it('precisa definir adding como false após criar com sucesso', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       mockGroceryItemService.create.and.returnValue(
         of(createGroceryItemModelMock()),
       );
@@ -308,7 +308,7 @@ fdescribe(GroceryListComponent.name, () => {
     }));
 
     it('precisa definir adding como false após erro na criação', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       mockGroceryItemService.create.and.returnValue(
         throwError(() => new Error('Erro ao criar')),
       );
@@ -320,7 +320,7 @@ fdescribe(GroceryListComponent.name, () => {
     }));
 
     it('precisa fechar o modal após criar com sucesso', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       component.showAddModal = true;
       mockGroceryItemService.create.and.returnValue(
         of(createGroceryItemModelMock()),
@@ -333,7 +333,7 @@ fdescribe(GroceryListComponent.name, () => {
     }));
 
     it('precisa limpar o campo newItemName após criar com sucesso', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       mockGroceryItemService.create.and.returnValue(
         of(createGroceryItemModelMock()),
       );
@@ -341,12 +341,12 @@ fdescribe(GroceryListComponent.name, () => {
       component.saveNewItem();
       tick();
 
-      expect(component.newItemName).toBe('');
+      expect(component.newItemName.value).toBe('');
     }));
 
     it('não deve chamar o service múltiplas vezes se já está criando', () => {
-      component.newItemName = 'Novo Item';
-      component.adding = true;
+      component.newItemName.setValue('Novo Item');
+      component.adding.set(true);
 
       component.saveNewItem();
 
@@ -354,7 +354,7 @@ fdescribe(GroceryListComponent.name, () => {
     });
 
     it('precisa desabilitar o botão de salvar durante a criação', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       component.showAddModal = true;
       mockGroceryItemService.create.and.returnValue(of(null).pipe(delay(100)));
 
@@ -373,7 +373,7 @@ fdescribe(GroceryListComponent.name, () => {
     }));
 
     it('precisa exibir loading no botão durante a criação', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       component.showAddModal = true;
       mockGroceryItemService.create.and.returnValue(of(null).pipe(delay(100)));
 
@@ -388,7 +388,7 @@ fdescribe(GroceryListComponent.name, () => {
       expect(saveButton.componentInstance.disabled).toBe(true);
     }));
     it('precisa exibir toast de erro quando a criação falhar', fakeAsync(() => {
-      component.newItemName = 'Novo Item';
+      component.newItemName.setValue('Novo Item');
       mockGroceryItemService.create.and.returnValue(
         throwError(() => new Error('Erro ao criar')),
       );
