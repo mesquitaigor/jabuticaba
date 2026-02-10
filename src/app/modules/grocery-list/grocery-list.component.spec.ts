@@ -555,7 +555,7 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
 
-    fit('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
+    it('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
         mockSignal.set([mockItem]);
@@ -565,12 +565,11 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const checkbox = DataTestIdHelper.queryOrFail(
+        const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.ItemCheckbox,
+          DataTestId.GroceryList.Item,
         );
-
-        checkbox.componentInstance.onClick.emit({ checked: true });
+        itemElement.nativeElement.click();
         tick(1);
 
         const itemInList = component
@@ -593,17 +592,15 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const checkbox = DataTestIdHelper.queryOrFail(
+        const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.ItemCheckbox,
+          DataTestId.GroceryList.Item,
         );
-
-        // Primeiro clique
-        checkbox.componentInstance.onClick.emit({ checked: true });
+        itemElement.nativeElement.click();
         fixture.detectChanges();
 
         // Segundo clique enquanto ainda está processando
-        checkbox.componentInstance.onClick.emit({ checked: false });
+        itemElement.nativeElement.click();
         tick(100);
 
         expect(mockGroceryItemService.updateMissing).toHaveBeenCalledTimes(1);
