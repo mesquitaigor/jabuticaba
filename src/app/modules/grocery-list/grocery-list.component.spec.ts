@@ -82,7 +82,111 @@ fdescribe(GroceryListComponent.name, () => {
     component = fixture.componentInstance;
   });
 
-  describe('quando o botão de editar missing do menu é clicado', () => {
+  // (describe removido pois estava vazio)
+
+  describe('quando o botão de visibilidade do menu é clicado', () => {
+    beforeEach(() => {
+      mockGroceryItemService.updateHidden = jasmine
+        .createSpy('updateHidden')
+        .and.returnValue(of(createGroceryItemModelMock()));
+    });
+
+    it('deve chamar updateHidden do service ao clicar no menu', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ hidden: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateHidden.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, hidden: true })),
+        );
+        fixture.detectChanges();
+        // Simula clique no botão de visibilidade no menu
+        component
+          .groceryItems()?.[0]
+          .menu()[1]
+          .command?.({ item: { label: 'Esconder' } } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+        expect(mockGroceryItemService.updateHidden).toHaveBeenCalledWith(
+          jasmine.objectContaining({ uuid: mockItem.uuid }),
+        );
+      });
+    }));
+
+    it('deve bloquear múltiplas chamadas enquanto está processando', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ hidden: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateHidden.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, hidden: true })).pipe(
+            delay(100),
+          ),
+        );
+        fixture.detectChanges();
+        component
+          .groceryItems()?.[0]
+          .menu()[1]
+          .command?.({ item: { label: 'Esconder' } } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        // Segunda chamada antes de terminar a primeira
+        component
+          .groceryItems()?.[0]
+          .menu()[1]
+          .command?.({ item: { label: 'Esconder' } } as MenuItemCommandEvent);
+        tick(100);
+        expect(mockGroceryItemService.updateHidden).toHaveBeenCalledTimes(1);
+      });
+    }));
+
+    it('deve atualizar o atributo hidden do item', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ hidden: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateHidden.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, hidden: true })),
+        );
+        fixture.detectChanges();
+        component
+          .groceryItems()?.[0]
+          .menu()[1]
+          .command?.({ item: { label: 'Esconder' } } as MenuItemCommandEvent);
+        tick(1);
+        expect(component.groceryItems()?.[0].hidden).toBe(true);
+      });
+    }));
+
+    it('deve exibir label "Mostrar" quando hidden é true e "Esconder" quando hidden é false', () => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ hidden: false });
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        // hidden false
+        expect(component.groceryItems()?.[0].menu()[1].label).toBe('Esconder');
+        // Simula mudança para hidden true
+        const item = component.groceryItems()[0];
+        item.hidden = true;
+        item['defineVisibilityItem']();
+        fixture.detectChanges();
+        expect(component.groceryItems()?.[0].menu()[1].label).toBe('Mostrar');
+      });
+    });
+  });
+
+  describe('labels do botão de marcar/desmarcar', () => {
+    it('deve exibir "Marcar" quando missing é false e "Desmarcar" quando missing é true', () => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        // missing false
+        expect(component.groceryItems()?.[0].menu()[2].label).toBe('Marcar');
+        // Simula mudança para missing true
+        const item = component.groceryItems()[0];
+        item.missing = true;
+        item['defineMissingLabel']();
+        fixture.detectChanges();
+        expect(component.groceryItems()?.[0].menu()[2].label).toBe('Desmarcar');
+      });
+    });
     it('precisa chamar updateMissing do service ao clicar no menu', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
