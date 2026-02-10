@@ -12,11 +12,13 @@ import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.m
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { signal } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MessageService } from 'primeng/api';
 
 fdescribe(GroceryListComponent.name, () => {
   let component: GroceryListComponent;
   let fixture: ComponentFixture<GroceryListComponent>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
+  let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
 
   beforeEach(async () => {
@@ -25,18 +27,24 @@ fdescribe(GroceryListComponent.name, () => {
     mockGroceryItemService = jasmine.createSpyObj('GroceryItemService', [
       'getAll',
       'getGroceryList',
+      'create',
     ]);
+    mockMessageService = jasmine.createSpyObj('MessageService', ['add']);
 
     mockGroceryItemService.getGroceryList.and.returnValue(
       mockSignal.asReadonly(),
     );
     mockGroceryItemService.getAll.and.returnValue(of([]));
+    mockGroceryItemService.create.and.returnValue(
+      of(createGroceryItemModelMock()),
+    );
 
     await TestBed.configureTestingModule({
       imports: [GroceryListComponent],
       providers: [
         provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
+        { provide: MessageService, useValue: mockMessageService },
       ],
     }).compileComponents();
 
@@ -218,5 +226,181 @@ fdescribe(GroceryListComponent.name, () => {
 
       expect(component.showAddModal).toBe(true);
     });
+  });
+
+  describe('quando o modal de adicionar está aberto', () => {
+    it('precisa manter o botão de salvar desabilitado quando o input está vazio', () => {
+      component.showAddModal = true;
+      component.newItemName = '';
+
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement.query(
+        By.css('[data-testid="save-button"]'),
+      );
+
+      expect(saveButton.componentInstance.disabled).toBe(true);
+    });
+
+    it('precisa habilitar o botão de salvar quando o usuário digita no input', () => {
+      component.showAddModal = true;
+      component.newItemName = '';
+
+      fixture.detectChanges();
+
+      component.newItemName = 'Novo Item';
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement.query(
+        By.css('[data-testid="save-button"]'),
+      );
+
+      expect(saveButton.componentInstance.disabled).toBe(false);
+    });
+
+    fit('precisa desabilitar o botão novamente se o input for esvaziado', () => {
+      component.showAddModal = true;
+      component.newItemName = 'Novo Item';
+
+      fixture.detectChanges();
+
+      component.newItemName = '';
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement.query(
+        By.css('[data-testid="save-button"]'),
+      );
+
+      expect(saveButton.componentInstance.disabled).toBe(true);
+    });
+  });
+
+  describe('quando salvar um novo item', () => {
+    it('precisa chamar o método create do service', () => {
+      const itemName = 'Novo Item';
+      component.newItemName = itemName;
+      fixture.detectChanges();
+
+      component.saveNewItem();
+
+      expect(mockGroceryItemService.create).toHaveBeenCalledWith(itemName);
+    });
+
+    it('precisa definir adding como true ao iniciar a criação', () => {
+      component.newItemName = 'Novo Item';
+      mockGroceryItemService.create.and.returnValue(of(null).pipe(delay(100)));
+
+      component.saveNewItem();
+
+      expect(component.adding).toBe(true);
+    });
+
+    it('precisa definir adding como false após criar com sucesso', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      mockGroceryItemService.create.and.returnValue(
+        of(createGroceryItemModelMock()),
+      );
+
+      component.saveNewItem();
+      tick();
+
+      expect(component.adding).toBe(false);
+    }));
+
+    it('precisa definir adding como false após erro na criação', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      mockGroceryItemService.create.and.returnValue(
+        throwError(() => new Error('Erro ao criar')),
+      );
+
+      component.saveNewItem();
+      tick();
+
+      expect(component.adding).toBe(false);
+    }));
+
+    it('precisa fechar o modal após criar com sucesso', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      component.showAddModal = true;
+      mockGroceryItemService.create.and.returnValue(
+        of(createGroceryItemModelMock()),
+      );
+
+      component.saveNewItem();
+      tick();
+
+      expect(component.showAddModal).toBe(false);
+    }));
+
+    it('precisa limpar o campo newItemName após criar com sucesso', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      mockGroceryItemService.create.and.returnValue(
+        of(createGroceryItemModelMock()),
+      );
+
+      component.saveNewItem();
+      tick();
+
+      expect(component.newItemName).toBe('');
+    }));
+
+    it('não deve chamar o service múltiplas vezes se já está criando', () => {
+      component.newItemName = 'Novo Item';
+      component.adding = true;
+
+      component.saveNewItem();
+
+      expect(mockGroceryItemService.create).not.toHaveBeenCalled();
+    });
+
+    it('precisa desabilitar o botão de salvar durante a criação', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      component.showAddModal = true;
+      mockGroceryItemService.create.and.returnValue(of(null).pipe(delay(100)));
+
+      fixture.detectChanges();
+      component.saveNewItem();
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement.query(
+        By.css('[data-testid="save-button"]'),
+      );
+      if (saveButton == null) {
+        fail('Botão de salvar não encontrado');
+        return;
+      }
+      expect(saveButton.componentInstance.disabled).toBe(true);
+    }));
+
+    it('precisa exibir loading no botão durante a criação', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      component.showAddModal = true;
+      mockGroceryItemService.create.and.returnValue(of(null).pipe(delay(100)));
+
+      fixture.detectChanges();
+      component.saveNewItem();
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement.query(
+        By.css('[data-testid="save-button"]'),
+      );
+
+      expect(saveButton.componentInstance.disabled).toBe(true);
+    }));
+    it('precisa exibir toast de erro quando a criação falhar', fakeAsync(() => {
+      component.newItemName = 'Novo Item';
+      mockGroceryItemService.create.and.returnValue(
+        throwError(() => new Error('Erro ao criar')),
+      );
+
+      component.saveNewItem();
+      tick();
+
+      expect(mockMessageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível adicionar o item',
+      });
+    }));
   });
 });

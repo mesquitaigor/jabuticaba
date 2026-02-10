@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { SupabaseService } from '../../../core/services/api/supabase.service';
-import { from, map, Observable, of } from 'rxjs';
+import { from, map, Observable, of, tap } from 'rxjs';
 import { IGroceryItemApi } from './grocery-item.dto';
 
 @Injectable({
@@ -17,7 +17,14 @@ export class GroceryItemApiService {
         payload,
         this.tableName,
       );
-      return from(promise).pipe(map((response) => response?.data || null));
+      return from(promise).pipe(
+        tap((response) => {
+          if (response?.error) {
+            throw response.error;
+          }
+        }),
+        map((response) => response?.data || null),
+      );
     } else {
       return of(null);
     }
@@ -32,7 +39,14 @@ export class GroceryItemApiService {
         uuid,
         payload,
       );
-      return from(promise).pipe(map((response) => response?.data || null));
+      return from(promise).pipe(
+        tap((response) => {
+          if (response?.error) {
+            throw response.error;
+          }
+        }),
+        map((response) => response?.data || null),
+      );
     } else {
       return of(null);
     }
@@ -40,7 +54,14 @@ export class GroceryItemApiService {
   public deleteRecord(uuid: string): Observable<null> {
     if (this.supabaseService.client) {
       const promise = this.supabaseService.delete(this.tableName, uuid);
-      return from(promise).pipe(map((response) => response?.data || null));
+      return from(promise).pipe(
+        tap((response) => {
+          if (response?.error) {
+            throw response.error;
+          }
+        }),
+        map((response) => response?.data || null),
+      );
     } else {
       return of(null);
     }
