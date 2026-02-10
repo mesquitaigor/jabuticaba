@@ -76,6 +76,11 @@ export class GroceryListComponent implements OnInit {
     this.groceryItemService.delete(item.uuid!).subscribe({
       next: () => {
         stopState();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Item excluído com sucesso',
+        });
       },
       error: () => {
         stopState();

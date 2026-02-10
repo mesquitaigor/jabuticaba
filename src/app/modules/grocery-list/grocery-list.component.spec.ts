@@ -99,7 +99,7 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
 
-    fit('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
+    it('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock();
         mockSignal.set([mockItem]);
