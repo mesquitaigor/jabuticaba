@@ -12,6 +12,10 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
+import {
+  DataTestId,
+  DataTestidDirective,
+} from '../../shared/directives/data-testid';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -24,6 +28,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
     InputTextModule,
     ToastModule,
     ReactiveFormsModule,
+    DataTestidDirective,
   ],
   templateUrl: './grocery-list.component.html',
 })
@@ -38,6 +43,7 @@ export class GroceryListComponent implements OnInit {
   public newItemName!: FormControl<string | null>;
   public readonly adding = signal(false);
   public readonly addButtonDisabledState = signal(true);
+  public readonly testIds = DataTestId.GroceryList;
 
   constructor() {
     // Criar FormControl dentro do constructor

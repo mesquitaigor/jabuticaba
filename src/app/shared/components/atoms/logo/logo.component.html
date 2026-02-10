@@ -1,4 +1,4 @@
-<div class="flex gap-3 align-center" data-testid="sidebar-logo">
+<div class="flex gap-3 align-center" [jbtDataTestid]="testIds.Sidebar.Logo">
   <img [src]="logoSrc" [alt]="logoAlt" />
   @if (showTitle()) {
     <h5 class="m-0 font-bold flex align-center">Jabuticaba</h5>

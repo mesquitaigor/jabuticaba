@@ -21,7 +21,7 @@
       @for (item of groceryItems(); track item.uuid) {
         <div
           class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
-          data-testid="grocery-item"
+          [jbtDataTestid]="testIds.Item"
           [class]="'grocery-item-content-' + item.uuid"
         >
           <!-- Icon -->
@@ -30,14 +30,16 @@
           >
             <img class="w-10 h-10" src="icons/ketchup.svg" alt="Item ícone" />
           </div>
-          <span class="flex-1 text-gray-800" data-testid="grocery-item-name">{{
-            item.name
-          }}</span>
+          <span
+            class="flex-1 text-gray-800"
+            [jbtDataTestid]="testIds.ItemName"
+            >{{ item.name }}</span
+          >
           <p-checkbox
             [(ngModel)]="item.missing"
             [binary]="true"
             (onChange)="onItemCheckChange(item)"
-            data-testid="grocery-item-checkbox"
+            [jbtDataTestid]="testIds.ItemCheckbox"
           />
         </div>
       }
@@ -45,11 +47,17 @@
 
     <!-- Empty State -->
     @if (loading) {
-      <div class="p-8 text-center text-gray-500" data-testid="loading-state">
+      <div
+        class="p-8 text-center text-gray-500"
+        [jbtDataTestid]="testIds.LoadingState"
+      >
         <p>Carregando</p>
       </div>
     } @else if (hasError) {
-      <div class="p-8 text-center text-gray-500" data-testid="error-state">
+      <div
+        class="p-8 text-center text-gray-500"
+        [jbtDataTestid]="testIds.ErrorState"
+      >
         <img
           src="error.svg"
           alt="Error"
@@ -66,7 +74,10 @@
         ></p-button>
       </div>
     } @else if (groceryItems().length === 0) {
-      <div class="p-8 text-center text-gray-500" data-testid="empty-state">
+      <div
+        class="p-8 text-center text-gray-500"
+        [jbtDataTestid]="testIds.EmptyState"
+      >
         <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
         <p>Nenhum item cadastrado</p>
       </div>
@@ -81,7 +92,7 @@
   [style]="{ width: '90%' }"
   [draggable]="false"
   [resizable]="false"
-  data-testid="add-item-modal"
+  [jbtDataTestid]="testIds.AddItemModal"
 >
   <div class="flex flex-col gap-4">
     <input
@@ -90,7 +101,7 @@
       type="text"
       placeholder="Digite o nome do item"
       [formControl]="newItemName"
-      data-testid="new-item-input"
+      [jbtDataTestid]="testIds.NewItemInput"
     />
   </div>
 
@@ -106,7 +117,7 @@
       [label]="adding() ? 'Adicionando...' : 'Adicionar'"
       severity="primary"
       (onClick)="saveNewItem()"
-      data-testid="save-button"
+      [jbtDataTestid]="testIds.SaveButton"
     />
   </ng-template>
 </p-dialog>

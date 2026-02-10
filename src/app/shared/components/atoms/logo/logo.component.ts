@@ -1,8 +1,12 @@
 import { Component, input } from '@angular/core';
+import {
+  DataTestidDirective,
+  DataTestId,
+} from '../../../directives/data-testid';
 
 @Component({
   selector: 'jbt-logo',
-  imports: [],
+  imports: [DataTestidDirective],
   templateUrl: './logo.component.html',
 })
 export class LogoComponent {
@@ -10,4 +14,7 @@ export class LogoComponent {
   public readonly logoAlt = 'Jabuticaba app';
   public readonly title = 'Jabuticaba';
   public readonly logoSrc = 'icons/logo.svg';
+
+  // Expõe o enum para o template
+  public readonly testIds = DataTestId;
 }

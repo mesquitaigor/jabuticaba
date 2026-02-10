@@ -7,7 +7,6 @@ import {
 import { GroceryListComponent } from './grocery-list.component';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { delay, of, throwError } from 'rxjs';
-import { By } from '@angular/platform-browser';
 import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.mock.spec';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { Component, signal } from '@angular/core';
@@ -15,6 +14,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../tests/mocks/message.service.mock.spec';
 import { ToastModule } from 'primeng/toast';
+import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
+import { DataTestId } from '../../shared/directives/data-testid';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -95,8 +96,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const items = fixture.debugElement.queryAll(
-          By.css('[data-testid="grocery-item"]'),
+        const items = DataTestIdHelper.queryAll(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
         );
 
         expect(items.length).toBe(mockItems.length);
@@ -110,8 +112,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const itemNames = fixture.debugElement.queryAll(
-          By.css('[data-testid="grocery-item-name"]'),
+        const itemNames = DataTestIdHelper.queryAll(
+          fixture.debugElement,
+          DataTestId.GroceryList.ItemName,
         );
 
         expect(itemNames.length).toBeGreaterThan(0);
@@ -133,8 +136,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
         tick(1);
-        const checkboxes = fixture.debugElement.queryAll(
-          By.css('[data-testid="grocery-item-checkbox"]'),
+        const checkboxes = DataTestIdHelper.queryAll(
+          fixture.debugElement,
+          DataTestId.GroceryList.ItemCheckbox,
         );
         expect(checkboxes[0].componentInstance.checked).toBe(
           component.groceryItems()[0].missing,
@@ -152,8 +156,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const emptyState = fixture.debugElement.query(
-          By.css('[data-testid="empty-state"]'),
+        const emptyState = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.EmptyState,
         );
 
         expect(emptyState).toBeTruthy();
@@ -180,8 +185,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const errorState = fixture.debugElement.query(
-          By.css('[data-testid="error-state"]'),
+        const errorState = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.ErrorState,
         );
         expect(errorState).toBeTruthy();
       });
@@ -195,8 +201,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const items = fixture.debugElement.queryAll(
-          By.css('[data-testid="grocery-item"]'),
+        const items = DataTestIdHelper.queryAll(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
         );
 
         expect(items.length).toBe(0);
@@ -211,8 +218,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const loadingState = fixture.debugElement.query(
-          By.css('[data-testid="loading-state"]'),
+        const loadingState = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.LoadingState,
         );
 
         expect(loadingState).toBeTruthy();
@@ -228,8 +236,9 @@ fdescribe(GroceryListComponent.name, () => {
         component.loading = true;
         fixture.detectChanges();
 
-        const items = fixture.debugElement.queryAll(
-          By.css('[data-testid="grocery-item"]'),
+        const items = DataTestIdHelper.queryAll(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
         );
 
         expect(items.length).toBe(0);
@@ -244,8 +253,9 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const emptyState = fixture.debugElement.query(
-          By.css('[data-testid="empty-state"]'),
+        const emptyState = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.EmptyState,
         );
 
         expect(emptyState).toBeFalsy();
@@ -283,11 +293,12 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const saveButton = fixture.debugElement.query(
-          By.css('[data-testid="save-button"]'),
+        const saveButton = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.SaveButton,
         );
 
-        expect(saveButton.componentInstance.disabled).toBe(true);
+        expect(saveButton?.componentInstance.disabled).toBe(true);
       });
     });
 
@@ -301,11 +312,12 @@ fdescribe(GroceryListComponent.name, () => {
         component.newItemName.setValue('Novo Item');
         fixture.detectChanges();
         tick();
-        const saveButton = fixture.debugElement.query(
-          By.css('[data-testid="save-button"]'),
+        const saveButton = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.SaveButton,
         );
 
-        expect(saveButton.componentInstance.disabled).toBe(false);
+        expect(saveButton!.componentInstance.disabled).toBe(false);
       });
     }));
 
@@ -319,8 +331,9 @@ fdescribe(GroceryListComponent.name, () => {
         component.newItemName.setValue('');
         fixture.detectChanges();
 
-        const saveButton = fixture.debugElement.query(
-          By.css('[data-testid="save-button"]'),
+        const saveButton = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.SaveButton,
         );
 
         expect(saveButton.componentInstance.disabled).toBe(true);
@@ -423,13 +436,10 @@ fdescribe(GroceryListComponent.name, () => {
         component.saveNewItem();
         fixture.detectChanges();
 
-        const saveButton = fixture.debugElement.query(
-          By.css('[data-testid="save-button"]'),
+        const saveButton = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.SaveButton,
         );
-        if (saveButton == null) {
-          fail('Botão de salvar não encontrado');
-          return;
-        }
         expect(saveButton.componentInstance.disabled).toBe(true);
       });
     }));
@@ -446,11 +456,12 @@ fdescribe(GroceryListComponent.name, () => {
         component.saveNewItem();
         fixture.detectChanges();
 
-        const saveButton = fixture.debugElement.query(
-          By.css('[data-testid="save-button"]'),
+        const saveButton = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.SaveButton,
         );
 
-        expect(saveButton.componentInstance.disabled).toBe(true);
+        expect(saveButton!.componentInstance.disabled).toBe(true);
       });
     }));
     it('precisa exibir toast de erro quando a criação falhar', fakeAsync(() => {

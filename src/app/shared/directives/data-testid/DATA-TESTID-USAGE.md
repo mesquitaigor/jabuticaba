@@ -71,40 +71,49 @@ export class DynamicComponent {
 
 ```typescript
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { DebugElement } from "@angular/core";
 import { DataTestId } from "../../../directives";
 import { DataTestIdHelper } from "../../../../../tests/helpers/data-testid.helper.spec";
 import { GroceryListComponent } from "./grocery-list.component";
 
 describe("GroceryListComponent", () => {
   let fixture: ComponentFixture<GroceryListComponent>;
-  let compiled: HTMLElement;
+  let debugElement: DebugElement;
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GroceryListComponent);
-    compiled = fixture.nativeElement;
+    debugElement = fixture.debugElement;
   });
 
   it("precisa renderizar o botão de salvar", () => {
     fixture.detectChanges();
 
-    const saveButton = DataTestIdHelper.query(compiled, DataTestId.GroceryList.SaveButton);
+    const saveButton = DataTestIdHelper.query(debugElement, DataTestId.GroceryList.SaveButton);
 
     expect(saveButton).toBeTruthy();
-    expect(saveButton?.textContent).toContain("Salvar");
+    expect(saveButton?.nativeElement.textContent).toContain("Salvar");
   });
 
   it("precisa lançar erro se elemento não existir", () => {
     fixture.detectChanges();
 
     expect(() => {
-      DataTestIdHelper.queryOrFail(compiled, DataTestId.GroceryList.SaveButton);
+      DataTestIdHelper.queryOrFail(debugElement, DataTestId.GroceryList.SaveButton);
     }).not.toThrow();
   });
 
   it("precisa verificar se elemento existe", () => {
     fixture.detectChanges();
 
-    expect(DataTestIdHelper.exists(compiled, DataTestId.GroceryList.EmptyState)).toBe(true);
+    expect(DataTestIdHelper.exists(debugElement, DataTestId.GroceryList.EmptyState)).toBe(true);
+  });
+
+  it("precisa buscar o nativeElement diretamente quando necessário", () => {
+    fixture.detectChanges();
+
+    const saveButtonNative = DataTestIdHelper.queryNative(debugElement, DataTestId.GroceryList.SaveButton);
+
+    expect(saveButtonNative?.textContent).toContain("Salvar");
   });
 });
 ```
@@ -113,27 +122,54 @@ describe("GroceryListComponent", () => {
 
 ```typescript
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { DebugElement } from "@angular/core";
+import { By } from "@angular/platform-browser";
 import { DataTestId } from "../../../directives";
 import { GroceryListComponent } from "./grocery-list.component";
 
 describe("GroceryListComponent", () => {
   let fixture: ComponentFixture<GroceryListComponent>;
-  let compiled: HTMLElement;
+  let debugElement: DebugElement;
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GroceryListComponent);
-    compiled = fixture.nativeElement;
+    debugElement = fixture.debugElement;
   });
 
   it("precisa renderizar o botão de salvar", () => {
     fixture.detectChanges();
 
-    const saveButton = compiled.querySelector(`[data-testid="${DataTestId.GroceryList.SaveButton}"]`);
+    const saveButton = debugElement.query(By.css(`[data-testid="${DataTestId.GroceryList.SaveButton}"]`));
 
     expect(saveButton).toBeTruthy();
-    expect(saveButton?.textContent).toContain("Salvar");
+    expect(saveButton?.nativeElement.textContent).toContain("Salvar");
   });
 });
+```
+
+## Por que usar DebugElement?
+
+O `DebugElement` é a abstração do Angular para elementos no DOM e oferece várias vantagens:
+
+### ✅ Vantagens
+
+1. **Funciona com Change Detection**: Integrado com o sistema de detecção de mudanças do Angular
+2. **API Consistente**: `query()` e `queryAll()` com predicates do `By`
+3. **Testabilidade**: Facilita testes de componentes Angular
+4. **Acesso ao ComponentInstance**: Pode acessar `componentInstance` de componentes filhos
+5. **Platform-Independent**: Funciona mesmo em ambientes sem DOM real
+
+### 📝 Quando usar `nativeElement`
+
+Use `nativeElement` quando precisar manipular o DOM diretamente:
+
+```typescript
+const button = DataTestIdHelper.queryNative(debugElement, DataTestId.SaveButton);
+button?.click(); // Manipulação direta do DOM
+
+// Ou use o método auxiliar
+const buttons = DataTestIdHelper.queryAllNative(debugElement, DataTestId.Item);
+buttons.forEach((btn) => console.log(btn.textContent));
 ```
 
 ## Adicionando Novos Test IDs
