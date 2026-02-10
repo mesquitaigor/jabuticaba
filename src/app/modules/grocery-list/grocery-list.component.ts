@@ -37,15 +37,15 @@ export class GroceryListComponent implements OnInit {
       });
   }
 
-  onEdit(): void {
+  public onEdit(): void {
     console.log('Edit clicked');
   }
 
-  onAdd(): void {
+  public onAdd(): void {
     console.log('Add clicked');
   }
 
-  onItemCheckChange(item: GroceryItemModel): void {
+  public onItemCheckChange(item: GroceryItemModel): void {
     console.log(`Item ${item.name} checked: ${item.missing}`);
   }
 }

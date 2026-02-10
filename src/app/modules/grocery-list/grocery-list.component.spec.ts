@@ -6,7 +6,7 @@ import {
 } from '@angular/core/testing';
 import { GroceryListComponent } from './grocery-list.component';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
-import { of, throwError } from 'rxjs';
+import { delay, of, throwError } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.mock.spec';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
@@ -153,5 +153,58 @@ fdescribe(GroceryListComponent.name, () => {
 
       expect(items.length).toBe(0);
     });
+  });
+  describe('quando está carregando os itens', () => {
+    it('precisa exibir estado de loading', () => {
+      mockGroceryItemService.getAll.and.returnValue(of([]).pipe(delay(1000)));
+      component.loading = true;
+
+      fixture.detectChanges();
+
+      const loadingState = fixture.debugElement.query(
+        By.css('[data-testid="loading-state"]'),
+      );
+
+      expect(loadingState).toBeTruthy();
+    });
+
+    it('não deve exibir a lista de itens durante o loading', () => {
+      const mockItems = [createGroceryItemModelMock()];
+      mockSignal.set(mockItems);
+
+      fixture.detectChanges();
+      component.loading = true;
+      fixture.detectChanges();
+
+      const items = fixture.debugElement.queryAll(
+        By.css('[data-testid="grocery-item"]'),
+      );
+
+      expect(items.length).toBe(0);
+    });
+
+    it('não deve exibir o estado vazio durante o loading', () => {
+      mockSignal.set([]);
+      mockGroceryItemService.getAll.and.returnValue(of([]).pipe(delay(1000)));
+      component.loading = true;
+
+      fixture.detectChanges();
+
+      const emptyState = fixture.debugElement.query(
+        By.css('[data-testid="empty-state"]'),
+      );
+
+      expect(emptyState).toBeFalsy();
+    });
+
+    it('precisa definir loading como false após carregar com sucesso', fakeAsync(() => {
+      const mockItems = [createGroceryItemModelMock()];
+      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
+
+      component.loadItems();
+      tick();
+
+      expect(component.loading).toBe(false);
+    }));
   });
 });

@@ -11,46 +11,46 @@
         severity="secondary"
         (onClick)="onEdit()"
       />
-      <p-button label="Adicionar" severity="primary" (onClick)="onAdd()" />
+      <p-button icon="pi pi-plus" severity="primary" (onClick)="onAdd()" />
     </div>
   </div>
 
   <!-- Items List -->
   <div class="bg-white rounded-lg">
-    @for (item of groceryItems(); track item.uuid) {
-      <div
-        class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
-        data-testid="grocery-item"
-      >
-        <!-- Icon -->
+    @if (!loading) {
+      @for (item of groceryItems(); track item.uuid) {
         <div
-          class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+          class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
+          data-testid="grocery-item"
         >
-          <i class="text-lg text-gray-600"></i>
+          <!-- Icon -->
+          <div
+            class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+          >
+            <img class="w-10 h-10" src="icons/ketchup.svg" alt="Item ícone" />
+          </div>
+
+          <!-- Item Name -->
+          <span class="flex-1 text-gray-800" data-testid="grocery-item-name">{{
+            item.name
+          }}</span>
+
+          <p-checkbox
+            [(ngModel)]="item.missing"
+            [binary]="true"
+            (onChange)="onItemCheckChange(item)"
+            data-testid="grocery-item-checkbox"
+          />
         </div>
-
-        <!-- Item Name -->
-        <span class="flex-1 text-gray-800" data-testid="grocery-item-name">{{
-          item.name
-        }}</span>
-
-        <p-checkbox
-          [(ngModel)]="item.missing"
-          [binary]="true"
-          (onChange)="onItemCheckChange(item)"
-          data-testid="grocery-item-checkbox"
-        />
-      </div>
+      }
     }
 
     <!-- Empty State -->
-    @if (!hasError && groceryItems().length === 0) {
-      <div class="p-8 text-center text-gray-500" data-testid="empty-state">
-        <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
-        <p>Nenhum item cadastrado</p>
+    @if (loading) {
+      <div class="p-8 text-center text-gray-500" data-testid="loading-state">
+        <p>Carregando</p>
       </div>
-    }
-    @if (hasError) {
+    } @else if (hasError) {
       <div class="p-8 text-center text-gray-500" data-testid="error-state">
         <img
           src="error.svg"
@@ -66,6 +66,11 @@
           severity="secondary"
           (onClick)="loadItems()"
         ></p-button>
+      </div>
+    } @else if (groceryItems().length === 0) {
+      <div class="p-8 text-center text-gray-500" data-testid="empty-state">
+        <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
+        <p>Nenhum item cadastrado</p>
       </div>
     }
   </div>
