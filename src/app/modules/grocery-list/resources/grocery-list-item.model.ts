@@ -4,7 +4,8 @@ import GroceryItemModel from '../../../data/entities/grocery-items/grocery-item.
 export class GroceryListItem extends GroceryItemModel {
   public adding = false;
   public changingMissing = false;
-  public onDelete?: () => void;
+  public deleting = false;
+  public onDelete?: (stopState: () => void) => void;
   public readonly menu: MenuItem[] = [
     { label: 'Editar', icon: 'pi pi-pencil' },
     { label: 'Esconder', icon: 'pi pi-eye' },
@@ -15,7 +16,10 @@ export class GroceryListItem extends GroceryItemModel {
       styleClass: 'warning',
       command: (): void => {
         if (this.onDelete) {
-          this.onDelete();
+          this.deleting = true;
+          this.onDelete(() => {
+            this.deleting = false;
+          });
         }
       },
     },

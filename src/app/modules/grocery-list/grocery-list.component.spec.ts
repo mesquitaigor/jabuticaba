@@ -83,8 +83,8 @@ fdescribe(GroceryListComponent.name, () => {
     component = fixture.componentInstance;
   });
 
-  describe('exclusão de item', () => {
-    fit('deve chamar o método delete do service ao clicar em excluir', () => {
+  describe('ao excluir item', () => {
+    it('deve chamar o método delete do service ao clicar em excluir', () => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock();
         mockSignal.set([mockItem]);
@@ -99,7 +99,7 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
 
-    it('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
+    fit('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock();
         mockSignal.set([mockItem]);

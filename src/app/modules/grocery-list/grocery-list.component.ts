@@ -72,8 +72,20 @@ export class GroceryListComponent implements OnInit {
     this.loadItems();
   }
 
-  private deleteItem(item: GroceryItemModel): void {
-    this.groceryItemService.delete(item.uuid!).subscribe();
+  private deleteItem(item: GroceryItemModel, stopState: () => void): void {
+    this.groceryItemService.delete(item.uuid!).subscribe({
+      next: () => {
+        stopState();
+      },
+      error: () => {
+        stopState();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível excluir o item',
+        });
+      },
+    });
   }
 
   private setAddButtonDisabledState(): void {
@@ -100,7 +112,8 @@ export class GroceryListComponent implements OnInit {
     this.groceryItems.set(
       items.map((item) => {
         const groceryListItem = new GroceryListItem();
-        groceryListItem.onDelete = (): void => this.deleteItem(item);
+        groceryListItem.onDelete = (stopState: () => void): void =>
+          this.deleteItem(item, stopState);
         return Object.assign(groceryListItem, item);
       }),
     );
