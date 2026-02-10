@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.mock.spec';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { signal } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 fdescribe(GroceryListComponent.name, () => {
   let component: GroceryListComponent;
@@ -34,6 +35,7 @@ fdescribe(GroceryListComponent.name, () => {
     await TestBed.configureTestingModule({
       imports: [GroceryListComponent],
       providers: [
+        provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
       ],
     }).compileComponents();
@@ -206,5 +208,15 @@ fdescribe(GroceryListComponent.name, () => {
 
       expect(component.loading).toBe(false);
     }));
+  });
+  describe('quando o botão de adicionar é clicado', () => {
+    it('precisa abrir o modal de adição de item', () => {
+      fixture.detectChanges();
+
+      component.onAdd();
+      fixture.detectChanges();
+
+      expect(component.showAddModal).toBe(true);
+    });
   });
 });

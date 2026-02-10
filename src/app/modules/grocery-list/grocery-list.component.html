@@ -22,6 +22,7 @@
         <div
           class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
           data-testid="grocery-item"
+          [class]="'grocery-item-content-' + item.uuid"
         >
           <!-- Icon -->
           <div
@@ -29,12 +30,9 @@
           >
             <img class="w-10 h-10" src="icons/ketchup.svg" alt="Item ícone" />
           </div>
-
-          <!-- Item Name -->
           <span class="flex-1 text-gray-800" data-testid="grocery-item-name">{{
             item.name
           }}</span>
-
           <p-checkbox
             [(ngModel)]="item.missing"
             [binary]="true"
@@ -75,3 +73,35 @@
     }
   </div>
 </div>
+
+<p-dialog
+  [(visible)]="showAddModal"
+  header="Adicionar Item"
+  [modal]="true"
+  [style]="{ width: '90%' }"
+  [draggable]="false"
+  [resizable]="false"
+  data-testid="add-item-modal"
+>
+  <div class="flex flex-col gap-4">
+    <label for="itemName">Nome do item</label>
+    <input
+      id="itemName"
+      pInputText
+      type="text"
+      placeholder="Digite o nome do item"
+      [(ngModel)]="newItemName"
+      data-testid="new-item-input"
+    />
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancelar"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="showAddModal = false"
+    />
+    <p-button label="Adicionar" severity="primary" (onClick)="saveNewItem()" />
+  </ng-template>
+</p-dialog>
