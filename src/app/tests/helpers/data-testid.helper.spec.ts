@@ -15,8 +15,9 @@ export class DataTestIdHelper {
   static query(
     element: DebugElement,
     testId: DataTestIdValue | string,
+    attributeName = 'data-testid',
   ): DebugElement | null {
-    return element.query(By.css(`[data-testid="${testId}"]`));
+    return element.query(By.css(`[${attributeName}="${testId}"]`));
   }
 
   /**

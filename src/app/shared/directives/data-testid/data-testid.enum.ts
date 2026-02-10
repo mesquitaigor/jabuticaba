@@ -17,6 +17,8 @@ export const DataTestId = {
     AddItemModal: createTestId('grocery-list', 'add-item-modal'),
     NewItemInput: createTestId('grocery-list', 'new-item-input'),
     SaveButton: createTestId('grocery-list', 'save-button'),
+    DetailsItemButton: createTestId('grocery-list', 'details-item-button'),
+    DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),
   },
 
   // Header Component

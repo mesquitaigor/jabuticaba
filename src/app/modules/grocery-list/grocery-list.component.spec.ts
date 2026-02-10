@@ -11,7 +11,7 @@ import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.m
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { Component, signal } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MessageService } from 'primeng/api';
+import { MenuItemCommandEvent, MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../tests/mocks/message.service.mock.spec';
 import { ToastModule } from 'primeng/toast';
 import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
@@ -40,12 +40,14 @@ fdescribe(GroceryListComponent.name, () => {
   beforeEach(async () => {
     mockSignal = signal<GroceryItemModel[]>([]);
 
-    mockGroceryItemService = jasmine.createSpyObj('GroceryItemService', [
+    mockGroceryItemService = jasmine.createSpyObj(GroceryItemService.name, [
       'getAll',
       'getGroceryList',
       'create',
       'updateMissing',
+      'delete',
     ]);
+    mockGroceryItemService.delete.and.returnValue(of(null));
     mockMessageService = createMessageServiceMock();
 
     mockGroceryItemService.getGroceryList.and.returnValue(
@@ -79,6 +81,172 @@ fdescribe(GroceryListComponent.name, () => {
 
     fixture = TestBed.createComponent(GroceryListComponent);
     component = fixture.componentInstance;
+  });
+
+  describe('exclusão de item', () => {
+    fit('deve chamar o método delete do service ao clicar em excluir', () => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+
+        component.groceryItems()?.[0].menu[3].command?.({
+          item: { label: 'Excluir' },
+        } as MenuItemCommandEvent);
+        fixture.detectChanges();
+
+        expect(mockGroceryItemService.delete).toHaveBeenCalled();
+      });
+    });
+
+    it('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.delete.and.returnValue(
+          of(null).pipe(delay(100)),
+        );
+        fixture.detectChanges();
+
+        component.groceryItems()?.[0].menu[3].command?.({
+          item: { label: 'Excluir' },
+        } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+
+        expect(mockGroceryItemService.delete).toHaveBeenCalledTimes(1);
+      });
+    }));
+
+    it('deve emitir toast de erro ao falhar', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.delete.and.returnValue(
+          throwError(() => new Error('Erro ao excluir')),
+        );
+        fixture.detectChanges();
+        component.groceryItems()?.[0].menu[3].command?.({
+          item: { label: 'Excluir' },
+        } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+
+        expect(mockMessageService.add).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            severity: 'error',
+          }),
+        );
+      });
+    }));
+
+    it('deve emitir toast de sucesso ao excluir', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.delete.and.returnValue(of(null));
+        fixture.detectChanges();
+        component.groceryItems()?.[0].menu[3].command?.({
+          item: { label: 'Excluir' },
+        } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+
+        expect(mockMessageService.add).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            severity: 'success',
+          }),
+        );
+      });
+    }));
+
+    it('deve desabilitar o botão de excluir enquanto está excluindo', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.delete.and.returnValue(
+          of(null).pipe(delay(100)),
+        );
+        fixture.detectChanges();
+        component.groceryItems()?.[0].menu[3].command?.({
+          item: { label: 'Excluir' },
+        } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        //expect(deleteButton.componentInstance.disabled).toBe(true);
+        tick(100);
+      });
+    }));
+
+    it('deve remover o item da listagem ao excluir com sucesso', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.delete.and.returnValue(of(null));
+        fixture.detectChanges();
+
+        component.groceryItems()?.[0].menu[3].command?.({
+          item: { label: 'Excluir' },
+        } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+
+        const items = DataTestIdHelper.queryAll(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        expect(items.length).toBe(0);
+      });
+    }));
+  });
+
+  describe('quando o botão de menu do item é clicado', () => {
+    it('precisa chamar toggle do menu', () => {
+      runInContext(() => {
+        // // Cria um item na lista
+        // const mockItem = createGroceryItemModelMock();
+        // mockSignal.set([mockItem]);
+        // fixture.detectChanges();
+        // // Busca o item
+        // const itemDebug = DataTestIdHelper.query(
+        //   fixture.debugElement,
+        //   DataTestId.GroceryList.Item,
+        // );
+        // if (!itemDebug) {
+        //   fail(
+        //     'Teste falhou: precisa implementar busca pelo item usando data-testid',
+        //   );
+        //   return;
+        // }
+        // // Busca o botão de menu pelo ícone
+        // const menuButton = DataTestIdHelper.query(
+        //   itemDebug,
+        //   DataTestId.GroceryList.DetailsItemButton,
+        // );
+        // if (!menuButton) {
+        //   fail(
+        //     'Teste falhou: precisa implementar busca pelo botão de menu usando data-testid',
+        //   );
+        //   return;
+        // }
+        // // Busca o menu pelo seletor p-menu
+        // const menuEl = DataTestIdHelper.query(
+        //   itemDebug,
+        //   DataTestId.GroceryList.DetailsMenu,
+        // );
+        // if (!menuEl) {
+        //   fail(
+        //     'Teste falhou: precisa implementar busca pelo menu usando data-testid',
+        //   );
+        //   return;
+        // }
+        // const menuInstance: Menu = menuEl.componentInstance;
+        // spyOn(menuInstance, 'toggle');
+        // // Simula clique no botão de menu
+        // menuButton.nativeElement.click();
+        // fixture.detectChanges();
+        //expect(menuInstance.toggle).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('quando o componente é inicializado', () => {
@@ -636,8 +804,4 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
   });
-  // describe('quando o usuário clica botão de menu do item', () => {
-  //   it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
-  //   }));
-  // })
 });

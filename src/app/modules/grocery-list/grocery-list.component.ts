@@ -9,7 +9,7 @@ import { finalize } from 'rxjs';
 import { GroceryListItem } from './resources/grocery-list-item.model';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { PopoverModule } from 'primeng/popover';
 import {
@@ -17,6 +17,7 @@ import {
   DataTestidDirective,
 } from '../../shared/directives/data-testid';
 import { Menu, MenuModule } from 'primeng/menu';
+import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -47,19 +48,13 @@ export class GroceryListComponent implements OnInit {
   public readonly adding = signal(false);
   public readonly addButtonDisabledState = signal(true);
   public readonly testIds = DataTestId.GroceryList;
-  public items: MenuItem[] | undefined;
   constructor() {
     // Criar FormControl dentro do constructor
     this.newItemName = new FormControl('', { updateOn: 'change' });
 
     effect(() => {
       const items = this.groceryItemService.getGroceryList()();
-      this.groceryItems.set(
-        items.map((item) => {
-          const groceryListItem = new GroceryListItem();
-          return Object.assign(groceryListItem, item);
-        }),
-      );
+      this.setListItems(items);
     });
 
     // Configurar valueChanges no constructor
@@ -75,16 +70,10 @@ export class GroceryListComponent implements OnInit {
   ngOnInit(): void {
     this.groceryItemService.getGroceryList();
     this.loadItems();
-    this.items = [
-      { label: 'Editar', icon: 'pi pi-pencil' },
-      { label: 'Esconder', icon: 'pi pi-eye' },
-      { label: 'Marcar', icon: 'pi pi-check' },
-      {
-        label: 'Excluir',
-        icon: 'pi pi-trash',
-        styleClass: 'warning',
-      },
-    ];
+  }
+
+  private deleteItem(item: GroceryItemModel): void {
+    this.groceryItemService.delete(item.uuid!).subscribe();
   }
 
   private setAddButtonDisabledState(): void {
@@ -105,6 +94,16 @@ export class GroceryListComponent implements OnInit {
           },
         });
     }
+  }
+
+  private setListItems(items: GroceryItemModel[]): void {
+    this.groceryItems.set(
+      items.map((item) => {
+        const groceryListItem = new GroceryListItem();
+        groceryListItem.onDelete = (): void => this.deleteItem(item);
+        return Object.assign(groceryListItem, item);
+      }),
+    );
   }
 
   public onEdit(): void {

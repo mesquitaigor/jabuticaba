@@ -47,8 +47,9 @@
             severity="secondary"
             [rounded]="true"
             [text]="true"
+            [jbtDataTestid]="testIds.DetailsItemButton"
           />
-          <p-menu appendTo="body" #menu [model]="items" [popup]="true" />
+          <p-menu appendTo="body" #menu [model]="item.menu" [popup]="true" />
         </div>
       }
     }
