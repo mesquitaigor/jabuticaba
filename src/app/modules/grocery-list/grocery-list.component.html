@@ -23,7 +23,6 @@
           class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
           [jbtDataTestid]="testIds.Item"
           [class]="'grocery-item-content-' + item.uuid"
-          [ngClass]="{ 'opacity-50 line-through': item.missing }"
           (click)="onMissingCheck(item)"
           (keypress)="onMissingCheck(item)"
           tabindex="0"
@@ -31,20 +30,25 @@
           <!-- Icon -->
           <div
             class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+            [class.opacity-50]="item.missing"
           >
             <img class="w-10 h-10" src="icons/ketchup.svg" alt="Item ícone" />
           </div>
           <span
             class="flex-1 text-gray-800"
+            [class.line-through]="item.missing"
+            [class.opacity-50]="item.missing"
             [jbtDataTestid]="testIds.ItemName"
             >{{ item.name }}</span
           >
-          <p-checkbox
-            [(ngModel)]="item.missing"
-            [binary]="true"
-            (onChange)="onItemCheckChange(item)"
-            [jbtDataTestid]="testIds.ItemCheckbox"
+          <p-button
+            (click)="onShowPopover($event, menu)"
+            icon="pi pi-ellipsis-h"
+            severity="secondary"
+            [rounded]="true"
+            [text]="true"
           />
+          <p-menu appendTo="body" #menu [model]="items" [popup]="true" />
         </div>
       }
     }

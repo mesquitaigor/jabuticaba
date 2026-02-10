@@ -130,29 +130,6 @@ fdescribe(GroceryListComponent.name, () => {
   });
 
   describe('quando renderiza o componente', () => {
-    it('precisa renderizar o checkbox com estado correspondente ao atributo do item', fakeAsync(() => {
-      runInContext(() => {
-        const mockItems = [
-          createGroceryItemModelMock({ missing: true }),
-          createGroceryItemModelMock({ missing: false }),
-        ];
-        mockSignal.set(mockItems);
-
-        fixture.detectChanges();
-        tick(1);
-        const checkboxes = DataTestIdHelper.queryAll(
-          fixture.debugElement,
-          DataTestId.GroceryList.ItemCheckbox,
-        );
-        expect(checkboxes[0].componentInstance.checked).toBe(
-          component.groceryItems()[0].missing,
-        );
-        expect(checkboxes[1].componentInstance.checked).toBe(
-          component.groceryItems()[1].missing,
-        );
-      });
-    }));
-
     it('precisa exibir estado vazio quando não há itens', () => {
       runInContext(() => {
         mockSignal.set([]);
@@ -580,6 +557,58 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
 
+    it('precisa alterar o atributo missing antes de chamar o service', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+
+        let missingValueWhenServiceCalled: boolean | undefined;
+        mockGroceryItemService.updateMissing.and.callFake((item) => {
+          missingValueWhenServiceCalled = component
+            .groceryItems()
+            .find((i) => i.uuid === item.uuid)?.missing;
+          return of(
+            createGroceryItemModelMock({ ...item, missing: true }),
+          ).pipe(delay(50));
+        });
+
+        fixture.detectChanges();
+
+        const itemElement = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        itemElement.nativeElement.click();
+
+        expect(missingValueWhenServiceCalled).toBe(true);
+      });
+    }));
+
+    it('precisa reverter o atributo missing quando a requisição falhar', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          throwError(() => new Error('Erro ao atualizar')),
+        );
+
+        fixture.detectChanges();
+
+        const itemElement = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        itemElement.nativeElement.click();
+        tick(1);
+
+        const itemInList = component
+          .groceryItems()
+          .find((item) => item.uuid === mockItem.uuid);
+
+        expect(itemInList?.missing).toBe(false);
+      });
+    }));
+
     it('não deve chamar updateMissing se o item já está em processo de atualização', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
@@ -607,4 +636,8 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
   });
+  // describe('quando o usuário clica botão de menu do item', () => {
+  //   it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
+  //   }));
+  // })
 });

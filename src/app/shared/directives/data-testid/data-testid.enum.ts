@@ -11,7 +11,6 @@ export const DataTestId = {
   GroceryList: {
     Item: createTestId('grocery-list', 'item'),
     ItemName: createTestId('grocery-list', 'item-name'),
-    ItemCheckbox: createTestId('grocery-list', 'item-checkbox'),
     LoadingState: createTestId('grocery-list', 'loading-state'),
     ErrorState: createTestId('grocery-list', 'error-state'),
     EmptyState: createTestId('grocery-list', 'empty-state'),

@@ -34,3 +34,9 @@ body {
     color: var(--p-primary-color);
   }
 }
+.p-menu-item.warning {
+  .p-menu-item-icon,
+  .p-menu-item-label {
+    color: #ff6600 !important;
+  }
+}
