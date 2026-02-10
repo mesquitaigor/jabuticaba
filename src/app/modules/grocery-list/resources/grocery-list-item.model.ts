@@ -7,10 +7,15 @@ export class GroceryListItem extends GroceryItemModel {
   public changingMissing = false;
   public deleting = false;
   public onDelete?: (stopState: () => void) => void;
+  public onMissingCheck?: (item: GroceryListItem) => void;
   public readonly menu = signal<MenuItem[]>([
     { label: 'Editar', icon: 'pi pi-pencil' },
     { label: 'Esconder', icon: 'pi pi-eye' },
-    { label: 'Marcar', icon: 'pi pi-check' },
+    {
+      label: 'Marcar',
+      icon: 'pi pi-check',
+      command: (): void => this.onMissingCheck?.(this),
+    },
     {
       label: 'Excluir',
       icon: 'pi pi-trash',

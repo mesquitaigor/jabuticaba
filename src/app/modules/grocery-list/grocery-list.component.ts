@@ -124,10 +124,6 @@ export class GroceryListComponent implements OnInit {
     );
   }
 
-  public onEdit(): void {
-    console.log('Edit clicked');
-  }
-
   public onMissingCheck(item: GroceryListItem): void {
     if (!item.changingMissing) {
       item.missing = !item.missing;

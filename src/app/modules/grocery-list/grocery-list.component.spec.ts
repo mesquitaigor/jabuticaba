@@ -82,6 +82,72 @@ fdescribe(GroceryListComponent.name, () => {
     component = fixture.componentInstance;
   });
 
+  describe('quando o botão de editar missing do menu é clicado', () => {
+    it('precisa chamar updateMissing do service ao clicar no menu', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, missing: true })),
+        );
+        fixture.detectChanges();
+        // Simula clique no botão de editar missing no menu
+        component
+          .groceryItems()?.[0]
+          .menu()[2] // índice do botão 'Marcar' (editar missing)
+          .command?.({
+            item: { label: 'Marcar' },
+          } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+        expect(mockGroceryItemService.updateMissing).toHaveBeenCalledWith(
+          jasmine.objectContaining({ uuid: mockItem.uuid }),
+        );
+      });
+    }));
+    it('precisa emitir toast de erro quando updateMissing falhar', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          throwError(() => new Error('Erro ao atualizar')),
+        );
+        fixture.detectChanges();
+        component
+          .groceryItems()?.[0]
+          .menu()[2]
+          .command?.({
+            item: { label: 'Marcar' },
+          } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        tick(1);
+        expect(mockMessageService.add).toHaveBeenCalledWith(
+          jasmine.objectContaining({ severity: 'error' }),
+        );
+      });
+    }));
+    it('precisa desabilitar o botão enquanto está atualizando', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
+            delay(100),
+          ),
+        );
+        fixture.detectChanges();
+        component
+          .groceryItems()?.[0]
+          .menu()[2]
+          .command?.({
+            item: { label: 'Marcar' },
+          } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        expect(component.groceryItems()?.[0].menu()[2].disabled).toBe(true);
+      });
+    }));
+  });
+
   describe('ao excluir item', () => {
     it('deve chamar o método delete do service ao clicar em excluir', () => {
       runInContext(() => {
