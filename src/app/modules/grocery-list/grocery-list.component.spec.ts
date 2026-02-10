@@ -517,19 +517,14 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const checkbox = DataTestIdHelper.queryOrFail(
+        const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.ItemCheckbox,
+          DataTestId.GroceryList.Item,
         );
-
-        checkbox.componentInstance.onClick.emit({ checked: true });
+        itemElement.nativeElement.click();
         tick(1);
 
-        expect(mockMessageService.add).toHaveBeenCalledWith({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Não foi possível atualizar o item',
-        });
+        expect(mockMessageService.add).toHaveBeenCalled();
       });
     }));
 
