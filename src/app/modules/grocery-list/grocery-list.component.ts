@@ -72,6 +72,30 @@ export class GroceryListComponent implements OnInit {
     this.loadItems();
   }
 
+  private changeVisibility(item: GroceryListItem, stop?: () => void): void {
+    this.groceryItemService
+      .updateHidden(item)
+      .pipe(
+        finalize(() => {
+          if (stop) {
+            stop();
+          } else {
+            item.changingVisibility = false;
+          }
+        }),
+      )
+      .subscribe({
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Não foi possível atualizar o item',
+          });
+          item.hidden = !item.hidden;
+        },
+      });
+  }
+
   private deleteItem(item: GroceryItemModel, stopState: () => void): void {
     this.groceryItemService.delete(item.uuid!).subscribe({
       next: () => {
@@ -115,22 +139,32 @@ export class GroceryListComponent implements OnInit {
 
   private setListItems(items: GroceryItemModel[]): void {
     this.groceryItems.set(
-      items.map((item) => {
-        const groceryListItem = new GroceryListItem();
-        groceryListItem.parse({
-          item,
-          onDelete: (stopState: () => void): void => {
-            this.deleteItem(item, stopState);
-          },
-          onChangeMissing: (
-            item: GroceryListItem,
-            stopState: () => void,
-          ): void => {
-            this.changeMissing(item, stopState);
-          },
-        });
-        return groceryListItem;
-      }),
+      items
+        .filter((item) => {
+          return !item.hidden;
+        })
+        .map((item) => {
+          const groceryListItem = new GroceryListItem();
+          groceryListItem.parse({
+            item,
+            onDelete: (stopState: () => void): void => {
+              this.deleteItem(item, stopState);
+            },
+            onChangeMissing: (
+              item: GroceryListItem,
+              stopState: () => void,
+            ): void => {
+              this.changeMissing(item, stopState);
+            },
+            onChangeVisibility: (
+              item: GroceryListItem,
+              stopState: () => void,
+            ): void => {
+              this.changeVisibility(item, stopState);
+            },
+          });
+          return groceryListItem;
+        }),
     );
   }
 

@@ -5,4 +5,5 @@ export interface IGroceryItemApi {
   missing: boolean;
   updated_at: string;
   uuid: string;
+  hidden: boolean;
 }

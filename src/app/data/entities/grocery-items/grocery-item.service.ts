@@ -64,6 +64,9 @@ export class GroceryItemService {
   public updateMissing(item: GroceryItemModel): Observable<GroceryItem | null> {
     return this.updateModel(item.uuid || '', { missing: item.missing });
   }
+  public updateHidden(item: GroceryItemModel): Observable<GroceryItem | null> {
+    return this.updateModel(item.uuid || '', { hidden: item.hidden });
+  }
   private updateModel(
     uuid: string,
     model: Partial<IGroceryItemApi>,
