@@ -49,7 +49,13 @@
             [text]="true"
             [jbtDataTestid]="testIds.DetailsItemButton"
           />
-          <p-menu appendTo="body" #menu [model]="item.menu" [popup]="true" />
+          <p-menu
+            appendTo="body"
+            #menu
+            [model]="item.menu()"
+            [popup]="true"
+            [jbtDataTestid]="testIds.DetailsMenu"
+          />
         </div>
       }
     }

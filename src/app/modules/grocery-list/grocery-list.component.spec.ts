@@ -16,6 +16,7 @@ import { createMessageServiceMock } from '../../tests/mocks/message.service.mock
 import { ToastModule } from 'primeng/toast';
 import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../shared/directives/data-testid';
+import { Menu } from 'primeng/menu';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -50,9 +51,7 @@ fdescribe(GroceryListComponent.name, () => {
     mockGroceryItemService.delete.and.returnValue(of(null));
     mockMessageService = createMessageServiceMock();
 
-    mockGroceryItemService.getGroceryList.and.returnValue(
-      mockSignal.asReadonly(),
-    );
+    mockGroceryItemService.getGroceryList.and.returnValue(mockSignal);
     mockGroceryItemService.getAll.and.returnValue(of([]));
     mockGroceryItemService.create.and.returnValue(
       of(createGroceryItemModelMock()),
@@ -90,9 +89,12 @@ fdescribe(GroceryListComponent.name, () => {
         mockSignal.set([mockItem]);
         fixture.detectChanges();
 
-        component.groceryItems()?.[0].menu[3].command?.({
-          item: { label: 'Excluir' },
-        } as MenuItemCommandEvent);
+        component
+          .groceryItems()?.[0]
+          .menu()[3]
+          .command?.({
+            item: { label: 'Excluir' },
+          } as MenuItemCommandEvent);
         fixture.detectChanges();
 
         expect(mockGroceryItemService.delete).toHaveBeenCalled();
@@ -108,9 +110,12 @@ fdescribe(GroceryListComponent.name, () => {
         );
         fixture.detectChanges();
 
-        component.groceryItems()?.[0].menu[3].command?.({
-          item: { label: 'Excluir' },
-        } as MenuItemCommandEvent);
+        component
+          .groceryItems()?.[0]
+          .menu()[3]
+          .command?.({
+            item: { label: 'Excluir' },
+          } as MenuItemCommandEvent);
         fixture.detectChanges();
         tick(1);
 
@@ -126,9 +131,12 @@ fdescribe(GroceryListComponent.name, () => {
           throwError(() => new Error('Erro ao excluir')),
         );
         fixture.detectChanges();
-        component.groceryItems()?.[0].menu[3].command?.({
-          item: { label: 'Excluir' },
-        } as MenuItemCommandEvent);
+        component
+          .groceryItems()?.[0]
+          .menu()[3]
+          .command?.({
+            item: { label: 'Excluir' },
+          } as MenuItemCommandEvent);
         fixture.detectChanges();
         tick(1);
 
@@ -146,9 +154,12 @@ fdescribe(GroceryListComponent.name, () => {
         mockSignal.set([mockItem]);
         mockGroceryItemService.delete.and.returnValue(of(null));
         fixture.detectChanges();
-        component.groceryItems()?.[0].menu[3].command?.({
-          item: { label: 'Excluir' },
-        } as MenuItemCommandEvent);
+        component
+          .groceryItems()?.[0]
+          .menu()[3]
+          .command?.({
+            item: { label: 'Excluir' },
+          } as MenuItemCommandEvent);
         fixture.detectChanges();
         tick(1);
 
@@ -168,12 +179,14 @@ fdescribe(GroceryListComponent.name, () => {
           of(null).pipe(delay(100)),
         );
         fixture.detectChanges();
-        component.groceryItems()?.[0].menu[3].command?.({
-          item: { label: 'Excluir' },
-        } as MenuItemCommandEvent);
+        component
+          .groceryItems()?.[0]
+          .menu()[3]
+          .command?.({
+            item: { label: 'Excluir' },
+          } as MenuItemCommandEvent);
         fixture.detectChanges();
-        //expect(deleteButton.componentInstance.disabled).toBe(true);
-        tick(100);
+        expect(component.groceryItems()?.[0].menu()[3].disabled).toBe(true);
       });
     }));
 
@@ -184,11 +197,16 @@ fdescribe(GroceryListComponent.name, () => {
         mockGroceryItemService.delete.and.returnValue(of(null));
         fixture.detectChanges();
 
-        component.groceryItems()?.[0].menu[3].command?.({
-          item: { label: 'Excluir' },
-        } as MenuItemCommandEvent);
+        component
+          .groceryItems()?.[0]
+          .menu()[3]
+          .command?.({
+            item: { label: 'Excluir' },
+          } as MenuItemCommandEvent);
         fixture.detectChanges();
         tick(1);
+        mockGroceryItemService.getGroceryList().set([]);
+        fixture.detectChanges();
 
         const items = DataTestIdHelper.queryAll(
           fixture.debugElement,
@@ -202,49 +220,49 @@ fdescribe(GroceryListComponent.name, () => {
   describe('quando o botão de menu do item é clicado', () => {
     it('precisa chamar toggle do menu', () => {
       runInContext(() => {
-        // // Cria um item na lista
-        // const mockItem = createGroceryItemModelMock();
-        // mockSignal.set([mockItem]);
-        // fixture.detectChanges();
-        // // Busca o item
-        // const itemDebug = DataTestIdHelper.query(
-        //   fixture.debugElement,
-        //   DataTestId.GroceryList.Item,
-        // );
-        // if (!itemDebug) {
-        //   fail(
-        //     'Teste falhou: precisa implementar busca pelo item usando data-testid',
-        //   );
-        //   return;
-        // }
-        // // Busca o botão de menu pelo ícone
-        // const menuButton = DataTestIdHelper.query(
-        //   itemDebug,
-        //   DataTestId.GroceryList.DetailsItemButton,
-        // );
-        // if (!menuButton) {
-        //   fail(
-        //     'Teste falhou: precisa implementar busca pelo botão de menu usando data-testid',
-        //   );
-        //   return;
-        // }
-        // // Busca o menu pelo seletor p-menu
-        // const menuEl = DataTestIdHelper.query(
-        //   itemDebug,
-        //   DataTestId.GroceryList.DetailsMenu,
-        // );
-        // if (!menuEl) {
-        //   fail(
-        //     'Teste falhou: precisa implementar busca pelo menu usando data-testid',
-        //   );
-        //   return;
-        // }
-        // const menuInstance: Menu = menuEl.componentInstance;
-        // spyOn(menuInstance, 'toggle');
-        // // Simula clique no botão de menu
-        // menuButton.nativeElement.click();
-        // fixture.detectChanges();
-        //expect(menuInstance.toggle).toHaveBeenCalled();
+        // Cria um item na lista
+        const mockItem = createGroceryItemModelMock();
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        // Busca o item
+        const itemDebug = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        if (!itemDebug) {
+          fail(
+            'Teste falhou: precisa implementar busca pelo item usando data-testid',
+          );
+          return;
+        }
+        // Busca o botão de menu pelo ícone
+        const menuButton = DataTestIdHelper.query(
+          itemDebug,
+          DataTestId.GroceryList.DetailsItemButton,
+        );
+        if (!menuButton) {
+          fail(
+            'Teste falhou: precisa implementar busca pelo botão de menu usando data-testid',
+          );
+          return;
+        }
+        // Busca o menu pelo seletor p-menu
+        const menuEl = DataTestIdHelper.query(
+          itemDebug,
+          DataTestId.GroceryList.DetailsMenu,
+        );
+        if (!menuEl) {
+          fail(
+            'Teste falhou: precisa implementar busca pelo menu usando data-testid',
+          );
+          return;
+        }
+        const menuInstance: Menu = menuEl.componentInstance;
+        spyOn(menuInstance, 'toggle');
+        // Simula clique no botão de menu
+        menuButton.nativeElement.click();
+        fixture.detectChanges();
+        expect(menuInstance.toggle).toHaveBeenCalled();
       });
     });
   });

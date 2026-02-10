@@ -18,6 +18,7 @@ export const DataTestId = {
     NewItemInput: createTestId('grocery-list', 'new-item-input'),
     SaveButton: createTestId('grocery-list', 'save-button'),
     DetailsItemButton: createTestId('grocery-list', 'details-item-button'),
+    DetailsMenu: createTestId('grocery-list', 'details-menu'),
     DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),
   },
 

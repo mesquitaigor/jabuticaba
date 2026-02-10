@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { map, Observable, tap, of } from 'rxjs';
 import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
@@ -33,8 +33,8 @@ export class GroceryItemService {
       }),
     );
   }
-  public getGroceryList(): Signal<GroceryItem[]> {
-    return this.groceryItems$.asReadonly();
+  public getGroceryList(): WritableSignal<GroceryItem[]> {
+    return this.groceryItems$;
   }
   public getAll(): Observable<GroceryItem[]> {
     // Only load from API if BehaviorSubject is empty
