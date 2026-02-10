@@ -23,6 +23,10 @@
           class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
           [jbtDataTestid]="testIds.Item"
           [class]="'grocery-item-content-' + item.uuid"
+          [ngClass]="{ 'opacity-50 line-through': item.missing }"
+          (click)="onMissingCheck(item)"
+          (keypress)="onMissingCheck(item)"
+          tabindex="0"
         >
           <!-- Icon -->
           <div

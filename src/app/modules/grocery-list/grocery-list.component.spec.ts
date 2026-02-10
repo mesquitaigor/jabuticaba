@@ -44,6 +44,7 @@ fdescribe(GroceryListComponent.name, () => {
       'getAll',
       'getGroceryList',
       'create',
+      'updateMissing',
     ]);
     mockMessageService = createMessageServiceMock();
 
@@ -52,6 +53,9 @@ fdescribe(GroceryListComponent.name, () => {
     );
     mockGroceryItemService.getAll.and.returnValue(of([]));
     mockGroceryItemService.create.and.returnValue(
+      of(createGroceryItemModelMock()),
+    );
+    mockGroceryItemService.updateMissing.and.returnValue(
       of(createGroceryItemModelMock()),
     );
 
@@ -477,6 +481,138 @@ fdescribe(GroceryListComponent.name, () => {
         severity: 'error',
         summary: 'Erro',
         detail: 'Não foi possível adicionar o item',
+      });
+    }));
+  });
+
+  describe('quando o usuário clica no item da lista', () => {
+    it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, missing: true })),
+        );
+
+        fixture.detectChanges();
+
+        const itemElement = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        itemElement.nativeElement.click();
+        tick(1);
+
+        expect(mockGroceryItemService.updateMissing).toHaveBeenCalled();
+      });
+    }));
+
+    fit('precisa exibir toast de erro quando updateMissing falhar', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          throwError(() => new Error('Erro ao atualizar')),
+        );
+
+        fixture.detectChanges();
+
+        const checkbox = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.ItemCheckbox,
+        );
+
+        checkbox.componentInstance.onClick.emit({ checked: true });
+        tick(1);
+
+        expect(mockMessageService.add).toHaveBeenCalledWith({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível atualizar o item',
+        });
+      });
+    }));
+
+    it('precisa definir estado de loading no item durante a atualização', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
+            delay(100),
+          ),
+        );
+
+        fixture.detectChanges();
+
+        const checkbox = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.ItemCheckbox,
+        );
+
+        checkbox.componentInstance.onClick.emit({ checked: true });
+        fixture.detectChanges();
+
+        const itemInList = component
+          .groceryItems()
+          .find((item) => item.uuid === mockItem.uuid);
+
+        expect(itemInList?.adding).toBe(true);
+      });
+    }));
+
+    it('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, missing: true })),
+        );
+
+        fixture.detectChanges();
+
+        const checkbox = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.ItemCheckbox,
+        );
+
+        checkbox.componentInstance.onClick.emit({ checked: true });
+        tick(1);
+
+        const itemInList = component
+          .groceryItems()
+          .find((item) => item.uuid === mockItem.uuid);
+
+        expect(itemInList?.adding).toBe(false);
+      });
+    }));
+
+    it('não deve chamar updateMissing se o item já está em processo de atualização', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ missing: false });
+        mockSignal.set([mockItem]);
+        mockGroceryItemService.updateMissing.and.returnValue(
+          of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
+            delay(100),
+          ),
+        );
+
+        fixture.detectChanges();
+
+        const checkbox = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.ItemCheckbox,
+        );
+
+        // Primeiro clique
+        checkbox.componentInstance.onClick.emit({ checked: true });
+        fixture.detectChanges();
+
+        // Segundo clique enquanto ainda está processando
+        checkbox.componentInstance.onClick.emit({ checked: false });
+        tick(100);
+
+        expect(mockGroceryItemService.updateMissing).toHaveBeenCalledTimes(1);
       });
     }));
   });

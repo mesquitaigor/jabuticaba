@@ -60,8 +60,7 @@ export class GroceryListComponent implements OnInit {
     });
 
     // Configurar valueChanges no constructor
-    this.newItemName.valueChanges.subscribe((value) => {
-      console.log('valueChanges disparado:', value);
+    this.newItemName.valueChanges.subscribe(() => {
       this.setAddButtonDisabledState();
     });
 
@@ -76,7 +75,6 @@ export class GroceryListComponent implements OnInit {
   }
 
   private setAddButtonDisabledState(): void {
-    console.log(!this.newItemName.value?.trim().length || this.adding());
     this.addButtonDisabledState.set(
       !this.newItemName.value?.trim().length || this.adding(),
     );
@@ -98,6 +96,10 @@ export class GroceryListComponent implements OnInit {
 
   public onEdit(): void {
     console.log('Edit clicked');
+  }
+
+  public onMissingCheck(item: GroceryListItem): void {
+    this.groceryItemService.updateMissing(item).subscribe({});
   }
 
   public onAdd(): void {
