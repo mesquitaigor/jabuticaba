@@ -117,30 +117,54 @@ export class GroceryListComponent implements OnInit {
     this.groceryItems.set(
       items.map((item) => {
         const groceryListItem = new GroceryListItem();
-        groceryListItem.onDelete = (stopState: () => void): void =>
-          this.deleteItem(item, stopState);
-        return Object.assign(groceryListItem, item);
+        groceryListItem.parse({
+          item,
+          onDelete: (stopState: () => void): void => {
+            this.deleteItem(item, stopState);
+          },
+          onChangeMissing: (
+            item: GroceryListItem,
+            stopState: () => void,
+          ): void => {
+            this.changeMissing(item, stopState);
+          },
+        });
+        return groceryListItem;
       }),
     );
   }
 
+  public changeMissing(item: GroceryListItem, stop?: () => void): void {
+    this.groceryItemService
+      .updateMissing(item)
+      .pipe(
+        finalize(() => {
+          if (stop) {
+            stop();
+          } else {
+            item.changingMissing = false;
+          }
+        }),
+      )
+      .subscribe({
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Não foi possível atualizar o item',
+          });
+          console.log('error', item.missing);
+          item.missing = !item.missing;
+        },
+      });
+  }
+
   public onMissingCheck(item: GroceryListItem): void {
     if (!item.changingMissing) {
+      console.log('onMissingCheck', item.missing);
       item.missing = !item.missing;
       item.changingMissing = true;
-      this.groceryItemService
-        .updateMissing(item)
-        .pipe(finalize(() => (item.changingMissing = false)))
-        .subscribe({
-          error: () => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erro',
-              detail: 'Não foi possível atualizar o item',
-            });
-            item.missing = !item.missing;
-          },
-        });
+      this.changeMissing(item);
     }
   }
 
