@@ -89,7 +89,7 @@
       pInputText
       type="text"
       placeholder="Digite o nome do item"
-      [(ngModel)]="newItemName"
+      [formControl]="newItemName"
       data-testid="new-item-input"
     />
   </div>
@@ -102,8 +102,8 @@
       (onClick)="showAddModal = false"
     />
     <p-button
-      [disabled]="adding"
-      [label]="adding ? 'Adicionando...' : 'Adicionar'"
+      [disabled]="addButtonDisabledState"
+      [label]="adding() ? 'Adicionando...' : 'Adicionar'"
       severity="primary"
       (onClick)="saveNewItem()"
       data-testid="save-button"

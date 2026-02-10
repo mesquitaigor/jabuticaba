@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { finalize } from 'rxjs';
@@ -11,6 +11,7 @@ import { GroceryListItem } from './resources/grocery-list-item.model';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -22,6 +23,7 @@ import { MessageService } from 'primeng/api';
     DialogModule,
     InputTextModule,
     ToastModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './grocery-list.component.html',
 })
@@ -33,8 +35,9 @@ export class GroceryListComponent implements OnInit {
   public hasError = false;
   public loading = false;
   public showAddModal = false;
-  public newItemName = '';
-  public adding = false;
+  public newItemName = new FormControl('');
+  public readonly adding = signal(false);
+  public readonly addButtonDisabledState = signal(true);
 
   constructor() {
     effect(() => {
@@ -51,6 +54,19 @@ export class GroceryListComponent implements OnInit {
   ngOnInit(): void {
     this.groceryItemService.getGroceryList();
     this.loadItems();
+    toObservable(this.adding).subscribe(() => {
+      this.setAddButtonDisabledState();
+    });
+    this.newItemName.valueChanges.subscribe(() => {
+      console.log('oi');
+      this.setAddButtonDisabledState();
+    });
+  }
+
+  private setAddButtonDisabledState(): void {
+    this.addButtonDisabledState.set(
+      !this.newItemName.value?.trim().length && !this.adding(),
+    );
   }
 
   public loadItems(): void {
@@ -76,18 +92,17 @@ export class GroceryListComponent implements OnInit {
   }
 
   public saveNewItem(): void {
-    if (!this.adding) {
-      this.adding = true;
+    if (!this.adding() && this.newItemName.value?.trim().length) {
+      this.adding.set(true);
       this.groceryItemService
-        .create(this.newItemName)
-        .pipe(finalize(() => (this.adding = false)))
+        .create(this.newItemName.value)
+        .pipe(finalize(() => this.adding.set(false)))
         .subscribe({
           next: () => {
-            this.newItemName = '';
+            this.newItemName.setValue('');
             this.showAddModal = false;
           },
           error: () => {
-            console.log('oi');
             this.messageService.add({
               severity: 'error',
               summary: 'Erro',

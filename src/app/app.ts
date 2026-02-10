@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
 import { HeaderComponent } from './core/layout/header/header';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -19,6 +20,7 @@ import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
     HeaderComponent,
     SidebarComponent,
   ],
+  providers: [MessageService],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
