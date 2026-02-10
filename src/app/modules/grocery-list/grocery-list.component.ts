@@ -99,15 +99,21 @@ export class GroceryListComponent implements OnInit {
   }
 
   public onMissingCheck(item: GroceryListItem): void {
-    this.groceryItemService.updateMissing(item).subscribe({
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Não foi possível atualizar o item',
+    if (!item.changingMissing) {
+      item.changingMissing = true;
+      this.groceryItemService
+        .updateMissing(item)
+        .pipe(finalize(() => (item.changingMissing = false)))
+        .subscribe({
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível atualizar o item',
+            });
+          },
         });
-      },
-    });
+    }
   }
 
   public onAdd(): void {

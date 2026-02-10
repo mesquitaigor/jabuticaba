@@ -507,7 +507,7 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
 
-    fit('precisa exibir toast de erro quando updateMissing falhar', fakeAsync(() => {
+    it('precisa exibir toast de erro quando updateMissing falhar', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
         mockSignal.set([mockItem]);
@@ -540,23 +540,22 @@ fdescribe(GroceryListComponent.name, () => {
 
         fixture.detectChanges();
 
-        const checkbox = DataTestIdHelper.queryOrFail(
+        const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.ItemCheckbox,
+          DataTestId.GroceryList.Item,
         );
-
-        checkbox.componentInstance.onClick.emit({ checked: true });
+        itemElement.nativeElement.click();
         fixture.detectChanges();
 
         const itemInList = component
           .groceryItems()
           .find((item) => item.uuid === mockItem.uuid);
 
-        expect(itemInList?.adding).toBe(true);
+        expect(itemInList?.changingMissing).toBe(true);
       });
     }));
 
-    it('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
+    fit('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
         mockSignal.set([mockItem]);

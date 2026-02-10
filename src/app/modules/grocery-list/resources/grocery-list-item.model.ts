@@ -2,4 +2,5 @@ import GroceryItemModel from '../../../data/entities/grocery-items/grocery-item.
 
 export class GroceryListItem extends GroceryItemModel {
   public adding = false;
+  public changingMissing = false;
 }
