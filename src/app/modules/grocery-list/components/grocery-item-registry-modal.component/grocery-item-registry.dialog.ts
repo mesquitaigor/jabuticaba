@@ -1,5 +1,14 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+  AfterViewInit,
+} from '@angular/core';
+import { Dialog, DialogModule } from 'primeng/dialog';
 import {
   DataTestId,
   DataTestidDirective,
@@ -10,6 +19,7 @@ import { finalize } from 'rxjs';
 import { GroceryItemService } from '../../../../data/entities/grocery-items/grocery-item.service';
 import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
@@ -18,13 +28,16 @@ import { toObservable } from '@angular/core/rxjs-interop';
     DataTestidDirective,
     ReactiveFormsModule,
     ButtonModule,
+    InputTextModule,
   ],
   templateUrl: './grocery-item-registry.dialog.html',
 })
-export class GroceryItemRegistryModalDialog {
+export class GroceryItemRegistryModalDialog implements AfterViewInit {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly groceryItemService = inject(GroceryItemService);
   public readonly showDialog = input(false);
+  public readonly hidded = output<void>();
+  public readonly dialogComponent = viewChild(Dialog);
   public showDialogFlag = false;
   public readonly testIds = DataTestId.GroceryList;
   public readonly executing = signal(false);
@@ -35,6 +48,7 @@ export class GroceryItemRegistryModalDialog {
   constructor() {
     effect(() => {
       this.showDialogFlag = this.showDialog();
+      console.log(this.showDialogFlag);
     });
     this.itemNameControl.valueChanges.subscribe(() => {
       this.setAddButtonDisabledState();
@@ -42,6 +56,11 @@ export class GroceryItemRegistryModalDialog {
 
     toObservable(this.executing).subscribe(() => {
       this.setAddButtonDisabledState();
+    });
+  }
+  public ngAfterViewInit(): void {
+    this.dialogComponent()?.onHide.subscribe(() => {
+      this.resetState();
     });
   }
   private setAddButtonDisabledState(): void {
@@ -57,11 +76,9 @@ export class GroceryItemRegistryModalDialog {
         .pipe(finalize(() => this.executing.set(false)))
         .subscribe({
           next: () => {
-            this.itemNameControl.setValue('');
-            this.showDialogFlag = false;
+            this.resetState();
           },
           error: () => {
-            console.log(this.messageService);
             this.messageService.add({
               severity: 'error',
               summary: 'Erro',
@@ -70,5 +87,13 @@ export class GroceryItemRegistryModalDialog {
           },
         });
     }
+  }
+  public handleCancel(): void {
+    this.resetState();
+  }
+  private resetState(): void {
+    this.itemNameControl.reset();
+    this.hidded.emit();
+    this.showDialogFlag = false;
   }
 }

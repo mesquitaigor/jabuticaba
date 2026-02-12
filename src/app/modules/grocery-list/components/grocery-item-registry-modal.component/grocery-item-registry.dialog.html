@@ -23,7 +23,8 @@
       label="Cancelar"
       severity="secondary"
       [outlined]="true"
-      (onClick)="itemNameControl.reset()"
+      (onClick)="handleCancel()"
+      [jbtDataTestid]="testIds.RegistryCancelButton"
     />
     <p-button
       [disabled]="saveButtonDisabledStt()"

@@ -17,6 +17,10 @@ export const DataTestId = {
     AddItemModal: createTestId('grocery-list', 'add-item-modal'),
     NewItemInput: createTestId('grocery-list', 'new-item-input'),
     SaveButton: createTestId('grocery-list', 'save-button'),
+    RegistryCancelButton: createTestId(
+      'grocery-list',
+      'registry-cancel-button',
+    ),
     DetailsItemButton: createTestId('grocery-list', 'details-item-button'),
     DetailsMenu: createTestId('grocery-list', 'details-menu'),
     DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),

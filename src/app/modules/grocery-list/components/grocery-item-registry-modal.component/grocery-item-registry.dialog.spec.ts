@@ -17,7 +17,7 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 
-fdescribe(GroceryItemRegistryModalDialog.name, () => {
+describe(GroceryItemRegistryModalDialog.name, () => {
   let component: GroceryItemRegistryModalDialog;
   let fixture: ComponentFixture<GroceryItemRegistryModalDialog>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
@@ -188,7 +188,7 @@ fdescribe(GroceryItemRegistryModalDialog.name, () => {
       component.exec();
       tick(1);
 
-      expect(component.itemNameControl.value).toBe('');
+      expect(component.itemNameControl.value).toBeNull();
     }));
 
     it('não deve chamar o service múltiplas vezes se já está criando', () => {
@@ -232,12 +232,12 @@ fdescribe(GroceryItemRegistryModalDialog.name, () => {
         component.exec();
         fixture.detectChanges();
 
-        const saveButton = DataTestIdHelper.query(
+        const saveButton = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
           DataTestId.GroceryList.SaveButton,
         );
 
-        expect(saveButton!.componentInstance.disabled).toBe(true);
+        expect(saveButton.componentInstance.disabled).toBe(true);
       });
     }));
     it('precisa exibir toast de erro quando a criação falhar', fakeAsync(() => {
@@ -255,6 +255,37 @@ fdescribe(GroceryItemRegistryModalDialog.name, () => {
         detail: 'Não foi possível adicionar o item',
       });
     }));
+  });
+
+  describe('quando usuário clicar no botão cancelar', () => {
+    it('precisa fechar o modal', () => {
+      component.showDialogFlag = true;
+      component.itemNameControl.setValue('Teste');
+
+      component.handleCancel();
+
+      expect(component.showDialogFlag).toBe(false);
+    });
+
+    it('precisa emitir o evento hidded', () => {
+      component.showDialogFlag = true;
+      spyOn(component.hidded, 'emit');
+      fixture.detectChanges();
+      const cancelButton = DataTestIdHelper.queryOrFail(
+        fixture.debugElement,
+        DataTestId.GroceryList.RegistryCancelButton,
+      );
+      cancelButton.componentInstance.onClick.emit();
+      expect(component.hidded.emit).toHaveBeenCalled();
+    });
+
+    it('precisa limpar o campo itemNameControl', () => {
+      component.itemNameControl.setValue('Teste');
+
+      component.handleCancel();
+
+      expect(component.itemNameControl.value).toBeNull();
+    });
   });
   // it('deve preencher o input de nome com o nome do item ao abrir o modal', () => {
   //     runInContext(() => {
