@@ -71,6 +71,7 @@
         class="p-8 text-center text-gray-500"
         [jbtDataTestid]="testIds.LoadingState"
       >
+        <jbt-loading />
         <p>Carregando</p>
       </div>
     } @else if (hasError) {
@@ -104,41 +105,7 @@
     }
   </div>
 </div>
-
-<p-dialog
-  [(visible)]="showAddModal"
-  header="Adicionar Item"
-  [modal]="true"
-  [style]="{ width: '90%' }"
-  [draggable]="false"
-  [resizable]="false"
-  [jbtDataTestid]="testIds.AddItemModal"
->
-  <div class="flex flex-col gap-4">
-    <input
-      id="itemName"
-      pInputText
-      type="text"
-      placeholder="Digite o nome do item"
-      [formControl]="newItemName"
-      [jbtDataTestid]="testIds.NewItemInput"
-    />
-  </div>
-
-  <ng-template pTemplate="footer">
-    <p-button
-      label="Cancelar"
-      severity="secondary"
-      [outlined]="true"
-      (onClick)="showAddModal = false"
-    />
-    <p-button
-      [disabled]="addButtonDisabledState()"
-      [label]="adding() ? 'Adicionando...' : 'Adicionar'"
-      severity="primary"
-      (onClick)="saveNewItem()"
-      [jbtDataTestid]="testIds.SaveButton"
-    />
-  </ng-template>
-</p-dialog>
+<jbt-grocery-item-registry-modal
+  [showDialog]="showRegistryDialog()"
+></jbt-grocery-item-registry-modal>
 <p-toast />

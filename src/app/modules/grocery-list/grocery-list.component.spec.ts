@@ -50,7 +50,6 @@ fdescribe(GroceryListComponent.name, () => {
       'delete',
     ]);
     mockGroceryItemService.delete.and.returnValue(of(null));
-    mockMessageService = createMessageServiceMock();
 
     mockGroceryItemService.getGroceryList.and.returnValue(mockSignal);
     mockGroceryItemService.getAll.and.returnValue(of([]));
@@ -60,6 +59,7 @@ fdescribe(GroceryListComponent.name, () => {
     mockGroceryItemService.updateMissing.and.returnValue(
       of(createGroceryItemModelMock()),
     );
+    mockMessageService = createMessageServiceMock();
 
     await TestBed.configureTestingModule({
       imports: [GroceryListComponent, MockToastComponent],
@@ -168,7 +168,7 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
   });
-  describe('labels do botão de marcar/desmarcar', () => {
+  describe('quando o botão de marcar/desmarcar é clicado', () => {
     it('deve exibir "Marcar" quando missing é false e "Desmarcar" quando missing é true', () => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
@@ -650,11 +650,10 @@ fdescribe(GroceryListComponent.name, () => {
         fixture.detectChanges();
         component.onAdd();
         fixture.detectChanges();
-        expect(component.showAddModal).toBe(true);
+        expect(component.showRegistryDialog()).toBe(true);
       });
     });
   });
-
   describe('quando o botão de editar é clicado', () => {
     it('deve abrir o modal de edição', () => {
       runInContext(() => {
@@ -669,219 +668,9 @@ fdescribe(GroceryListComponent.name, () => {
           .menu()[0]
           .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
         fixture.detectChanges();
-        expect(component.showAddModal).toBe(true);
+        expect(component.showRegistryDialog()).toBe(true);
       });
     });
-
-    it('deve preencher o input de nome com o nome do item ao abrir o modal', () => {
-      runInContext(() => {
-        fixture.detectChanges();
-        const mockItem = createGroceryItemModelMock({ name: 'Item Editável' });
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        component
-          .groceryItems()?.[0]
-          .menu()[0]
-          .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        // Verifica se o input foi preenchido corretamente
-        expect(component.newItemName.value).toBe('Item Editável');
-      });
-    });
-  });
-  describe('quando o modal de adicionar está aberto', () => {
-    it('precisa manter o botão de salvar desabilitado quando o input está vazio', () => {
-      runInContext(() => {
-        component.showAddModal = true;
-        component.newItemName.setValue('');
-
-        fixture.detectChanges();
-
-        const saveButton = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
-        );
-
-        expect(saveButton?.componentInstance.disabled).toBe(true);
-      });
-    });
-
-    it('precisa habilitar o botão de salvar quando o usuário digita no input', fakeAsync(() => {
-      runInContext(() => {
-        component.showAddModal = true;
-        component.newItemName.setValue('');
-
-        fixture.detectChanges();
-
-        component.newItemName.setValue('Novo Item');
-        fixture.detectChanges();
-        tick();
-        const saveButton = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
-        );
-
-        expect(saveButton!.componentInstance.disabled).toBe(false);
-      });
-    }));
-
-    it('precisa desabilitar o botão novamente se o input for esvaziado', () => {
-      runInContext(() => {
-        component.showAddModal = true;
-        component.newItemName.setValue('Novo Item');
-
-        fixture.detectChanges();
-
-        component.newItemName.setValue('');
-        fixture.detectChanges();
-
-        const saveButton = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
-        );
-
-        expect(saveButton.componentInstance.disabled).toBe(true);
-      });
-    });
-  });
-  describe('quando salvar um novo item', () => {
-    it('precisa chamar o método create do service', () => {
-      runInContext(() => {
-        const itemName = 'Novo Item';
-        component.newItemName.setValue(itemName);
-        fixture.detectChanges();
-
-        component.saveNewItem();
-
-        expect(mockGroceryItemService.create).toHaveBeenCalledWith(itemName);
-      });
-    });
-
-    it('precisa definir adding como true ao iniciar a criação', () => {
-      runInContext(() => {
-        component.newItemName.setValue('Novo Item');
-        mockGroceryItemService.create.and.returnValue(
-          of(null).pipe(delay(100)),
-        );
-
-        component.saveNewItem();
-        expect(component.adding()).toBe(true);
-      });
-    });
-
-    it('precisa definir adding como false após criar com sucesso', fakeAsync(() => {
-      component.newItemName.setValue('Novo Item');
-      mockGroceryItemService.create.and.returnValue(
-        of(createGroceryItemModelMock()),
-      );
-
-      component.saveNewItem();
-      tick(1);
-
-      expect(component.adding()).toBe(false);
-    }));
-
-    it('precisa definir adding como false após erro na criação', fakeAsync(() => {
-      component.newItemName.setValue('Novo Item');
-      mockGroceryItemService.create.and.returnValue(
-        throwError(() => new Error('Erro ao criar')),
-      );
-
-      component.saveNewItem();
-      tick(1);
-
-      expect(component.adding()).toBe(false);
-    }));
-
-    it('precisa fechar o modal após criar com sucesso', fakeAsync(() => {
-      component.newItemName.setValue('Novo Item');
-      component.showAddModal = true;
-      mockGroceryItemService.create.and.returnValue(
-        of(createGroceryItemModelMock()),
-      );
-
-      component.saveNewItem();
-      tick(1);
-
-      expect(component.showAddModal).toBe(false);
-    }));
-
-    it('precisa limpar o campo newItemName após criar com sucesso', fakeAsync(() => {
-      component.newItemName.setValue('Novo Item');
-      mockGroceryItemService.create.and.returnValue(
-        of(createGroceryItemModelMock()),
-      );
-
-      component.saveNewItem();
-      tick(1);
-
-      expect(component.newItemName.value).toBe('');
-    }));
-
-    it('não deve chamar o service múltiplas vezes se já está criando', () => {
-      component.newItemName.setValue('Novo Item');
-      component.adding.set(true);
-
-      component.saveNewItem();
-
-      expect(mockGroceryItemService.create).not.toHaveBeenCalled();
-    });
-
-    it('precisa desabilitar o botão de salvar durante a criação', fakeAsync(() => {
-      runInContext(() => {
-        component.newItemName.setValue('Novo Item');
-        component.showAddModal = true;
-        mockGroceryItemService.create.and.returnValue(
-          of(null).pipe(delay(100)),
-        );
-
-        fixture.detectChanges();
-        component.saveNewItem();
-        fixture.detectChanges();
-
-        const saveButton = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
-        );
-        expect(saveButton.componentInstance.disabled).toBe(true);
-      });
-    }));
-
-    it('precisa exibir loading no botão durante a criação', fakeAsync(() => {
-      runInContext(() => {
-        component.newItemName.setValue('Novo Item');
-        component.showAddModal = true;
-        mockGroceryItemService.create.and.returnValue(
-          of(null).pipe(delay(100)),
-        );
-
-        fixture.detectChanges();
-        component.saveNewItem();
-        fixture.detectChanges();
-
-        const saveButton = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
-        );
-
-        expect(saveButton!.componentInstance.disabled).toBe(true);
-      });
-    }));
-    it('precisa exibir toast de erro quando a criação falhar', fakeAsync(() => {
-      component.newItemName.setValue('Novo Item');
-      mockGroceryItemService.create.and.returnValue(
-        throwError(() => new Error('Erro ao criar')),
-      );
-
-      component.saveNewItem();
-      tick(1);
-
-      expect(mockMessageService.add).toHaveBeenCalledWith({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Não foi possível adicionar o item',
-      });
-    }));
   });
   describe('quando o usuário clica no item da lista', () => {
     it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {

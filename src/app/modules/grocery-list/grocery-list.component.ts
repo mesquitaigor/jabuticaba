@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { finalize } from 'rxjs';
 import { TemplateGroceryItem } from './resources/template-grocery-item.model';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { PopoverModule } from 'primeng/popover';
 import {
   DataTestId,
@@ -18,6 +17,8 @@ import {
 } from '../../shared/directives/data-testid';
 import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
+import { GroceryItemRegistryModalComponent } from './components/grocery-item-registry-modal.component/grocery-item-registry-modal.component';
+import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -33,6 +34,8 @@ import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.mod
     DataTestidDirective,
     PopoverModule,
     MenuModule,
+    GroceryItemRegistryModalComponent,
+    LoadingComponent,
   ],
   templateUrl: './grocery-list.component.html',
 })
@@ -43,28 +46,13 @@ export class GroceryListComponent implements OnInit {
   public groceryItems = signal<TemplateGroceryItem[]>([]);
   public hasError = false;
   public loading = false;
-  public showAddModal = false;
-  public newItemName!: FormControl<string | null>;
-  public readonly adding = signal(false);
-  public readonly addButtonDisabledState = signal(true);
   public readonly testIds = DataTestId.GroceryList;
   public showAllItems = signal(false);
+  public readonly showRegistryDialog = signal(false);
   constructor() {
-    // Criar FormControl dentro do constructor
-    this.newItemName = new FormControl('', { updateOn: 'change' });
-
     effect(() => {
       const items = this.groceryItemService.getGroceryList()();
       this.setListItems(items);
-    });
-
-    // Configurar valueChanges no constructor
-    this.newItemName.valueChanges.subscribe(() => {
-      this.setAddButtonDisabledState();
-    });
-
-    toObservable(this.adding).subscribe(() => {
-      this.setAddButtonDisabledState();
     });
   }
 
@@ -118,18 +106,12 @@ export class GroceryListComponent implements OnInit {
     });
   }
 
-  private setAddButtonDisabledState(): void {
-    this.addButtonDisabledState.set(
-      !this.newItemName.value?.trim().length || this.adding(),
-    );
-  }
-
   public loadItems(): void {
     if (!this.loading) {
       this.loading = true;
       this.groceryItemService
         .getAll()
-        .pipe(finalize(() => (this.loading = false)))
+        //.pipe(finalize(() => (this.loading = false)))
         .subscribe({
           error: () => {
             this.hasError = true;
@@ -164,8 +146,7 @@ export class GroceryListComponent implements OnInit {
             },
             onEdit: (item: TemplateGroceryItem): void => {
               if (item.name) {
-                this.showAddModal = !this.showAddModal;
-                this.newItemName.setValue(item.name);
+                this.showRegistryDialog.set(true);
               }
             },
             onChangeVisibility: (
@@ -213,29 +194,7 @@ export class GroceryListComponent implements OnInit {
   }
 
   public onAdd(): void {
-    this.showAddModal = true;
-  }
-
-  public saveNewItem(): void {
-    if (!this.adding() && this.newItemName.value?.trim().length) {
-      this.adding.set(true);
-      this.groceryItemService
-        .create(this.newItemName.value)
-        .pipe(finalize(() => this.adding.set(false)))
-        .subscribe({
-          next: () => {
-            this.newItemName.setValue('');
-            this.showAddModal = false;
-          },
-          error: () => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erro',
-              detail: 'Não foi possível adicionar o item',
-            });
-          },
-        });
-    }
+    this.showRegistryDialog.set(true);
   }
 
   public onShowPopover(event: Event, popover: Menu): void {
