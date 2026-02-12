@@ -17,6 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../shared/directives/data-testid';
 import { Menu } from 'primeng/menu';
+import { Button } from 'primeng/button';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -81,9 +82,6 @@ fdescribe(GroceryListComponent.name, () => {
     fixture = TestBed.createComponent(GroceryListComponent);
     component = fixture.componentInstance;
   });
-
-  // (describe removido pois estava vazio)
-
   describe('quando o botão de visibilidade do menu é clicado', () => {
     beforeEach(() => {
       mockGroceryItemService.updateHidden = jasmine
@@ -170,7 +168,6 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
   });
-
   describe('labels do botão de marcar/desmarcar', () => {
     it('deve exibir "Marcar" quando missing é false e "Desmarcar" quando missing é true', () => {
       runInContext(() => {
@@ -251,7 +248,22 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
   });
-
+  describe('quando botão de visibilidade é clicado', () => {
+    it('deve alternar estado de visibilidade dos items da lista', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        const initial = component.showAllItems();
+        const button = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.VisibilityOffIcon,
+        );
+        const ngButtonInstance: Button = button.componentInstance;
+        ngButtonInstance.onClick.emit();
+        fixture.detectChanges();
+        expect(component.showAllItems()).toBe(!initial);
+      });
+    });
+  });
   describe('ao excluir item', () => {
     it('deve chamar o método delete do service ao clicar em excluir', () => {
       runInContext(() => {
@@ -386,7 +398,6 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
   });
-
   describe('quando o botão de menu do item é clicado', () => {
     it('precisa chamar toggle do menu', () => {
       runInContext(() => {
@@ -436,8 +447,51 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
   });
-
   describe('quando o componente é inicializado', () => {
+    it('precisa exibir estado vazio quando não há itens', () => {
+      runInContext(() => {
+        mockSignal.set([]);
+        mockGroceryItemService.getAll.and.returnValue(of([]));
+
+        fixture.detectChanges();
+
+        const emptyState = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.EmptyState,
+        );
+
+        expect(emptyState).toBeTruthy();
+      });
+    });
+    it('deve renderizar o ícone de exibição do item quando ele estiver configurado como escondido', () => {
+      runInContext(() => {
+        component.showAllItems.set(true);
+        const mockItem = createGroceryItemModelMock({ hidden: true });
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        const itemDebug = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        expect(itemDebug).toBeTruthy();
+        // Busca o ícone pi-eye-slash
+        const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
+        expect(icon).toBeTruthy();
+      });
+    });
+    it('não deve renderizar o ícone de exibição quando item estiver configurado como visível', () => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ hidden: false });
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        const itemDebug = DataTestIdHelper.queryOrFail(
+          fixture.debugElement,
+          DataTestId.GroceryList.Item,
+        );
+        const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
+        expect(icon).toBeFalsy();
+      });
+    });
     it('precisa carregar os itens do serviço', () => {
       runInContext(() => {
         fixture.detectChanges();
@@ -484,25 +538,6 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
   });
-
-  describe('quando renderiza o componente', () => {
-    it('precisa exibir estado vazio quando não há itens', () => {
-      runInContext(() => {
-        mockSignal.set([]);
-        mockGroceryItemService.getAll.and.returnValue(of([]));
-
-        fixture.detectChanges();
-
-        const emptyState = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.EmptyState,
-        );
-
-        expect(emptyState).toBeTruthy();
-      });
-    });
-  });
-
   describe('quando ocorre um erro ao carregar os itens', () => {
     it('precisa exibir mensagem de erro', () => {
       runInContext(() => {
@@ -621,7 +656,6 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
   });
-
   describe('quando o modal de adicionar está aberto', () => {
     it('precisa manter o botão de salvar desabilitado quando o input está vazio', () => {
       runInContext(() => {
@@ -677,7 +711,6 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
   });
-
   describe('quando salvar um novo item', () => {
     it('precisa chamar o método create do service', () => {
       runInContext(() => {
@@ -817,7 +850,6 @@ fdescribe(GroceryListComponent.name, () => {
       });
     }));
   });
-
   describe('quando o usuário clica no item da lista', () => {
     it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
       runInContext(() => {

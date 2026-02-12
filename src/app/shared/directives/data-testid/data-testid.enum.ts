@@ -20,6 +20,7 @@ export const DataTestId = {
     DetailsItemButton: createTestId('grocery-list', 'details-item-button'),
     DetailsMenu: createTestId('grocery-list', 'details-menu'),
     DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),
+    VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
   },
 
   // Header Component

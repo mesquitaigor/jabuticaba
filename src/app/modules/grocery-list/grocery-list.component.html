@@ -5,6 +5,12 @@
   >
     <h1 class="text-xl font-bold text-gray-800">Seus itens</h1>
     <div class="flex gap-2">
+      <p-button
+        [icon]="showAllItems() ? 'pi pi-eye-slash' : 'pi pi-eye'"
+        [jbtDataTestid]="testIds.VisibilityOffIcon"
+        severity="secondary"
+        (onClick)="onShowAllItems()"
+      />
       <p-button icon="pi pi-plus" severity="primary" (onClick)="onAdd()" />
     </div>
   </div>
@@ -23,9 +29,14 @@
         >
           <!-- Icon -->
           <div
-            class="w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
+            class="relative w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
             [class.opacity-50]="item.missing"
           >
+            @if (item.hidden) {
+              <i
+                class="pi pi-eye-slash text-gray-400 text-xl bg-[#cacaca] p-[0.4rem] rounded-full absolute right-0 top-0 translate-x-[30%] -translate-y-[30%]"
+              ></i>
+            }
             <img class="w-10 h-10" src="icons/ketchup.svg" alt="Item ícone" />
           </div>
           <span

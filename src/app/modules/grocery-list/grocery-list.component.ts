@@ -6,7 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { finalize } from 'rxjs';
-import { GroceryListItem } from './resources/grocery-list-item.model';
+import { TemplateGroceryItem } from './resources/template-grocery-item.model';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
@@ -40,7 +40,7 @@ export class GroceryListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
     inject(GroceryItemService);
   private readonly messageService: MessageService = inject(MessageService);
-  public groceryItems = signal<GroceryListItem[]>([]);
+  public groceryItems = signal<TemplateGroceryItem[]>([]);
   public hasError = false;
   public loading = false;
   public showAddModal = false;
@@ -48,6 +48,7 @@ export class GroceryListComponent implements OnInit {
   public readonly adding = signal(false);
   public readonly addButtonDisabledState = signal(true);
   public readonly testIds = DataTestId.GroceryList;
+  public showAllItems = signal(false);
   constructor() {
     // Criar FormControl dentro do constructor
     this.newItemName = new FormControl('', { updateOn: 'change' });
@@ -72,7 +73,7 @@ export class GroceryListComponent implements OnInit {
     this.loadItems();
   }
 
-  private changeVisibility(item: GroceryListItem, stop?: () => void): void {
+  private changeVisibility(item: TemplateGroceryItem, stop?: () => void): void {
     this.groceryItemService
       .updateHidden(item)
       .pipe(
@@ -137,27 +138,33 @@ export class GroceryListComponent implements OnInit {
     }
   }
 
+  public onShowAllItems(): void {
+    console.log('oi');
+    this.showAllItems.set(!this.showAllItems());
+  }
+
   private setListItems(items: GroceryItemModel[]): void {
     this.groceryItems.set(
       items
         .filter((item) => {
-          return !item.hidden;
+          const showAll = this.showAllItems();
+          return showAll || !item.hidden;
         })
         .map((item) => {
-          const groceryListItem = new GroceryListItem();
+          const groceryListItem = new TemplateGroceryItem();
           groceryListItem.parse({
             item,
             onDelete: (stopState: () => void): void => {
               this.deleteItem(item, stopState);
             },
             onChangeMissing: (
-              item: GroceryListItem,
+              item: TemplateGroceryItem,
               stopState: () => void,
             ): void => {
               this.changeMissing(item, stopState);
             },
             onChangeVisibility: (
-              item: GroceryListItem,
+              item: TemplateGroceryItem,
               stopState: () => void,
             ): void => {
               this.changeVisibility(item, stopState);
@@ -168,7 +175,7 @@ export class GroceryListComponent implements OnInit {
     );
   }
 
-  public changeMissing(item: GroceryListItem, stop?: () => void): void {
+  public changeMissing(item: TemplateGroceryItem, stop?: () => void): void {
     this.groceryItemService
       .updateMissing(item)
       .pipe(
@@ -193,7 +200,7 @@ export class GroceryListComponent implements OnInit {
       });
   }
 
-  public onMissingCheck(item: GroceryListItem): void {
+  public onMissingCheck(item: TemplateGroceryItem): void {
     if (!item.changingMissing) {
       console.log('onMissingCheck', item.missing);
       item.missing = !item.missing;

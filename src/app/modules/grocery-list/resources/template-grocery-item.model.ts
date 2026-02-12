@@ -2,18 +2,18 @@ import { MenuItem } from 'primeng/api';
 import GroceryItemModel from '../../../data/entities/grocery-items/grocery-item.model';
 import { signal } from '@angular/core';
 
-export class GroceryListItem extends GroceryItemModel {
+export class TemplateGroceryItem extends GroceryItemModel {
   public adding = false;
   public changingMissing = false;
   public changingVisibility = false;
   public deleting = false;
   public onDelete?: (stopState: () => void) => void;
   public onVisibilityChange?: (
-    item: GroceryListItem,
+    item: TemplateGroceryItem,
     stopState: () => void,
   ) => void;
   public onMissingCheck?: (
-    item: GroceryListItem,
+    item: TemplateGroceryItem,
     stopState: () => void,
   ) => void;
   public readonly menu = signal<MenuItem[]>([
@@ -69,8 +69,14 @@ export class GroceryListItem extends GroceryItemModel {
   }: {
     item: GroceryItemModel;
     onDelete?: (stopState: () => void) => void;
-    onChangeMissing?: (item: GroceryListItem, stopState: () => void) => void;
-    onChangeVisibility?: (item: GroceryListItem, stopState: () => void) => void;
+    onChangeMissing?: (
+      item: TemplateGroceryItem,
+      stopState: () => void,
+    ) => void;
+    onChangeVisibility?: (
+      item: TemplateGroceryItem,
+      stopState: () => void,
+    ) => void;
   }): void {
     this.uuid = item.uuid;
     this.name = item.name;
