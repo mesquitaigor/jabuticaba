@@ -55,6 +55,12 @@ export class GroceryItemRegistryModalDialog implements AfterViewInit {
     effect(() => {
       this.showDialogFlag = this.showDialog();
     });
+    effect(() => {
+      const item = this.item();
+      if (item) {
+        this.itemNameControl.setValue(item.name || '');
+      }
+    });
     this.itemNameControl.valueChanges.subscribe(() => {
       this.setAddButtonDisabledState();
     });
@@ -67,10 +73,6 @@ export class GroceryItemRegistryModalDialog implements AfterViewInit {
     this.dialogComponent()?.onHide.subscribe(() => {
       this.resetState();
     });
-    const item = this.item();
-    if (item) {
-      this.itemNameControl.setValue(item.name || '');
-    }
   }
   private setAddButtonDisabledState(): void {
     this.saveButtonDisabledStt.set(
