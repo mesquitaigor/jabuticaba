@@ -27,12 +27,13 @@ import { Button } from 'primeng/button';
 })
 class MockToastComponent {}
 
-fdescribe(GroceryListComponent.name, () => {
+describe(GroceryListComponent.name, () => {
   let component: GroceryListComponent;
   let fixture: ComponentFixture<GroceryListComponent>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
+  let loadDelay = 0;
 
   // Helper para executar código dentro do contexto de injeção
   const runInContext = <T>(fn: () => T): T => {
@@ -81,6 +82,7 @@ fdescribe(GroceryListComponent.name, () => {
 
     fixture = TestBed.createComponent(GroceryListComponent);
     component = fixture.componentInstance;
+    loadDelay = component['loadDelay'];
   });
   describe('quando o botão de visibilidade do menu é clicado', () => {
     beforeEach(() => {
@@ -399,11 +401,13 @@ fdescribe(GroceryListComponent.name, () => {
     }));
   });
   describe('quando o botão de menu do item é clicado', () => {
-    it('precisa chamar toggle do menu', () => {
+    it('precisa chamar toggle do menu', fakeAsync(() => {
       runInContext(() => {
         // Cria um item na lista
         const mockItem = createGroceryItemModelMock();
         mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
         // Busca o item
         const itemDebug = DataTestIdHelper.query(
@@ -445,14 +449,16 @@ fdescribe(GroceryListComponent.name, () => {
         fixture.detectChanges();
         expect(menuInstance.toggle).toHaveBeenCalled();
       });
-    });
+    }));
   });
   describe('quando o componente é inicializado', () => {
-    it('precisa exibir estado vazio quando não há itens', () => {
+    it('precisa exibir estado vazio quando não há itens', fakeAsync(() => {
       runInContext(() => {
         mockSignal.set([]);
         mockGroceryItemService.getAll.and.returnValue(of([]));
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const emptyState = DataTestIdHelper.query(
@@ -462,27 +468,30 @@ fdescribe(GroceryListComponent.name, () => {
 
         expect(emptyState).toBeTruthy();
       });
-    });
-    it('deve renderizar o ícone de exibição do item quando ele estiver configurado como escondido', () => {
+    }));
+    it('deve renderizar o ícone de exibição do item quando ele estiver configurado como escondido', fakeAsync(() => {
       runInContext(() => {
         component.showAllItems.set(true);
         const mockItem = createGroceryItemModelMock({ hidden: true });
         mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
         const itemDebug = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
           DataTestId.GroceryList.Item,
         );
         expect(itemDebug).toBeTruthy();
-        // Busca o ícone pi-eye-slash
         const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
         expect(icon).toBeTruthy();
       });
-    });
-    it('não deve renderizar o ícone de exibição quando item estiver configurado como visível', () => {
+    }));
+    it('não deve renderizar o ícone de exibição quando item estiver configurado como visível', fakeAsync(() => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ hidden: false });
         mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
         const itemDebug = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
@@ -491,7 +500,7 @@ fdescribe(GroceryListComponent.name, () => {
         const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
         expect(icon).toBeFalsy();
       });
-    });
+    }));
     it('precisa carregar os itens do serviço', () => {
       runInContext(() => {
         fixture.detectChanges();
@@ -499,7 +508,7 @@ fdescribe(GroceryListComponent.name, () => {
       });
     });
 
-    it('precisa listar os itens na interface', () => {
+    it('precisa listar os itens na interface', fakeAsync(() => {
       runInContext(() => {
         const mockItems = [
           createGroceryItemModelMock(),
@@ -509,6 +518,8 @@ fdescribe(GroceryListComponent.name, () => {
         mockSignal.set(mockItems);
 
         fixture.detectChanges();
+        tick(loadDelay);
+        fixture.detectChanges();
 
         const items = DataTestIdHelper.queryAll(
           fixture.debugElement,
@@ -517,13 +528,15 @@ fdescribe(GroceryListComponent.name, () => {
 
         expect(items.length).toBe(mockItems.length);
       });
-    });
+    }));
 
-    it('precisa renderizar o nome dos itens corretamente', () => {
+    it('precisa renderizar o nome dos itens corretamente', fakeAsync(() => {
       runInContext(() => {
         const mockItems = [createGroceryItemModelMock()];
         mockSignal.set(mockItems);
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const itemNames = DataTestIdHelper.queryAll(
@@ -536,7 +549,7 @@ fdescribe(GroceryListComponent.name, () => {
           component.groceryItems()[0].name,
         );
       });
-    });
+    }));
   });
   describe('quando ocorre um erro ao carregar os itens', () => {
     it('precisa exibir mensagem de erro', () => {
@@ -639,7 +652,7 @@ fdescribe(GroceryListComponent.name, () => {
       mockGroceryItemService.getAll.and.returnValue(of(mockItems));
 
       component.loadItems();
-      tick(1);
+      tick(loadDelay);
 
       expect(component.loading).toBe(false);
     }));
@@ -682,6 +695,8 @@ fdescribe(GroceryListComponent.name, () => {
         );
 
         fixture.detectChanges();
+        tick(loadDelay);
+        fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
@@ -702,6 +717,8 @@ fdescribe(GroceryListComponent.name, () => {
           throwError(() => new Error('Erro ao atualizar')),
         );
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(
@@ -725,6 +742,8 @@ fdescribe(GroceryListComponent.name, () => {
           ),
         );
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(
@@ -750,6 +769,8 @@ fdescribe(GroceryListComponent.name, () => {
           of(createGroceryItemModelMock({ ...mockItem, missing: true })),
         );
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(
@@ -783,6 +804,8 @@ fdescribe(GroceryListComponent.name, () => {
         });
 
         fixture.detectChanges();
+        tick(loadDelay);
+        fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
@@ -802,6 +825,8 @@ fdescribe(GroceryListComponent.name, () => {
           throwError(() => new Error('Erro ao atualizar')),
         );
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(
@@ -829,6 +854,8 @@ fdescribe(GroceryListComponent.name, () => {
           ),
         );
 
+        fixture.detectChanges();
+        tick(loadDelay);
         fixture.detectChanges();
 
         const itemElement = DataTestIdHelper.queryOrFail(

@@ -50,6 +50,7 @@ export class GroceryListComponent implements OnInit {
   public readonly testIds = DataTestId.GroceryList;
   public showAllItems = signal(false);
   public readonly showRegistryDialog = signal(false);
+  private readonly loadDelay = 2000;
   constructor() {
     effect(() => {
       const items = this.groceryItemService.getGroceryList()();
@@ -113,7 +114,7 @@ export class GroceryListComponent implements OnInit {
       this.groceryItemService
         .getAll()
         .pipe(
-          delay(2000),
+          delay(this.loadDelay),
           finalize(() => (this.loading = false)),
         )
         .subscribe({
