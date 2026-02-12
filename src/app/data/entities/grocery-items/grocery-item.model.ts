@@ -5,5 +5,6 @@ export default class GroceryItemModel {
   public updated_at?: Date;
   public deleted_at?: Date;
   public hidden?: boolean;
+  public icon?: string | null;
   public constructor(public uuid?: string) {}
 }

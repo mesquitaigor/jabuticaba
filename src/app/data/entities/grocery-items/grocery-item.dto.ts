@@ -6,4 +6,5 @@ export interface IGroceryItemApi {
   updated_at: string;
   uuid: string;
   hidden: boolean;
+  icon: string | null;
 }

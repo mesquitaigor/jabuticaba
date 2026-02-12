@@ -8,6 +8,7 @@ describe(GroceryItemMapper.name, () => {
     name: 'Test Grocery Item',
     missing: true,
     hidden: false,
+    icon: 'test-icon.svg',
     created_at: '2024-01-15T10:30:00Z',
     updated_at: '2024-01-16T14:45:00Z',
     deleted_at: null,
