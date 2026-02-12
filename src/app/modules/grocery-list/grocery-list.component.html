@@ -109,6 +109,7 @@
 </div>
 <jbt-grocery-item-registry-dialog
   [showDialog]="showRegistryDialog()"
-  (hidded)="showRegistryDialog.set(false)"
+  [item]="editingItem()"
+  (hidded)="onCloseRegistryDialog()"
 ></jbt-grocery-item-registry-dialog>
 <p-toast />

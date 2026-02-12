@@ -51,6 +51,7 @@ export class GroceryListComponent implements OnInit {
   public showAllItems = signal(false);
   public readonly showRegistryDialog = signal(false);
   private readonly loadDelay = 2000;
+  public readonly editingItem = signal<GroceryItemModel | null>(null);
   constructor() {
     effect(() => {
       const items = this.groceryItemService.getGroceryList()();
@@ -152,6 +153,7 @@ export class GroceryListComponent implements OnInit {
             onEdit: (item: TemplateGroceryItem): void => {
               if (item.name) {
                 this.showRegistryDialog.set(true);
+                this.editingItem.set(item);
               }
             },
             onChangeVisibility: (
@@ -164,6 +166,11 @@ export class GroceryListComponent implements OnInit {
           return groceryListItem;
         }),
     );
+  }
+
+  public onCloseRegistryDialog(): void {
+    this.showRegistryDialog.set(false);
+    this.editingItem.set(null);
   }
 
   public changeMissing(item: TemplateGroceryItem, stop?: () => void): void {

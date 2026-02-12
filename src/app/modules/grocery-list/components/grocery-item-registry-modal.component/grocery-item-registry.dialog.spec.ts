@@ -17,7 +17,7 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 
-describe(GroceryItemRegistryModalDialog.name, () => {
+fdescribe(GroceryItemRegistryModalDialog.name, () => {
   let component: GroceryItemRegistryModalDialog;
   let fixture: ComponentFixture<GroceryItemRegistryModalDialog>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
@@ -287,19 +287,49 @@ describe(GroceryItemRegistryModalDialog.name, () => {
       expect(component.itemNameControl.value).toBeNull();
     });
   });
-  // it('deve preencher o input de nome com o nome do item ao abrir o modal', () => {
-  //     runInContext(() => {
-  //       fixture.detectChanges();
-  //       const mockItem = createGroceryItemModelMock({ name: 'Item Editável' });
-  //       mockSignal.set([mockItem]);
-  //       fixture.detectChanges();
-  //       component
-  //         .groceryItems()?.[0]
-  //         .menu()[0]
-  //         .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
-  //       fixture.detectChanges();
-  //       // Verifica se o input foi preenchido corretamente
-  //       expect(component.newItemName.value).toBe('Item Editável');
-  //     });
-  //   });
+
+  describe('quando dialog é aberto para adicionar novo item', () => {
+    it('precisa exibir "Adicionar Item" no header', () => {
+      TestBed.runInInjectionContext(() => {
+        fixture.componentRef.setInput('item', null);
+        fixture.detectChanges();
+
+        expect(component.dialogHeader()).toBe('Adicionar Item');
+      });
+    });
+
+    it('precisa manter o input vazio', () => {
+      TestBed.runInInjectionContext(() => {
+        fixture.componentRef.setInput('item', null);
+        fixture.detectChanges();
+
+        expect(component.itemNameControl.value).toBeNull();
+      });
+    });
+  });
+
+  describe('quando dialog é aberto para editar item existente', () => {
+    it('precisa exibir "Editar Item" no header', () => {
+      TestBed.runInInjectionContext(() => {
+        const mockItem = createGroceryItemModelMock({ name: 'Item Teste' });
+        fixture.componentRef.setInput('item', mockItem);
+        fixture.detectChanges();
+
+        expect(component.dialogHeader()).toBe('Editar Item');
+      });
+    });
+
+    it('precisa preencher o input com o nome do item', () => {
+      TestBed.runInInjectionContext(() => {
+        const mockItem = createGroceryItemModelMock({
+          name: 'Item Editável',
+        });
+        fixture.componentRef.setInput('item', mockItem);
+        component.ngAfterViewInit();
+        fixture.detectChanges();
+
+        expect(component.itemNameControl.value).toBe('Item Editável');
+      });
+    });
+  });
 });
