@@ -1,23 +1,31 @@
 import { MenuItem } from 'primeng/api';
 import GroceryItemModel from '../../../data/entities/grocery-items/grocery-item.model';
 import { signal } from '@angular/core';
-
+import { EmptyFn } from '../../../shared/types/empty-fn';
+type onDeleteFn = (stopState: () => void) => void;
+type onVisibilityChangeFn = (
+  item: TemplateGroceryItem,
+  stopState: EmptyFn,
+) => void;
+type onEditFn = (item: TemplateGroceryItem) => void;
+type onMissingCheckFn = (item: TemplateGroceryItem, stopState: EmptyFn) => void;
 export class TemplateGroceryItem extends GroceryItemModel {
   public adding = false;
   public changingMissing = false;
   public changingVisibility = false;
   public deleting = false;
-  public onDelete?: (stopState: () => void) => void;
-  public onVisibilityChange?: (
-    item: TemplateGroceryItem,
-    stopState: () => void,
-  ) => void;
-  public onMissingCheck?: (
-    item: TemplateGroceryItem,
-    stopState: () => void,
-  ) => void;
+  public onDelete?: onDeleteFn;
+  public onVisibilityChange?: onVisibilityChangeFn;
+  public onMissingCheck?: onMissingCheckFn;
+  public onEdit?: onEditFn;
   public readonly menu = signal<MenuItem[]>([
-    { label: 'Editar', icon: 'pi pi-pencil' },
+    {
+      label: 'Editar',
+      icon: 'pi pi-pencil',
+      command: (): void => {
+        this.onEdit?.(this);
+      },
+    },
     {
       label: 'Esconder',
       icon: 'pi pi-eye',
@@ -66,27 +74,24 @@ export class TemplateGroceryItem extends GroceryItemModel {
     onDelete,
     onChangeMissing: onMissingCheck,
     onChangeVisibility,
+    onEdit,
   }: {
     item: GroceryItemModel;
-    onDelete?: (stopState: () => void) => void;
-    onChangeMissing?: (
-      item: TemplateGroceryItem,
-      stopState: () => void,
-    ) => void;
-    onChangeVisibility?: (
-      item: TemplateGroceryItem,
-      stopState: () => void,
-    ) => void;
+    onDelete?: onDeleteFn;
+    onChangeMissing?: onMissingCheckFn;
+    onEdit?: onEditFn;
+    onChangeVisibility?: onVisibilityChangeFn;
   }): void {
     this.uuid = item.uuid;
     this.name = item.name;
     this.missing = item.missing;
     this.hidden = item.hidden;
     this.onDelete = onDelete;
+    this.onEdit = onEdit;
     this.onMissingCheck = onMissingCheck;
     this.onVisibilityChange = onChangeVisibility;
     this.defineMissingLabel();
-    this.defineMissingLabel();
+    this.defineVisibilityItem();
   }
   private defineMissingLabel(): void {
     const menu = this.menu();

@@ -648,11 +648,44 @@ fdescribe(GroceryListComponent.name, () => {
     it('precisa abrir o modal de adição de item', () => {
       runInContext(() => {
         fixture.detectChanges();
-
         component.onAdd();
         fixture.detectChanges();
-
         expect(component.showAddModal).toBe(true);
+      });
+    });
+  });
+
+  describe('quando o botão de editar é clicado', () => {
+    it('deve abrir o modal de edição', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        // Simula um item na lista
+        const mockItem = createGroceryItemModelMock({ name: 'Item Editável' });
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        // Simula clique no botão de editar (índice 0 do menu)
+        component
+          .groceryItems()?.[0]
+          .menu()[0]
+          .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        expect(component.showAddModal).toBe(true);
+      });
+    });
+
+    it('deve preencher o input de nome com o nome do item ao abrir o modal', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        const mockItem = createGroceryItemModelMock({ name: 'Item Editável' });
+        mockSignal.set([mockItem]);
+        fixture.detectChanges();
+        component
+          .groceryItems()?.[0]
+          .menu()[0]
+          .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
+        fixture.detectChanges();
+        // Verifica se o input foi preenchido corretamente
+        expect(component.newItemName.value).toBe('Item Editável');
       });
     });
   });

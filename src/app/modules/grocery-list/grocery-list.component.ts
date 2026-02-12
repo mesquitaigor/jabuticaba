@@ -139,7 +139,6 @@ export class GroceryListComponent implements OnInit {
   }
 
   public onShowAllItems(): void {
-    console.log('oi');
     this.showAllItems.set(!this.showAllItems());
   }
 
@@ -162,6 +161,12 @@ export class GroceryListComponent implements OnInit {
               stopState: () => void,
             ): void => {
               this.changeMissing(item, stopState);
+            },
+            onEdit: (item: TemplateGroceryItem): void => {
+              if (item.name) {
+                this.showAddModal = !this.showAddModal;
+                this.newItemName.setValue(item.name);
+              }
             },
             onChangeVisibility: (
               item: TemplateGroceryItem,
@@ -194,7 +199,6 @@ export class GroceryListComponent implements OnInit {
             summary: 'Erro',
             detail: 'Não foi possível atualizar o item',
           });
-          console.log('error', item.missing);
           item.missing = !item.missing;
         },
       });
@@ -202,7 +206,6 @@ export class GroceryListComponent implements OnInit {
 
   public onMissingCheck(item: TemplateGroceryItem): void {
     if (!item.changingMissing) {
-      console.log('onMissingCheck', item.missing);
       item.missing = !item.missing;
       item.changingMissing = true;
       this.changeMissing(item);
