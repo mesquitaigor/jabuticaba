@@ -5,7 +5,7 @@ import {
   tick,
 } from '@angular/core/testing';
 
-import { GroceryItemRegistryModalComponent } from './grocery-item-registry-modal.component';
+import { GroceryItemRegistryModalDialog } from './grocery-item-registry.dialog';
 import { DataTestIdHelper } from '../../../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../../../shared/directives/data-testid';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,9 +17,9 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 
-fdescribe(GroceryItemRegistryModalComponent.name, () => {
-  let component: GroceryItemRegistryModalComponent;
-  let fixture: ComponentFixture<GroceryItemRegistryModalComponent>;
+fdescribe(GroceryItemRegistryModalDialog.name, () => {
+  let component: GroceryItemRegistryModalDialog;
+  let fixture: ComponentFixture<GroceryItemRegistryModalDialog>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
   let mockMessageService: jasmine.SpyObj<MessageService>;
@@ -50,10 +50,10 @@ fdescribe(GroceryItemRegistryModalComponent.name, () => {
         { provide: GroceryItemService, useValue: mockGroceryItemService },
         { provide: MessageService, useValue: mockMessageService },
       ],
-      imports: [GroceryItemRegistryModalComponent],
+      imports: [GroceryItemRegistryModalDialog],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GroceryItemRegistryModalComponent);
+    fixture = TestBed.createComponent(GroceryItemRegistryModalDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

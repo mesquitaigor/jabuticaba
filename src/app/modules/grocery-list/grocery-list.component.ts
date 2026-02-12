@@ -17,7 +17,7 @@ import {
 } from '../../shared/directives/data-testid';
 import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
-import { GroceryItemRegistryModalComponent } from './components/grocery-item-registry-modal.component/grocery-item-registry-modal.component';
+import { GroceryItemRegistryModalDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
 
 @Component({
@@ -34,7 +34,7 @@ import { LoadingComponent } from '../../shared/components/atoms/loading/loading.
     DataTestidDirective,
     PopoverModule,
     MenuModule,
-    GroceryItemRegistryModalComponent,
+    GroceryItemRegistryModalDialog,
     LoadingComponent,
   ],
   templateUrl: './grocery-list.component.html',

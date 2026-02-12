@@ -12,16 +12,16 @@ import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'jbt-grocery-item-registry-modal',
+  selector: 'jbt-grocery-item-registry-dialog',
   imports: [
     DialogModule,
     DataTestidDirective,
     ReactiveFormsModule,
     ButtonModule,
   ],
-  templateUrl: './grocery-item-registry-modal.component.html',
+  templateUrl: './grocery-item-registry.dialog.html',
 })
-export class GroceryItemRegistryModalComponent {
+export class GroceryItemRegistryModalDialog {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly groceryItemService = inject(GroceryItemService);
   public readonly showDialog = input(false);

@@ -33,6 +33,12 @@ module.exports = defineConfig([
           style: "kebab-case",
         },
       ],
+      "@angular-eslint/component-class-suffix": [
+        "error",
+        {
+          suffixes: ["Component", "Page", "Dialog"], // sufixos permitidos
+        },
+      ],
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/explicit-function-return-type": "error",
       "@angular-eslint/no-conflicting-lifecycle": "error",
