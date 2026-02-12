@@ -7,6 +7,7 @@ import {
   signal,
   viewChild,
   AfterViewInit,
+  computed,
 } from '@angular/core';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import {
@@ -20,6 +21,7 @@ import { GroceryItemService } from '../../../../data/entities/grocery-items/groc
 import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { InputTextModule } from 'primeng/inputtext';
+import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
@@ -36,19 +38,22 @@ export class GroceryItemRegistryModalDialog implements AfterViewInit {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly groceryItemService = inject(GroceryItemService);
   public readonly showDialog = input(false);
+  public readonly item = input<GroceryItemModel | null>(null);
   public readonly hidded = output<void>();
   public readonly dialogComponent = viewChild(Dialog);
   public showDialogFlag = false;
   public readonly testIds = DataTestId.GroceryList;
   public readonly executing = signal(false);
   public readonly saveButtonDisabledStt = signal(true);
+  public readonly dialogHeader = computed(() =>
+    this.item() ? 'Editar Item' : 'Adicionar Item',
+  );
   public readonly itemNameControl = new FormControl<string | null>(null, {
     updateOn: 'change',
   });
   constructor() {
     effect(() => {
       this.showDialogFlag = this.showDialog();
-      console.log(this.showDialogFlag);
     });
     this.itemNameControl.valueChanges.subscribe(() => {
       this.setAddButtonDisabledState();
@@ -62,6 +67,10 @@ export class GroceryItemRegistryModalDialog implements AfterViewInit {
     this.dialogComponent()?.onHide.subscribe(() => {
       this.resetState();
     });
+    const item = this.item();
+    if (item) {
+      this.itemNameControl.setValue(item.name || '');
+    }
   }
   private setAddButtonDisabledState(): void {
     this.saveButtonDisabledStt.set(

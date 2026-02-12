@@ -1,6 +1,6 @@
 <p-dialog
   [(visible)]="showDialogFlag"
-  header="Adicionar Item"
+  [header]="dialogHeader()"
   [modal]="true"
   [style]="{ width: '90%' }"
   [draggable]="false"
