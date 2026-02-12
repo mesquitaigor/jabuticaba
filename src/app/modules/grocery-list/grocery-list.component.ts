@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
-import { finalize } from 'rxjs';
+import { delay, finalize } from 'rxjs';
 import { TemplateGroceryItem } from './resources/template-grocery-item.model';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -38,6 +38,7 @@ import { LoadingComponent } from '../../shared/components/atoms/loading/loading.
     LoadingComponent,
   ],
   templateUrl: './grocery-list.component.html',
+  styleUrl: './grocery-list.component.scss',
 })
 export class GroceryListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
@@ -111,7 +112,10 @@ export class GroceryListComponent implements OnInit {
       this.loading = true;
       this.groceryItemService
         .getAll()
-        //.pipe(finalize(() => (this.loading = false)))
+        .pipe(
+          delay(2000),
+          finalize(() => (this.loading = false)),
+        )
         .subscribe({
           error: () => {
             this.hasError = true;

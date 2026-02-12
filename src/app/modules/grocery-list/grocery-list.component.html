@@ -16,9 +16,12 @@
   </div>
 
   <!-- Items List -->
-  <div class="bg-white rounded-lg">
-    @if (!loading) {
-      @for (item of groceryItems(); track item.uuid) {
+  <div
+    class="bg-white rounded-lg absolute w-full left-0 px-4"
+    [class.fade-in]="!loading"
+  >
+    @for (item of groceryItems(); track item.uuid) {
+      @if (!loading) {
         <div
           class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
           [jbtDataTestid]="testIds.Item"
@@ -65,16 +68,15 @@
       }
     }
 
-    <!-- Empty State -->
-    @if (loading) {
-      <div
-        class="p-8 text-center text-gray-500"
-        [jbtDataTestid]="testIds.LoadingState"
-      >
-        <jbt-loading />
-        <p>Carregando</p>
-      </div>
-    } @else if (hasError) {
+    <div
+      class="p-8 text-center text-gray-500 absolute w-full left-0 top-0"
+      [jbtDataTestid]="testIds.LoadingState"
+      [class.fade-out]="!loading"
+    >
+      <jbt-loading />
+      <p>Carregando</p>
+    </div>
+    @if (!loading && hasError) {
       <div
         class="p-8 text-center text-gray-500"
         [jbtDataTestid]="testIds.ErrorState"
@@ -94,7 +96,7 @@
           (onClick)="loadItems()"
         ></p-button>
       </div>
-    } @else if (groceryItems().length === 0) {
+    } @else if (!loading && groceryItems().length === 0) {
       <div
         class="p-8 text-center text-gray-500"
         [jbtDataTestid]="testIds.EmptyState"
