@@ -3,7 +3,7 @@ import GroceryItem from './grocery-item.model';
 import GroceryItemMapper from './grocery-item.mapper';
 
 describe(GroceryItemMapper.name, () => {
-  const mockApiData: IGroceryItemApi = {
+  const mockApiData: () => IGroceryItemApi = () => ({
     uuid: '123e4567-e89b-12d3-a456-426614174000',
     name: 'Test Grocery Item',
     missing: true,
@@ -12,12 +12,12 @@ describe(GroceryItemMapper.name, () => {
     created_at: '2024-01-15T10:30:00Z',
     updated_at: '2024-01-16T14:45:00Z',
     deleted_at: null,
-  };
+  });
 
   describe('quando convertendo dados da API para o modelo', () => {
     it('precisa criar uma instância do modelo com todas as propriedades básicas', () => {
       // Arrange
-      const apiData = mockApiData;
+      const apiData = mockApiData();
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -30,20 +30,20 @@ describe(GroceryItemMapper.name, () => {
       expect(result.missing).toBe(apiData.missing);
     });
 
-    it('precisa criar uma instância do modelo com todas as propriedades básicas', () => {
+    it('precisa configurar ícone do item como ícone padrão quando for null', () => {
       // Arrange
-      const apiData = mockApiData;
+      const apiData = mockApiData();
       apiData.icon = null;
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
 
-      expect(result.icon).toBe(GroceryItem.defaultIconName);
+      expect(result.icon).toEqual(GroceryItem.defaultIconName);
     });
 
     it('precisa converter created_at de string para Date corretamente', () => {
       // Arrange
-      const apiData = mockApiData;
+      const apiData = mockApiData();
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -57,7 +57,7 @@ describe(GroceryItemMapper.name, () => {
 
     it('precisa converter updated_at de string para Date corretamente', () => {
       // Arrange
-      const apiData = mockApiData;
+      const apiData = mockApiData();
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -71,7 +71,7 @@ describe(GroceryItemMapper.name, () => {
 
     it('precisa manter deleted_at como undefined quando for null na API', () => {
       // Arrange
-      const apiData = { ...mockApiData, deleted_at: null };
+      const apiData = { ...mockApiData(), deleted_at: null };
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -83,7 +83,7 @@ describe(GroceryItemMapper.name, () => {
     it('precisa converter deleted_at de string para Date quando não for null', () => {
       // Arrange
       const deletedAtString = '2024-01-17T09:15:00Z';
-      const apiData = { ...mockApiData, deleted_at: deletedAtString };
+      const apiData = { ...mockApiData(), deleted_at: deletedAtString };
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -99,7 +99,7 @@ describe(GroceryItemMapper.name, () => {
   describe('quando trabalhando com diferentes valores de entrada', () => {
     it('precisa manter false para missing quando definido na API', () => {
       // Arrange
-      const apiData = { ...mockApiData, missing: false };
+      const apiData = { ...mockApiData(), missing: false };
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -110,7 +110,7 @@ describe(GroceryItemMapper.name, () => {
 
     it('precisa manter true para missing quando definido na API', () => {
       // Arrange
-      const apiData = { ...mockApiData, missing: true };
+      const apiData = { ...mockApiData(), missing: true };
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -121,7 +121,7 @@ describe(GroceryItemMapper.name, () => {
 
     it('precisa processar nomes vazios corretamente', () => {
       // Arrange
-      const apiData = { ...mockApiData, name: '' };
+      const apiData = { ...mockApiData(), name: '' };
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
@@ -133,7 +133,7 @@ describe(GroceryItemMapper.name, () => {
     it('precisa processar UUIDs diferentes corretamente', () => {
       // Arrange
       const differentUuid = '456e7890-f12c-34d5-b678-901234567890';
-      const apiData = { ...mockApiData, uuid: differentUuid };
+      const apiData = { ...mockApiData(), uuid: differentUuid };
 
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);

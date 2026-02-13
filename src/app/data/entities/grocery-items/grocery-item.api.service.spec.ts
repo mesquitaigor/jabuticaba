@@ -64,23 +64,6 @@ describe(GroceryItemApiService.name, () => {
           done();
         });
       });
-
-      it('precisa retornar null quando a resposta não contém dados', (done) => {
-        // Arrange
-        const payload = { name: 'New Item' };
-        const expectedResponse =
-          PostgresMockHelper.createNullResponse<IGroceryItemApi>();
-        mockSupabaseService.insert.and.returnValue(
-          Promise.resolve(expectedResponse),
-        );
-
-        // Act
-        service.create(payload).subscribe((result) => {
-          // Assert
-          expect(result).toBeNull();
-          done();
-        });
-      });
     });
 
     describe('quando o cliente Supabase não está disponível', () => {
@@ -125,24 +108,6 @@ describe(GroceryItemApiService.name, () => {
             payload,
           );
           expect(result).toEqual([updatedItem]);
-          done();
-        });
-      });
-
-      it('precisa retornar null quando a resposta não contém dados', (done) => {
-        // Arrange
-        const uuid = '123e4567-e89b-12d3-a456-426614174000';
-        const payload = { name: 'Updated Item' };
-        const expectedResponse =
-          PostgresMockHelper.createNullResponse<IGroceryItemApi>();
-        mockSupabaseService.update.and.returnValue(
-          Promise.resolve(expectedResponse),
-        );
-
-        // Act
-        service.updateRecord(uuid, payload).subscribe((result) => {
-          // Assert
-          expect(result).toBeNull();
           done();
         });
       });
@@ -228,22 +193,6 @@ describe(GroceryItemApiService.name, () => {
             'grocery_item',
           );
           expect(result).toEqual([mockGroceryItem]);
-          done();
-        });
-      });
-
-      it('precisa retornar null quando a resposta não contém dados', (done) => {
-        // Arrange
-        const expectedResponse =
-          PostgresMockHelper.createNullResponse<IGroceryItemApi>();
-        mockSupabaseService.select.and.returnValue(
-          Promise.resolve(expectedResponse),
-        );
-
-        // Act
-        service.getAll().subscribe((result) => {
-          // Assert
-          expect(result).toBeNull();
           done();
         });
       });

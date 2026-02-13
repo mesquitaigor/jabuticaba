@@ -29,6 +29,24 @@ export class PostgresMockHelper {
   static createNullResponse<T>(): PostgrestResponse<T> {
     return {
       data: null,
+      error: new PostgrestError({
+        message: 'No data found',
+        details: '',
+        hint: '',
+        code: 'PGRST404',
+      }),
+      count: null,
+      status: 200,
+      statusText: 'OK',
+    };
+  }
+
+  /**
+   * Cria uma resposta de "não encontrado" com erro
+   */
+  static createNotFoundResponse<T>(): PostgrestResponse<T> {
+    return {
+      data: null,
       error: {
         message: 'No data found',
         details: '',
@@ -37,8 +55,8 @@ export class PostgresMockHelper {
         name: 'PostgrestError',
       } as PostgrestError,
       count: null,
-      status: 200,
-      statusText: 'OK',
+      status: 404,
+      statusText: 'Not Found',
     };
   }
 
