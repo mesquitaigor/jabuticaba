@@ -11,13 +11,13 @@ import { MessageService } from 'primeng/api';
 import { PopoverModule } from 'primeng/popover';
 import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
-import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
 import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
 import { GroceryItemRegistryDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 import { GroceryItemRegistryDialogInput } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog.types';
 import { GroceryItemService } from '@models/grocery-items';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 import { DialogService } from '@layout/dialog';
+import { LoadingComponent } from '@atoms/loading';
 
 @Component({
   selector: 'jbt-grocery-list',
