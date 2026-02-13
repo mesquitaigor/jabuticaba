@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { GroceryItemService } from './data/entities/grocery-items/grocery-item.service';
 import { SupabaseService } from './core/services/api/supabase.service';
 import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
@@ -27,8 +26,6 @@ import { DialogComponent } from './core/layout/dialog/dialog.component';
   styleUrl: './app.scss',
 })
 export class AppComponent implements OnInit {
-  private readonly groceryItemService: GroceryItemService =
-    inject(GroceryItemService);
   private readonly supabaseService = inject(SupabaseService);
   public itemName = '';
   public visibleShoppingDrawer = false;
