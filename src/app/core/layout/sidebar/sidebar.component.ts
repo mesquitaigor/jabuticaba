@@ -6,7 +6,7 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { NavigationEnd, Router } from '@angular/router';
 import { NavigationService } from '../../navigation/navigation.service';
-import { LogoComponent } from '../../../shared/components/atoms/logo/logo.component';
+import { LogoComponent } from '@atoms/logo';
 
 @Component({
   selector: 'jbt-sidebar',

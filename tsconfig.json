@@ -17,7 +17,8 @@
     "module": "preserve",
     "paths": {
       "@models/*": ["src/app/data/entities/*"],
-      "@directives/*": ["src/app/shared/directives/*"]
+      "@directives/*": ["src/app/shared/directives/*"],
+      "@atoms/*": ["src/app/shared/components/atoms/*"]
     }
   },
   "angularCompilerOptions": {
