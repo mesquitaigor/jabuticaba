@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 import { MessageService } from 'primeng/api';
-import { DialogComponent } from './core/layout/dialog/dialog.component';
 import { HeaderComponent } from '@layout/header';
+import { DialogComponent } from '@layout/dialog';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
