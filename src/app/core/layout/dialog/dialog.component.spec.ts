@@ -7,8 +7,9 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { DialogComponent } from './dialog.component';
-import { DialogConfig, DialogService } from './dialog.service';
+import { DialogService } from './dialog.service';
 import { DialogModule } from 'primeng/dialog';
+import { DialogConfig } from './dialog.types';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

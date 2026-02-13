@@ -1,16 +1,5 @@
-import { Injectable, Type, ComponentRef, signal } from '@angular/core';
-
-export interface DialogConfig<T, I = unknown> {
-  component: Type<T>;
-  header?: string;
-  data?: I;
-  width?: string;
-  onClose?: () => void;
-}
-
-export interface DialogInstance {
-  close: () => void;
-}
+import { Injectable, ComponentRef, signal } from '@angular/core';
+import { DialogConfig } from './dialog.types';
 
 @Injectable({
   providedIn: 'root',

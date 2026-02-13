@@ -15,8 +15,8 @@ import { signal } from '@angular/core';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
-import { DialogService } from '../../../../core/layout/dialog/dialog.service';
 import { GroceryItemService } from '@models/grocery-items';
+import { DialogService } from '@layout/dialog';
 
 describe(GroceryItemRegistryDialog.name, () => {
   let component: GroceryItemRegistryDialog;

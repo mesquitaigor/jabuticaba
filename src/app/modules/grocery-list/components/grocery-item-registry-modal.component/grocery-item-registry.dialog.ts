@@ -14,10 +14,10 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { InputTextModule } from 'primeng/inputtext';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
-import { DialogService } from '../../../../core/layout/dialog/dialog.service';
 import { GroceryItemRegistryDialogInput } from './grocery-item-registry.dialog.types';
 import { GroceryItemService } from '@models/grocery-items';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
+import { DialogService } from '@layout/dialog';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',

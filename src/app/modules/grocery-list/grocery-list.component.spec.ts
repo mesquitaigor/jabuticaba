@@ -17,9 +17,9 @@ import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../shared/directives/data-testid';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
-import { DialogService } from '../../core/layout/dialog/dialog.service';
 import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
 import { GroceryItemService } from '@models/grocery-items';
+import { DialogService } from '@layout/dialog';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
