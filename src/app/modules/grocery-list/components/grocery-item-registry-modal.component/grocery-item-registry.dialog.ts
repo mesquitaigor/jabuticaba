@@ -9,7 +9,7 @@ import {
   AfterViewInit,
   computed,
 } from '@angular/core';
-import { Dialog, DialogModule } from 'primeng/dialog';
+import { Dialog } from 'primeng/dialog';
 import {
   DataTestId,
   DataTestidDirective,
@@ -27,7 +27,6 @@ import { GroceryItemIconComponent } from '../../../../shared/components/atoms/gr
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
   imports: [
-    DialogModule,
     DataTestidDirective,
     ReactiveFormsModule,
     ButtonModule,

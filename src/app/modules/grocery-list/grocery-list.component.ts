@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { delay, finalize } from 'rxjs';
 import { TemplateGroceryItem } from './resources/template-grocery-item.model';
-import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { PopoverModule } from 'primeng/popover';
@@ -29,7 +28,6 @@ import { GroceryItemRegistryModalDialog } from './components/grocery-item-regist
     ButtonModule,
     CheckboxModule,
     FormsModule,
-    DialogModule,
     InputTextModule,
     ToastModule,
     ReactiveFormsModule,

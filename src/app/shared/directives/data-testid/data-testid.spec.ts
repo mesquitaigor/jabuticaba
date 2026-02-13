@@ -9,7 +9,7 @@ import { DataTestId } from './data-testid.enum';
   imports: [DataTestidDirective],
 })
 class TestComponent {
-  testId: string = DataTestId.GroceryList.SaveButton;
+  testId: string = DataTestId.GroceryItemRegistryDialog.SaveButton;
 }
 
 describe(DataTestidDirective.name, () => {
@@ -26,14 +26,14 @@ describe(DataTestidDirective.name, () => {
       fixture.detectChanges();
 
       expect(element.getAttribute('data-testid')).toBe(
-        DataTestId.GroceryList.SaveButton,
+        DataTestId.GroceryItemRegistryDialog.SaveButton,
       );
     });
 
     it('precisa atualizar o atributo quando o valor muda', () => {
       fixture.detectChanges();
       expect(element.getAttribute('data-testid')).toBe(
-        DataTestId.GroceryList.SaveButton,
+        DataTestId.GroceryItemRegistryDialog.SaveButton,
       );
 
       fixture.componentInstance.testId = DataTestId.GroceryList.Item;
