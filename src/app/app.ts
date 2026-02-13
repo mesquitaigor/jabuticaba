@@ -8,6 +8,7 @@ import { DrawerModule } from 'primeng/drawer';
 import { HeaderComponent } from './core/layout/header/header';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 import { MessageService } from 'primeng/api';
+import { DialogComponent } from './core/layout/dialog/dialog.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -19,6 +20,7 @@ import { MessageService } from 'primeng/api';
     DrawerModule,
     HeaderComponent,
     SidebarComponent,
+    DialogComponent,
   ],
   providers: [MessageService],
   templateUrl: './app.html',

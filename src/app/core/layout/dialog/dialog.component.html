@@ -1,0 +1,12 @@
+<p-dialog
+  [(visible)]="isVisible"
+  [header]="dialogHeader()"
+  [modal]="true"
+  [style]="{ width: dialogWidth() }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="onHide()"
+  [jbtDataTestid]="testId.Dialog"
+>
+  <ng-template #dynamicComponentContainer></ng-template>
+</p-dialog>
