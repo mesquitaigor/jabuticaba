@@ -35,7 +35,7 @@ export const DataTestId = {
     Logo: createTestId('header', 'logo'),
     Avatar: createTestId('header', 'avatar'),
   },
-
+  Dialog: 'dialog',
   // Sidebar Component
   Sidebar: {
     Logo: createTestId('sidebar', 'logo'),

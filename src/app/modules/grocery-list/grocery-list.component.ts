@@ -17,9 +17,10 @@ import {
 } from '../../shared/directives/data-testid';
 import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
-import { GroceryItemRegistryModalDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
 import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
+import { DialogService } from '../../core/layout/dialog/dialog.service';
+import { GroceryItemRegistryModalDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -35,7 +36,6 @@ import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-
     DataTestidDirective,
     PopoverModule,
     MenuModule,
-    GroceryItemRegistryModalDialog,
     LoadingComponent,
     GroceryItemIconComponent,
   ],
@@ -45,6 +45,7 @@ import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-
 export class GroceryListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
     inject(GroceryItemService);
+  private readonly dialogService = inject(DialogService);
   private readonly messageService: MessageService = inject(MessageService);
   public groceryItems = signal<TemplateGroceryItem[]>([]);
   public hasError = false;
@@ -208,7 +209,14 @@ export class GroceryListComponent implements OnInit {
   }
 
   public onAdd(): void {
-    this.showRegistryDialog.set(true);
+    this.dialogService.open({
+      component: GroceryItemRegistryModalDialog,
+      header: 'Cadastrar item',
+      width: '90%',
+      onClose: () => {
+        alert('close');
+      },
+    });
   }
 
   public onShowPopover(event: Event, popover: Menu): void {
