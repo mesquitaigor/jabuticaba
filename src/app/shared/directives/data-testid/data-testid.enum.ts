@@ -14,19 +14,21 @@ export const DataTestId = {
     LoadingState: createTestId('grocery-list', 'loading-state'),
     ErrorState: createTestId('grocery-list', 'error-state'),
     EmptyState: createTestId('grocery-list', 'empty-state'),
-    AddItemModal: createTestId('grocery-list', 'add-item-modal'),
-    NewItemInput: createTestId('grocery-list', 'new-item-input'),
-    SaveButton: createTestId('grocery-list', 'save-button'),
-    RegistryCancelButton: createTestId(
-      'grocery-list',
-      'registry-cancel-button',
-    ),
     DetailsItemButton: createTestId('grocery-list', 'details-item-button'),
     DetailsMenu: createTestId('grocery-list', 'details-menu'),
     DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),
     VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
   },
-
+  GroceryItemRegistryDialog: {
+    RegistryCancelButton: createTestId(
+      'grocery-list',
+      'registry-cancel-button',
+    ),
+    SaveButton: createTestId('grocery-list', 'save-button'),
+    NewItemInput: createTestId('grocery-list', 'new-item-input'),
+    AddItemModal: createTestId('grocery-list', 'add-item-modal'),
+    ItemIcon: createTestId('grocery-item-registry-dialog', 'item-icon'),
+  },
   // Header Component
   Header: {
     SidebarButton: createTestId('header', 'sidebar-button'),

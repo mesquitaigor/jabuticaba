@@ -22,6 +22,7 @@ import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { InputTextModule } from 'primeng/inputtext';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
+import { GroceryItemIconComponent } from '../../../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
@@ -30,6 +31,7 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
     DataTestidDirective,
     ReactiveFormsModule,
     ButtonModule,
+    GroceryItemIconComponent,
     InputTextModule,
   ],
   templateUrl: './grocery-item-registry.dialog.html',
@@ -42,7 +44,7 @@ export class GroceryItemRegistryModalDialog implements AfterViewInit {
   public readonly hidded = output<void>();
   public readonly dialogComponent = viewChild(Dialog);
   public showDialogFlag = false;
-  public readonly testIds = DataTestId.GroceryList;
+  public readonly testIds = DataTestId.GroceryItemRegistryDialog;
   public readonly executing = signal(false);
   public readonly saveButtonDisabledStt = signal(true);
   public readonly dialogHeader = computed(() =>

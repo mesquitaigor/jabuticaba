@@ -8,6 +8,17 @@
   [jbtDataTestid]="testIds.AddItemModal"
 >
   <div class="flex flex-col gap-4">
+    <div class="w-full flex justify-center">
+      <div
+        class="relative w-30 h-30 rounded-full bg-gray-100 flex items-center justify-center"
+      >
+        <jbt-grocery-item-icon
+          [iconName]="item()?.icon || ''"
+          [iconSize]="20"
+          [jbtDataTestid]="testIds.ItemIcon"
+        ></jbt-grocery-item-icon>
+      </div>
+    </div>
     <input
       id="itemName"
       pInputText

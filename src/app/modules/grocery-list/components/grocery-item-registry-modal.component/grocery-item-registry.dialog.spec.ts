@@ -71,7 +71,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
 
         const saveButton = DataTestIdHelper.query(
           fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
+          DataTestId.GroceryItemRegistryDialog.SaveButton,
         );
 
         expect(saveButton?.componentInstance.disabled).toBe(true);
@@ -91,7 +91,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
         tick();
         const saveButton = DataTestIdHelper.query(
           fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
+          DataTestId.GroceryItemRegistryDialog.SaveButton,
         );
 
         expect(saveButton!.componentInstance.disabled).toBe(false);
@@ -110,7 +110,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
 
         const saveButton = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
+          DataTestId.GroceryItemRegistryDialog.SaveButton,
         );
 
         expect(saveButton.componentInstance.disabled).toBe(true);
@@ -214,7 +214,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
 
         const saveButton = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
+          DataTestId.GroceryItemRegistryDialog.SaveButton,
         );
         expect(saveButton.componentInstance.disabled).toBe(true);
       });
@@ -234,7 +234,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
 
         const saveButton = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.SaveButton,
+          DataTestId.GroceryItemRegistryDialog.SaveButton,
         );
 
         expect(saveButton.componentInstance.disabled).toBe(true);
@@ -273,7 +273,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
       fixture.detectChanges();
       const cancelButton = DataTestIdHelper.queryOrFail(
         fixture.debugElement,
-        DataTestId.GroceryList.RegistryCancelButton,
+        DataTestId.GroceryItemRegistryDialog.RegistryCancelButton,
       );
       cancelButton.componentInstance.onClick.emit();
       expect(component.hidded.emit).toHaveBeenCalled();
