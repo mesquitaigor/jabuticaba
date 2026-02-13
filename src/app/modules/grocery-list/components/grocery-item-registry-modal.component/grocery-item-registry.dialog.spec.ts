@@ -10,13 +10,13 @@ import { DataTestIdHelper } from '../../../../tests/helpers/data-testid.helper.s
 import { DataTestId } from '../../../../shared/directives/data-testid';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { delay, of, throwError } from 'rxjs';
-import { GroceryItemService } from '../../../../data/entities/grocery-items/grocery-item.service';
 import { createGroceryItemModelMock } from '../../../../tests/mocks/GroceryItemModel.mock.spec';
 import { signal } from '@angular/core';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 import { DialogService } from '../../../../core/layout/dialog/dialog.service';
+import { GroceryItemService } from '@models/grocery-items';
 
 describe(GroceryItemRegistryDialog.name, () => {
   let component: GroceryItemRegistryDialog;

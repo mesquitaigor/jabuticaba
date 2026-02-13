@@ -4,7 +4,6 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { delay, finalize } from 'rxjs';
 import { TemplateGroceryItem } from './resources/template-grocery-item.model';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +20,7 @@ import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery
 import { DialogService } from '../../core/layout/dialog/dialog.service';
 import { GroceryItemRegistryDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 import { GroceryItemRegistryDialogInput } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog.types';
+import { GroceryItemService } from '@models/grocery-items';
 
 @Component({
   selector: 'jbt-grocery-list',

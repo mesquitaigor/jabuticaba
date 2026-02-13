@@ -13,7 +13,6 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { finalize } from 'rxjs';
-import { GroceryItemService } from '../../../../data/entities/grocery-items/grocery-item.service';
 import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +20,7 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import { DialogService } from '../../../../core/layout/dialog/dialog.service';
 import { GroceryItemRegistryDialogInput } from './grocery-item-registry.dialog.types';
+import { GroceryItemService } from '@models/grocery-items';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',

@@ -1,5 +1,5 @@
+import { GroceryItemService } from '@models/grocery-items';
 import { of } from 'rxjs';
-import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 
 export const createGroceryItemServiceMock =
   (): jasmine.SpyObj<GroceryItemService> => {

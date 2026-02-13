@@ -5,7 +5,6 @@ import {
   tick,
 } from '@angular/core/testing';
 import { GroceryListComponent } from './grocery-list.component';
-import { GroceryItemService } from '../../data/entities/grocery-items/grocery-item.service';
 import { delay, of, throwError } from 'rxjs';
 import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.mock.spec';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
@@ -20,6 +19,7 @@ import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { DialogService } from '../../core/layout/dialog/dialog.service';
 import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
+import { GroceryItemService } from '@models/grocery-items';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
