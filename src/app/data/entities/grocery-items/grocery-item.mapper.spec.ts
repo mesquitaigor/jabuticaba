@@ -38,7 +38,7 @@ describe(GroceryItemMapper.name, () => {
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
 
-      expect(result.icon).toBe('default-icon');
+      expect(result.icon).toBe(GroceryItem.defaultIconName);
     });
 
     it('precisa converter created_at de string para Date corretamente', () => {
