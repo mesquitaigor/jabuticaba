@@ -23,6 +23,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { InputTextModule } from 'primeng/inputtext';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
+import { DialogService } from '../../../../core/layout/dialog/dialog.service';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
@@ -38,6 +39,7 @@ import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon
 export class GroceryItemRegistryModalDialog implements AfterViewInit {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly groceryItemService = inject(GroceryItemService);
+  private readonly dialogService = inject(DialogService);
   public readonly showDialog = input(false);
   public readonly item = input<GroceryItemModel | null>(null);
   public readonly hidded = output<void>();
@@ -106,6 +108,7 @@ export class GroceryItemRegistryModalDialog implements AfterViewInit {
   private resetState(): void {
     this.itemNameControl.reset();
     this.hidded.emit();
+    this.dialogService.close();
     this.showDialogFlag = false;
   }
 }

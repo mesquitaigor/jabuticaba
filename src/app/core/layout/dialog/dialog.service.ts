@@ -8,6 +8,10 @@ export interface DialogConfig<T> {
   onClose?: () => void;
 }
 
+export interface DialogInstance {
+  close: () => void;
+}
+
 @Injectable({
   providedIn: 'root',
 })
