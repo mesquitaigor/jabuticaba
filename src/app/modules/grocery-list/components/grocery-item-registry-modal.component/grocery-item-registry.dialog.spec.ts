@@ -17,7 +17,7 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 
-fdescribe(GroceryItemRegistryModalDialog.name, () => {
+describe(GroceryItemRegistryModalDialog.name, () => {
   let component: GroceryItemRegistryModalDialog;
   let fixture: ComponentFixture<GroceryItemRegistryModalDialog>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;

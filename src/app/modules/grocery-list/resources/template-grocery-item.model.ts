@@ -86,6 +86,7 @@ export class TemplateGroceryItem extends GroceryItemModel {
     this.name = item.name;
     this.missing = item.missing;
     this.hidden = item.hidden;
+    this.icon = item.icon;
     this.onDelete = onDelete;
     this.onEdit = onEdit;
     this.onMissingCheck = onMissingCheck;

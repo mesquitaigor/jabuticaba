@@ -40,7 +40,9 @@
                 class="pi pi-eye-slash text-gray-400 text-xl bg-[#cacaca] p-[0.4rem] rounded-full absolute right-0 top-0 translate-x-[30%] -translate-y-[30%]"
               ></i>
             }
-            <img class="w-10 h-10" src="icons/ketchup.svg" alt="Item ícone" />
+            <jbt-grocery-item-icon
+              [iconName]="item.icon || ''"
+            ></jbt-grocery-item-icon>
           </div>
           <span
             class="flex-1 text-gray-800"

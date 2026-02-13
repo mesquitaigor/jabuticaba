@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 
 @Component({
-  selector: 'jbt-grocery-item-icon.component',
+  selector: 'jbt-grocery-item-icon',
   templateUrl: './grocery-item-icon.component.html',
 })
 export class GroceryItemIconComponent {

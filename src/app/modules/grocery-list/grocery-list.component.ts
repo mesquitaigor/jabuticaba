@@ -19,6 +19,7 @@ import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemRegistryModalDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
+import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -36,6 +37,7 @@ import { LoadingComponent } from '../../shared/components/atoms/loading/loading.
     MenuModule,
     GroceryItemRegistryModalDialog,
     LoadingComponent,
+    GroceryItemIconComponent,
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.scss',

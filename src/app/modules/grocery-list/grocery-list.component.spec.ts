@@ -873,4 +873,26 @@ describe(GroceryListComponent.name, () => {
       });
     }));
   });
+
+  describe('quando itens são renderizados', () => {
+    it('precisa passar o ícone do item para o componente jbt-grocery-item-icon', fakeAsync(() => {
+      runInContext(() => {
+        const mockItem = createGroceryItemModelMock({ icon: 'apple' });
+        mockSignal.set([mockItem]);
+
+        fixture.detectChanges();
+        tick(loadDelay);
+        fixture.detectChanges();
+
+        const iconComponent = fixture.nativeElement.querySelector(
+          'jbt-grocery-item-icon',
+        );
+
+        expect(iconComponent).toBeTruthy();
+        expect(iconComponent.getAttribute('ng-reflect-icon-name')).toBe(
+          'apple',
+        );
+      });
+    }));
+  });
 });

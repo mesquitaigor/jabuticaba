@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroceryItemIconComponent } from './grocery-item-icon.component';
 
-describe(GroceryItemIconComponent.name, () => {
+fdescribe(GroceryItemIconComponent.name, () => {
   let component: GroceryItemIconComponent;
   let fixture: ComponentFixture<GroceryItemIconComponent>;
 
