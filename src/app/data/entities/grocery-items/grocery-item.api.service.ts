@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { SupabaseService } from '../../../core/services/api/supabase.service';
 import { from, map, Observable, of, tap } from 'rxjs';
 import { IGroceryItemApi } from './grocery-item.dto';
+import { SupabaseService } from '@api/supabase.service';
 
 @Injectable({
   providedIn: 'root',

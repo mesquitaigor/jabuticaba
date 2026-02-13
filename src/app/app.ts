@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { SupabaseService } from './core/services/api/supabase.service';
 import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 import { MessageService } from 'primeng/api';
 import { HeaderComponent } from '@layout/header';
 import { DialogComponent } from '@layout/dialog';
+import { SupabaseService } from '@api/supabase.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { NavigationService } from '@navigation/navigation.service';
 import { MenuItem } from 'primeng/api';
-import { NavigationService } from '../../navigation/navigation.service';
 
 @Injectable({
   providedIn: 'root',
