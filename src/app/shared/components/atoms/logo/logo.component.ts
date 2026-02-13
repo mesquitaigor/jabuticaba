@@ -1,8 +1,5 @@
 import { Component, input } from '@angular/core';
-import {
-  DataTestidDirective,
-  DataTestId,
-} from '../../../directives/data-testid';
+import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 
 @Component({
   selector: 'jbt-logo',

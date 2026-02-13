@@ -6,10 +6,6 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { Dialog } from 'primeng/dialog';
-import {
-  DataTestId,
-  DataTestidDirective,
-} from '../../../../shared/directives/data-testid';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { finalize } from 'rxjs';
@@ -21,6 +17,7 @@ import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon
 import { DialogService } from '../../../../core/layout/dialog/dialog.service';
 import { GroceryItemRegistryDialogInput } from './grocery-item-registry.dialog.types';
 import { GroceryItemService } from '@models/grocery-items';
+import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',

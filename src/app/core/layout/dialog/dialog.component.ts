@@ -8,11 +8,8 @@ import {
   inject,
 } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import {
-  DataTestId,
-  DataTestidDirective,
-} from '../../../shared/directives/data-testid';
 import { DialogService } from './dialog.service';
+import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 
 @Component({
   selector: 'jbt-dialog',
