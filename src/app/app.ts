@@ -4,10 +4,10 @@ import { ButtonModule } from 'primeng/button';
 import { SupabaseService } from './core/services/api/supabase.service';
 import { FormsModule } from '@angular/forms';
 import { DrawerModule } from 'primeng/drawer';
-import { HeaderComponent } from './core/layout/header/header';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 import { MessageService } from 'primeng/api';
 import { DialogComponent } from './core/layout/dialog/dialog.component';
+import { HeaderComponent } from '@layout/header';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

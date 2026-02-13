@@ -18,7 +18,8 @@
     "paths": {
       "@models/*": ["src/app/data/entities/*"],
       "@directives/*": ["src/app/shared/directives/*"],
-      "@atoms/*": ["src/app/shared/components/atoms/*"]
+      "@atoms/*": ["src/app/shared/components/atoms/*"],
+      "@layout/*": ["src/app/core/layout/*"]
     }
   },
   "angularCompilerOptions": {
