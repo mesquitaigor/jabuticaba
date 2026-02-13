@@ -121,14 +121,6 @@ export class GroceryListComponent implements OnInit {
           finalize(() => (this.loading = false)),
         )
         .subscribe({
-          next: () => {
-            // this.messageService.add({
-            //   severity: 'success',
-            //   summary: 'Sucesso',
-            //   detail: 'Lista de compras atualizada',
-            //   life: 30000000,
-            // });
-          },
           error: () => {
             this.hasError = true;
           },
