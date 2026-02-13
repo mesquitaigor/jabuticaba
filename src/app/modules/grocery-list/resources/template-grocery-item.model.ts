@@ -1,7 +1,8 @@
 import { MenuItem } from 'primeng/api';
 import GroceryItemModel from '../../../data/entities/grocery-items/grocery-item.model';
 import { signal } from '@angular/core';
-import { EmptyFn } from '../../../shared/types/empty-fn';
+import { EmptyFn } from '@jbt-types/empty-fn';
+
 type onDeleteFn = (stopState: () => void) => void;
 type onVisibilityChangeFn = (
   item: TemplateGroceryItem,
