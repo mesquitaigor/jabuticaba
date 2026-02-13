@@ -19,7 +19,7 @@ import { DataTestId } from '../../shared/directives/data-testid';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { DialogService } from '../../core/layout/dialog/dialog.service';
-import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
+import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

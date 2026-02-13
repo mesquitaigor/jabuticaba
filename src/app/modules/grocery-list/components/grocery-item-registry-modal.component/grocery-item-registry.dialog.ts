@@ -22,7 +22,7 @@ import { MessageService } from 'primeng/api';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { InputTextModule } from 'primeng/inputtext';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
-import { GroceryItemIconComponent } from '../../../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
+import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',

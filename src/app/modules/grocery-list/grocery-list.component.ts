@@ -17,7 +17,7 @@ import {
 import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
-import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
+import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
 import { DialogService } from '../../core/layout/dialog/dialog.service';
 import { GroceryItemRegistryModalDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
 
@@ -212,7 +212,7 @@ export class GroceryListComponent implements OnInit {
       header: 'Cadastrar item',
       width: '90%',
       onClose: () => {
-        alert('close');
+        this.onCloseRegistryDialog();
       },
     });
   }
