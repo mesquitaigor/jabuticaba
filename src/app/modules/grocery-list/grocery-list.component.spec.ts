@@ -18,6 +18,8 @@ import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../shared/directives/data-testid';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
+import { DialogService } from '../../core/layout/dialog/dialog.service';
+import { GroceryItemIconComponent } from '../../shared/components/atoms/grocery-item-icon.component/grocery-item-icon.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -32,6 +34,7 @@ describe(GroceryListComponent.name, () => {
   let fixture: ComponentFixture<GroceryListComponent>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockMessageService: jasmine.SpyObj<MessageService>;
+  let mockDialogService: jasmine.SpyObj<DialogService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
   let loadDelay = 0;
 
@@ -61,6 +64,10 @@ describe(GroceryListComponent.name, () => {
       of(createGroceryItemModelMock()),
     );
     mockMessageService = createMessageServiceMock();
+    mockDialogService = jasmine.createSpyObj('DialogService', [
+      'open',
+      'close',
+    ]);
 
     await TestBed.configureTestingModule({
       imports: [GroceryListComponent, MockToastComponent],
@@ -68,6 +75,7 @@ describe(GroceryListComponent.name, () => {
         provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
         { provide: MessageService, useValue: mockMessageService },
+        { provide: DialogService, useValue: mockDialogService },
       ],
     })
       .overrideComponent(GroceryListComponent, {
@@ -658,12 +666,17 @@ describe(GroceryListComponent.name, () => {
     }));
   });
   describe('quando o botão de adicionar é clicado', () => {
-    it('precisa abrir o modal de adição de item', () => {
+    it('precisa chamar dialogService.open com o componente correto', () => {
       runInContext(() => {
         fixture.detectChanges();
         component.onAdd();
         fixture.detectChanges();
-        expect(component.showRegistryDialog()).toBe(true);
+        expect(mockDialogService.open).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            header: 'Cadastrar item',
+            width: '90%',
+          }),
+        );
       });
     });
   });
@@ -884,14 +897,13 @@ describe(GroceryListComponent.name, () => {
         tick(loadDelay);
         fixture.detectChanges();
 
-        const iconComponent = fixture.nativeElement.querySelector(
-          'jbt-grocery-item-icon',
+        const iconElement = fixture.debugElement.query(
+          (el) => el.nativeElement.tagName === 'JBT-GROCERY-ITEM-ICON',
         );
-
-        expect(iconComponent).toBeTruthy();
-        expect(iconComponent.getAttribute('ng-reflect-icon-name')).toBe(
-          'apple',
-        );
+        expect(iconElement).toBeTruthy();
+        const iconInstance: GroceryItemIconComponent =
+          iconElement?.componentInstance;
+        expect(iconInstance.iconName()).toBe('apple');
       });
     }));
   });
