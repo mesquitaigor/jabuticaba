@@ -19,7 +19,8 @@ import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.mod
 import { LoadingComponent } from '../../shared/components/atoms/loading/loading.component';
 import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
 import { DialogService } from '../../core/layout/dialog/dialog.service';
-import { GroceryItemRegistryModalDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
+import { GroceryItemRegistryDialog } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog';
+import { GroceryItemRegistryDialogInput } from './components/grocery-item-registry-modal.component/grocery-item-registry.dialog.types';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -50,9 +51,7 @@ export class GroceryListComponent implements OnInit {
   public loading = false;
   public readonly testIds = DataTestId.GroceryList;
   public showAllItems = signal(false);
-  public readonly showRegistryDialog = signal(false);
   private readonly loadDelay = 2000;
-  public readonly editingItem = signal<GroceryItemModel | null>(null);
   constructor() {
     effect(() => {
       const items = this.groceryItemService.getGroceryList()();
@@ -153,8 +152,15 @@ export class GroceryListComponent implements OnInit {
             },
             onEdit: (item: TemplateGroceryItem): void => {
               if (item.name) {
-                this.showRegistryDialog.set(true);
-                this.editingItem.set(item);
+                this.dialogService.open<
+                  GroceryItemRegistryDialog,
+                  GroceryItemRegistryDialogInput
+                >({
+                  component: GroceryItemRegistryDialog,
+                  header: 'Editar item',
+                  width: '90%',
+                  data: { item },
+                });
               }
             },
             onChangeVisibility: (
@@ -167,11 +173,6 @@ export class GroceryListComponent implements OnInit {
           return groceryListItem;
         }),
     );
-  }
-
-  public onCloseRegistryDialog(): void {
-    this.showRegistryDialog.set(false);
-    this.editingItem.set(null);
   }
 
   public changeMissing(item: TemplateGroceryItem, stop?: () => void): void {
@@ -208,12 +209,9 @@ export class GroceryListComponent implements OnInit {
 
   public onAdd(): void {
     this.dialogService.open({
-      component: GroceryItemRegistryModalDialog,
+      component: GroceryItemRegistryDialog,
       header: 'Cadastrar item',
       width: '90%',
-      onClose: () => {
-        this.onCloseRegistryDialog();
-      },
     });
   }
 

@@ -5,7 +5,7 @@ import {
   tick,
 } from '@angular/core/testing';
 
-import { GroceryItemRegistryModalDialog } from './grocery-item-registry.dialog';
+import { GroceryItemRegistryDialog } from './grocery-item-registry.dialog';
 import { DataTestIdHelper } from '../../../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../../../shared/directives/data-testid';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -16,13 +16,15 @@ import { signal } from '@angular/core';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
+import { DialogService } from '../../../../core/layout/dialog/dialog.service';
 
-describe(GroceryItemRegistryModalDialog.name, () => {
-  let component: GroceryItemRegistryModalDialog;
-  let fixture: ComponentFixture<GroceryItemRegistryModalDialog>;
+describe(GroceryItemRegistryDialog.name, () => {
+  let component: GroceryItemRegistryDialog;
+  let fixture: ComponentFixture<GroceryItemRegistryDialog>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
   let mockMessageService: jasmine.SpyObj<MessageService>;
+  let mockDialogService: jasmine.SpyObj<DialogService>;
 
   beforeEach(async () => {
     mockSignal = signal<GroceryItemModel[]>([]);
@@ -44,16 +46,21 @@ describe(GroceryItemRegistryModalDialog.name, () => {
       of(createGroceryItemModelMock()),
     );
     mockMessageService = createMessageServiceMock();
+    mockDialogService = jasmine.createSpyObj('DialogService', [
+      'close',
+      'open',
+    ]);
     await TestBed.configureTestingModule({
       providers: [
         provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
+        { provide: DialogService, useValue: mockDialogService },
         { provide: MessageService, useValue: mockMessageService },
       ],
-      imports: [GroceryItemRegistryModalDialog],
+      imports: [GroceryItemRegistryDialog],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GroceryItemRegistryModalDialog);
+    fixture = TestBed.createComponent(GroceryItemRegistryDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -64,7 +71,6 @@ describe(GroceryItemRegistryModalDialog.name, () => {
   describe('quando componente é inicializado', () => {
     it('precisa manter o botão de salvar desabilitado quando o input está vazio', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('showDialog', true);
         component.itemNameControl.setValue('');
 
         fixture.detectChanges();
@@ -81,7 +87,6 @@ describe(GroceryItemRegistryModalDialog.name, () => {
   describe('quando usuário inserir valor no input de nome do item', () => {
     it('precisa habilitar o botão de salvar quando o usuário digita no input', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('showDialog', true);
         component.itemNameControl.setValue('');
 
         fixture.detectChanges();
@@ -100,7 +105,6 @@ describe(GroceryItemRegistryModalDialog.name, () => {
 
     it('precisa desabilitar o botão novamente se o input for esvaziado', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('showDialog', true);
         component.itemNameControl.setValue('Novo Item');
 
         fixture.detectChanges();
@@ -166,9 +170,8 @@ describe(GroceryItemRegistryModalDialog.name, () => {
       expect(component.executing()).toBe(false);
     }));
 
-    it('precisa fechar o modal após criar com sucesso', fakeAsync(() => {
+    it('precisa chamar dialogService.close após criar com sucesso', fakeAsync(() => {
       component.itemNameControl.setValue('Novo Item');
-      component.showDialogFlag = true;
       mockGroceryItemService.create.and.returnValue(
         of(createGroceryItemModelMock()),
       );
@@ -176,7 +179,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
       component.exec();
       tick(1);
 
-      expect(component.showDialogFlag).toBe(false);
+      expect(mockDialogService.close).toHaveBeenCalled();
     }));
 
     it('precisa limpar o campo itemNameControl após criar com sucesso', fakeAsync(() => {
@@ -203,7 +206,6 @@ describe(GroceryItemRegistryModalDialog.name, () => {
     it('precisa desabilitar o botão de salvar durante a criação', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         component.itemNameControl.setValue('Novo Item');
-        component.showDialogFlag = true;
         mockGroceryItemService.create.and.returnValue(
           of(null).pipe(delay(100)),
         );
@@ -223,7 +225,7 @@ describe(GroceryItemRegistryModalDialog.name, () => {
     it('precisa exibir loading no botão durante a criação', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         component.itemNameControl.setValue('Novo Item');
-        component.showDialogFlag = true;
+
         mockGroceryItemService.create.and.returnValue(
           of(null).pipe(delay(100)),
         );
@@ -258,25 +260,30 @@ describe(GroceryItemRegistryModalDialog.name, () => {
   });
 
   describe('quando usuário clicar no botão cancelar', () => {
-    it('precisa fechar o modal', () => {
-      component.showDialogFlag = true;
+    it('precisa exibir mensagem de erro', fakeAsync(() => {
+      component.itemNameControl.setValue('Novo Item');
+      mockGroceryItemService.create.and.returnValue(
+        throwError(() => new Error('Erro da rede')),
+      );
+
+      component.exec();
+      tick(1);
+
+      expect(mockMessageService.add).toHaveBeenCalledWith({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível adicionar o item',
+      });
+    }));
+  });
+
+  describe('quando usuário clicar no botão cancelar', () => {
+    it('precisa chamar dialogService.close', () => {
       component.itemNameControl.setValue('Teste');
 
       component.handleCancel();
 
-      expect(component.showDialogFlag).toBe(false);
-    });
-
-    it('precisa emitir o evento hidded', () => {
-      component.showDialogFlag = true;
-      spyOn(component.hidded, 'emit');
-      fixture.detectChanges();
-      const cancelButton = DataTestIdHelper.queryOrFail(
-        fixture.debugElement,
-        DataTestId.GroceryItemRegistryDialog.RegistryCancelButton,
-      );
-      cancelButton.componentInstance.onClick.emit();
-      expect(component.hidded.emit).toHaveBeenCalled();
+      expect(mockDialogService.close).toHaveBeenCalled();
     });
 
     it('precisa limpar o campo itemNameControl', () => {
@@ -288,48 +295,23 @@ describe(GroceryItemRegistryModalDialog.name, () => {
     });
   });
 
-  describe('quando dialog é aberto para adicionar novo item', () => {
-    it('precisa exibir "Adicionar Item" no header', () => {
-      TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('item', null);
-        fixture.detectChanges();
-
-        expect(component.dialogHeader()).toBe('Adicionar Item');
-      });
+  describe('quando dialog é criado', () => {
+    it('precisa manter o input vazio inicialmente', () => {
+      expect(component.itemNameControl.value).toBeNull();
     });
 
-    it('precisa manter o input vazio', () => {
-      TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('item', null);
-        fixture.detectChanges();
-
-        expect(component.itemNameControl.value).toBeNull();
-      });
-    });
-  });
-
-  describe('quando dialog é aberto para editar item existente', () => {
-    it('precisa exibir "Editar Item" no header', () => {
-      TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock({ name: 'Item Teste' });
-        fixture.componentRef.setInput('item', mockItem);
-        fixture.detectChanges();
-
-        expect(component.dialogHeader()).toBe('Editar Item');
-      });
-    });
-
-    it('precisa preencher o input com o nome do item', () => {
-      TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock({
+    it('precisa preencher o input quando item é fornecido', async () => {
+      // Simula definição do item via input
+      fixture.detectChanges();
+      Object.defineProperty(component, 'item', {
+        value: createGroceryItemModelMock({
           name: 'Item Editável',
-        });
-        fixture.componentRef.setInput('item', mockItem);
-        component.ngAfterViewInit();
-        fixture.detectChanges();
-
-        expect(component.itemNameControl.value).toBe('Item Editável');
+        }),
+        writable: true,
       });
+      component.ngAfterViewInit();
+      await fixture.whenStable();
+      expect(component.itemNameControl.value).toBe('Item Editável');
     });
   });
 });

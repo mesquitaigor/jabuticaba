@@ -1,9 +1,9 @@
 import { Injectable, Type, ComponentRef, signal } from '@angular/core';
 
-export interface DialogConfig<T> {
+export interface DialogConfig<T, I = unknown> {
   component: Type<T>;
   header?: string;
-  data?: unknown;
+  data?: I;
   width?: string;
   onClose?: () => void;
 }
@@ -23,7 +23,7 @@ export class DialogService {
    * Abre o dialog com um componente dinâmico
    * @param config Configuração do dialog incluindo o componente a ser renderizado
    */
-  public open<T>(config: DialogConfig<T>): void {
+  public open<T, I>(config: DialogConfig<T, I>): void {
     this.dialogConfig.set(config);
     this.isVisible.set(true);
   }

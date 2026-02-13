@@ -26,7 +26,19 @@ describe(GroceryItemMapper.name, () => {
       expect(result).toBeInstanceOf(GroceryItem);
       expect(result.uuid).toBe(apiData.uuid);
       expect(result.name).toBe(apiData.name);
+      expect(result.icon).toBe(apiData.icon);
       expect(result.missing).toBe(apiData.missing);
+    });
+
+    it('precisa criar uma instância do modelo com todas as propriedades básicas', () => {
+      // Arrange
+      const apiData = mockApiData;
+      apiData.icon = null;
+
+      // Act
+      const result = GroceryItemMapper.apiToModel(apiData);
+
+      expect(result.icon).toBe('default-icon');
     });
 
     it('precisa converter created_at de string para Date corretamente', () => {

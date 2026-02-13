@@ -681,7 +681,7 @@ describe(GroceryListComponent.name, () => {
     });
   });
   describe('quando o botão de editar é clicado', () => {
-    it('deve abrir o modal de edição', () => {
+    it('deve abrir o modal de edição com o item correto', () => {
       runInContext(() => {
         fixture.detectChanges();
         // Simula um item na lista
@@ -694,7 +694,12 @@ describe(GroceryListComponent.name, () => {
           .menu()[0]
           .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
         fixture.detectChanges();
-        expect(component.showRegistryDialog()).toBe(true);
+        expect(mockDialogService.open).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            header: 'Editar item',
+            data: jasmine.objectContaining({ item: jasmine.any(Object) }),
+          }),
+        );
       });
     });
   });

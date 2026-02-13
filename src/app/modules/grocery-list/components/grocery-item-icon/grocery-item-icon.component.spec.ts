@@ -52,23 +52,21 @@ fdescribe(GroceryItemIconComponent.name, () => {
 
     it('precisa aplicar as classes CSS corretas', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('iconName', 'grape');
+        fixture.componentRef.setInput('iconName', '10');
         fixture.detectChanges();
-
-        const img = fixture.nativeElement.querySelector('img');
-        expect(img.classList.contains('w-10')).toBe(true);
-        expect(img.classList.contains('h-10')).toBe(true);
+        expect(fixture.nativeElement.classList.contains('w-10')).toBe(true);
+        expect(fixture.nativeElement.classList.contains('h-10')).toBe(true);
       });
     });
   });
 
   describe('quando iconName está vazio', () => {
-    it('precisa computar o caminho com string vazia', () => {
+    it('precisa computar o caminho com ícone padrão', () => {
       TestBed.runInInjectionContext(() => {
         fixture.componentRef.setInput('iconName', '');
         fixture.detectChanges();
 
-        expect(component.iconSrc()).toBe('icons/.svg');
+        expect(component.iconSrc()).toBe('icons/default-icon.svg');
       });
     });
   });
