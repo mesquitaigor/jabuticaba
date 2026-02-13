@@ -8,6 +8,33 @@ import { routes } from './app.routes';
 
 const MyPreset = definePreset(Aura, {
   components: {
+    toast: {
+      colorScheme: {
+        light: {
+          success: {
+            background: '{success.400}',
+            borderColor: '{success.400}',
+            color: '{surface.0}',
+            detailColor: '{surface.100}',
+          },
+          info: {
+            background: '{info.500}',
+            borderColor: '{info.500}',
+            color: '{surface.0}',
+          },
+          warn: {
+            background: '{warn.500}',
+            borderColor: '{warn.500}',
+            color: '{surface.0}',
+          },
+          error: {
+            background: '{error.500}',
+            borderColor: '{error.500}',
+            color: '{surface.0}',
+          },
+        },
+      },
+    },
     button: {
       colorScheme: {
         light: {
@@ -58,6 +85,19 @@ const MyPreset = definePreset(Aura, {
       800: '#67557e',
       900: '#554966',
       950: '#292331',
+    },
+    success: {
+      50: '#f1fcf4',
+      100: '#dff9e8',
+      200: '#c0f2d2',
+      300: '#8fe6ae',
+      400: '#56d283',
+      500: '#3bcc70',
+      600: '#22974d',
+      700: '#1e773f',
+      800: '#1d5e36',
+      900: '#194e2e',
+      950: '#082b17',
     },
   },
 });

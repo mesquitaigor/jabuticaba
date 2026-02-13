@@ -41,7 +41,7 @@ body {
   }
 }
 
-@theme {
+:root {
   --color-primary-50: #f4f3fa;
   --color-primary-100: #eceaf5;
   --color-primary-200: #dcd9ec;
@@ -126,4 +126,13 @@ body {
   --color-infor-800: #254a45;
   --color-infor-900: #233e3c;
   --color-infor-950: #0f2422;
+}
+p-toast.p-toast {
+  transform: translate(20px, -20px);
+  width: 100%;
+  p-toastitem {
+    padding: 0.8rem;
+    display: inline-block;
+    width: 100%;
+  }
 }
