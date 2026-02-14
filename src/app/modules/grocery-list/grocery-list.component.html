@@ -79,25 +79,10 @@
       <p>Carregando</p>
     </div>
     @if (!loading && hasError) {
-      <div
-        class="p-8 text-center text-gray-500"
+      <jbt-error-list-state
         [jbtDataTestid]="testIds.ErrorState"
-      >
-        <img
-          src="error.svg"
-          alt="Error"
-          class="w-40 h-40 mb-4 mx-auto translate-5"
-        />
-        <p>Erro ao carregar itens</p>
-        <p-button
-          class="mt-4 inline-block"
-          icon="pi pi-reload"
-          label="Recarregar"
-          [outlined]="true"
-          severity="secondary"
-          (onClick)="loadItems()"
-        ></p-button>
-      </div>
+        (reloadList)="loadItems()"
+      ></jbt-error-list-state>
     } @else if (!loading && groceryItems().length === 0) {
       <jbt-empty-list-state
         [jbtDataTestid]="testIds.EmptyState"

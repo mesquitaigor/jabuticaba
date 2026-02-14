@@ -19,6 +19,7 @@ import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 import { DialogService } from '@layout/dialog';
 import { LoadingComponent } from '@atoms/loading';
 import { EmptyListStateComponent } from '@atoms/empty-list-state';
+import { ErrorListStateComponent } from '@atoms/error-list-state';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -36,6 +37,7 @@ import { EmptyListStateComponent } from '@atoms/empty-list-state';
     LoadingComponent,
     GroceryItemIconComponent,
     EmptyListStateComponent,
+    ErrorListStateComponent,
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.scss',

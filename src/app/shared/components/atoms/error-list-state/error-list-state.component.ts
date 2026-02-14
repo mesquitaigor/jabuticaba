@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
+import { DataTestId, DataTestidDirective } from '@directives/data-testid';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'jbt-error-list-state',
-  imports: [],
+  imports: [DataTestidDirective, ButtonModule],
   templateUrl: './error-list-state.component.html',
-  styleUrl: './error-list-state.component.scss',
 })
-export class ErrorListStateComponent {}
+export class ErrorListStateComponent {
+  public readonly reloadList = output<void>();
+  public readonly testId = DataTestId.ErrorListState;
+}

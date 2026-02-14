@@ -37,6 +37,7 @@ export const DataTestId = {
   },
   Dialog: 'dialog',
   EmptyListState: 'empty-state',
+  ErrorListState: 'error-state',
   // Sidebar Component
   Sidebar: {
     Logo: createTestId('sidebar', 'logo'),
