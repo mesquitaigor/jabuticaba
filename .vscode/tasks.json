@@ -45,7 +45,8 @@
       "args": [
         "generate",
         "component",
-        "shared/components/atoms/${input:componentName}"
+        "shared/components/atoms/${input:componentName}",
+        "--type=component"
       ],
       "group": "build",
       "presentation": {
