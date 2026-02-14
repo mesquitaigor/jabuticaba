@@ -100,10 +100,10 @@
       </div>
     } @else if (!loading && groceryItems().length === 0) {
       <div
-        class="p-8 text-center text-gray-500"
+        class="p-8 text-center text-gray-500 flex flex-col items-center gap-4"
         [jbtDataTestid]="testIds.EmptyState"
       >
-        <i class="pi pi-shopping-cart text-4xl mb-3 block"></i>
+        <img class="w-20 h-20" src="icons/empty-sack.svg" alt="Lista vazia" />
         <p>Nenhum item cadastrado</p>
       </div>
     }
