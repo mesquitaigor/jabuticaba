@@ -3,7 +3,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -16,13 +15,13 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
-      "@models/*": ["src/app/data/entities/*"],
-      "@directives/*": ["src/app/shared/directives/*"],
-      "@atoms/*": ["src/app/shared/components/atoms/*"],
-      "@layout/*": ["src/app/core/layout/*"],
-      "@jbt-types/*": ["src/app/shared/types/*"],
-      "@navigation/*": ["src/app/core/navigation/*"],
-      "@api/*": ["src/app/core/services/api/*"]
+      "@models/*": ["./src/app/data/entities/*"],
+      "@directives/*": ["./src/app/shared/directives/*"],
+      "@atoms/*": ["./src/app/shared/components/atoms/*"],
+      "@layout/*": ["./src/app/core/layout/*"],
+      "@jbt-types/*": ["./src/app/shared/types/*"],
+      "@navigation/*": ["./src/app/core/navigation/*"],
+      "@api/*": ["./src/app/core/services/api/*"]
     }
   },
   "angularCompilerOptions": {
