@@ -37,6 +37,32 @@
           }
         }
       }
+    },
+    {
+      "label": "Generate component atom",
+      "type": "shell",
+      "command": "ng",
+      "args": [
+        "generate",
+        "component",
+        "shared/components/atoms/${input:componentName}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "componentName",
+      "description": "Component name",
+      "default": "my-component",
+      "type": "promptString"
     }
   ]
 }
