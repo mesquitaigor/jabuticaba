@@ -5,7 +5,6 @@ import { DataTestId, DataTestidDirective } from '@directives/data-testid';
   selector: 'jbt-empty-list-state',
   imports: [DataTestidDirective],
   templateUrl: './empty-list-state.html',
-  styleUrl: './empty-list-state.scss',
 })
 export class EmptyListStateComponent {
   public readonly testId = DataTestId.EmptyListState;
