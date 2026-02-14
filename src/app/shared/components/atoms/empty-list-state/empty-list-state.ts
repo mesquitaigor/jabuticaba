@@ -8,5 +8,5 @@ import { DataTestId, DataTestidDirective } from '@directives/data-testid';
   styleUrl: './empty-list-state.scss',
 })
 export class EmptyListStateComponent {
-  public readonly testId = DataTestId.EmptyState;
+  public readonly testId = DataTestId.EmptyListState;
 }

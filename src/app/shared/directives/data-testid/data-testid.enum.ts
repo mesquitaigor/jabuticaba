@@ -36,7 +36,7 @@ export const DataTestId = {
     Avatar: createTestId('header', 'avatar'),
   },
   Dialog: 'dialog',
-  EmptyState: 'empty-state',
+  EmptyListState: 'empty-state',
   // Sidebar Component
   Sidebar: {
     Logo: createTestId('sidebar', 'logo'),
