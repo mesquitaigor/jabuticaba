@@ -18,6 +18,7 @@ import { GroceryItemService } from '@models/grocery-items';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 import { DialogService } from '@layout/dialog';
 import { LoadingComponent } from '@atoms/loading';
+import { EmptyListStateComponent } from '@atoms/empty-list-state';
 
 @Component({
   selector: 'jbt-grocery-list',
@@ -34,6 +35,7 @@ import { LoadingComponent } from '@atoms/loading';
     MenuModule,
     LoadingComponent,
     GroceryItemIconComponent,
+    EmptyListStateComponent,
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.scss',
