@@ -12,7 +12,7 @@ export class DialogService {
    * Abre o dialog com um componente dinâmico
    * @param config Configuração do dialog incluindo o componente a ser renderizado
    */
-  public open<T, I>(config: DialogConfig<T, I>): void {
+  public open<T, I = unknown>(config: DialogConfig<T, I>): void {
     this.dialogConfig.set(config);
     this.isVisible.set(true);
   }

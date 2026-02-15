@@ -18,6 +18,7 @@ import { GroceryItemRegistryDialogInput } from './grocery-item-registry.dialog.t
 import { GroceryItemService } from '@models/grocery-items';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
 import { DialogService } from '@layout/dialog';
+import { GroceryIconListSelectionDialog } from '../grocery-icon-list-selection/grocery-icon-list-selection.dialog';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
@@ -27,6 +28,7 @@ import { DialogService } from '@layout/dialog';
     ButtonModule,
     GroceryItemIconComponent,
     InputTextModule,
+    GroceryIconListSelectionDialog,
   ],
   templateUrl: './grocery-item-registry.dialog.html',
 })
@@ -61,6 +63,14 @@ export class GroceryItemRegistryDialog
     if (this.item) {
       this.itemNameControl.setValue(this.item.name || '');
     }
+  }
+  public openIconSelectionDialog(): void {
+    alert('oi');
+    this.dialogService.open<GroceryIconListSelectionDialog>({
+      component: GroceryIconListSelectionDialog,
+      header: 'Selecionar ícone',
+      width: '90%',
+    });
   }
   private setAddButtonDisabledState(): void {
     this.saveButtonDisabledStt.set(

@@ -2,6 +2,9 @@
   <div class="w-full flex justify-center">
     <div
       class="cursor-pointer relative w-30 h-30 rounded-full bg-gray-100 flex items-center justify-center"
+      (click)="openIconSelectionDialog()"
+      (keypress)="openIconSelectionDialog()"
+      tabindex="0"
     >
       <jbt-grocery-item-icon
         [iconName]="item?.icon"
