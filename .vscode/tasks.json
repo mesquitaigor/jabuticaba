@@ -64,7 +64,7 @@
       "args": [
         "generate",
         "component",
-        "shared/modules/${input:moduleName}/components/${input:componentName}",
+        "modules/${input:moduleName}/components/${input:componentName}",
         "--type=component"
       ],
       "group": "build",
