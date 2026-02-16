@@ -9,7 +9,7 @@ import {
 import { DialogComponent } from './dialog.component';
 import { DialogService } from './dialog.service';
 import { DialogModule } from 'primeng/dialog';
-import { DialogConfig } from './dialog.types';
+import { DialogState } from './dialog.types';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -35,24 +35,25 @@ class MockPDialogComponent {
 })
 class TestDynamicComponent {}
 
+@Component({
+  selector: 'jbt-another-test-dynamic',
+  template: '<div>Another Test Component</div>',
+  standalone: true,
+})
+class AnotherTestDynamicComponent {}
+
 describe(DialogComponent.name, () => {
   let component: DialogComponent;
   let fixture: ComponentFixture<DialogComponent>;
   let mockDialogService: jasmine.SpyObj<DialogService>;
-  let isVisibleSignal: WritableSignal<boolean>;
-  let dialogConfigSignal: WritableSignal<DialogConfig<unknown> | null>;
+  let activeDialogsSignal: WritableSignal<DialogState[]>;
 
   beforeEach(async () => {
-    isVisibleSignal = signal(false);
-    dialogConfigSignal = signal(null);
+    activeDialogsSignal = signal([]);
 
     mockDialogService = jasmine.createSpyObj('DialogService', ['close']);
-    Object.defineProperty(mockDialogService, 'isVisible', {
-      value: isVisibleSignal,
-      writable: false,
-    });
-    Object.defineProperty(mockDialogService, 'dialogConfig', {
-      value: dialogConfigSignal,
+    Object.defineProperty(mockDialogService, 'activeDialogs', {
+      value: activeDialogsSignal,
       writable: false,
     });
 
@@ -78,61 +79,128 @@ describe(DialogComponent.name, () => {
     expect(component).toBeTruthy();
   });
 
-  describe('quando o dialog não está visível', () => {
-    it('precisa ter isVisible como false', () => {
-      isVisibleSignal.set(false);
+  describe('quando não há diálogos', () => {
+    it('precisa ter array de diálogos vazio', () => {
+      activeDialogsSignal.set([]);
       fixture.detectChanges();
 
-      expect(component.isVisible()).toBe(false);
-    });
-
-    it('precisa exibir header padrão quando não há configuração', () => {
-      dialogConfigSignal.set(null);
-      fixture.detectChanges();
-
-      expect(component.dialogHeader()).toBe('Dialog');
-    });
-
-    it('precisa exibir width padrão quando não há configuração', () => {
-      dialogConfigSignal.set(null);
-      fixture.detectChanges();
-
-      expect(component.dialogWidth()).toBe('90%');
+      expect(component.dialogs()).toEqual([]);
     });
   });
 
-  describe('quando o dialog está visível', () => {
-    it('precisa ter isVisible como true', () => {
-      isVisibleSignal.set(true);
-      fixture.detectChanges();
-
-      expect(component.isVisible()).toBe(true);
-    });
-
-    it('precisa exibir o header customizado da configuração', () => {
-      dialogConfigSignal.set({
+  describe('quando há um diálogo', () => {
+    const mockDialog: DialogState = {
+      id: 'dialog-1',
+      config: {
         component: TestDynamicComponent,
-        header: 'Custom Header',
-      });
-      fixture.detectChanges();
-
-      expect(component.dialogHeader()).toBe('Custom Header');
-    });
-
-    it('precisa exibir o width customizado da configuração', () => {
-      dialogConfigSignal.set({
-        component: TestDynamicComponent,
+        header: 'Test Header',
         width: '500px',
-      });
-      fixture.detectChanges();
+      },
+      isVisible: true,
+    };
 
-      expect(component.dialogWidth()).toBe('500px');
+    beforeEach(() => {
+      activeDialogsSignal.set([mockDialog]);
+      fixture.detectChanges();
     });
 
-    it('precisa chamar dialogService.close quando onHide é executado', () => {
-      component.onHide();
+    it('precisa exibir o diálogo corretamente', () => {
+      expect(component.dialogs().length).toBe(1);
+      expect(component.dialogs()[0]).toEqual(mockDialog);
+    });
 
-      expect(mockDialogService.close).toHaveBeenCalledTimes(1);
+    it('precisa retornar header customizado da configuração', () => {
+      const header = component.getDialogHeader(mockDialog);
+
+      expect(header).toBe('Test Header');
+    });
+
+    it('precisa retornar width customizado da configuração', () => {
+      const width = component.getDialogWidth(mockDialog);
+
+      expect(width).toBe('500px');
+    });
+
+    it('precisa chamar dialogService.close com ID correto quando onHide é executado', () => {
+      component.onHide('dialog-1');
+
+      expect(mockDialogService.close).toHaveBeenCalledWith('dialog-1');
+    });
+  });
+
+  describe('quando há múltiplos diálogos', () => {
+    const mockDialogs: DialogState[] = [
+      {
+        id: 'dialog-1',
+        config: {
+          component: TestDynamicComponent,
+          header: 'First Dialog',
+          width: '400px',
+        },
+        isVisible: true,
+      },
+      {
+        id: 'dialog-2',
+        config: {
+          component: AnotherTestDynamicComponent,
+          header: 'Second Dialog',
+        },
+        isVisible: true,
+      },
+    ];
+
+    beforeEach(() => {
+      activeDialogsSignal.set(mockDialogs);
+      fixture.detectChanges();
+    });
+
+    it('precisa exibir todos os diálogos', () => {
+      expect(component.dialogs().length).toBe(2);
+      expect(component.dialogs()).toEqual(mockDialogs);
+    });
+
+    it('precisa retornar headers corretos para cada diálogo', () => {
+      expect(component.getDialogHeader(mockDialogs[0])).toBe('First Dialog');
+      expect(component.getDialogHeader(mockDialogs[1])).toBe('Second Dialog');
+    });
+
+    it('precisa retornar widths corretos para cada diálogo', () => {
+      expect(component.getDialogWidth(mockDialogs[0])).toBe('400px');
+      expect(component.getDialogWidth(mockDialogs[1])).toBe('90%'); // default
+    });
+
+    it('precisa fechar diálogo específico quando onHide é chamado', () => {
+      component.onHide('dialog-2');
+
+      expect(mockDialogService.close).toHaveBeenCalledWith('dialog-2');
+    });
+  });
+
+  describe('métodos de suporte', () => {
+    const mockDialog: DialogState = {
+      id: 'dialog-test',
+      config: {
+        component: TestDynamicComponent,
+      },
+      isVisible: true,
+    };
+
+    it('precisa retornar header padrão quando não configurado', () => {
+      const header = component.getDialogHeader(mockDialog);
+
+      expect(header).toBe('Dialog');
+    });
+
+    it('precisa retornar width padrão quando não configurado', () => {
+      const width = component.getDialogWidth(mockDialog);
+
+      expect(width).toBe('90%');
+    });
+
+    it('precisa rastrear diálogos corretamente pelo ID', () => {
+      const trackResult = component.trackDialogById(mockDialog);
+
+      expect(trackResult).toBe('dialog-test');
     });
   });
 });

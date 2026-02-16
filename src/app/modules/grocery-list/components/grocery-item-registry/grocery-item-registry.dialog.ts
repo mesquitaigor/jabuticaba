@@ -65,7 +65,6 @@ export class GroceryItemRegistryDialog
     }
   }
   public openIconSelectionDialog(): void {
-    alert('oi');
     this.dialogService.open<GroceryIconListSelectionDialog>({
       component: GroceryIconListSelectionDialog,
       header: 'Selecionar ícone',

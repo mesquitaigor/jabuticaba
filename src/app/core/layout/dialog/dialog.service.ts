@@ -1,43 +1,134 @@
-import { Injectable, ComponentRef, signal } from '@angular/core';
-import { DialogConfig } from './dialog.types';
+import { Injectable, signal, computed } from '@angular/core';
+import { DialogConfig, DialogState } from './dialog.types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DialogService {
-  public readonly dialogConfig = signal<DialogConfig<unknown> | null>(null);
-  public readonly isVisible = signal(false);
+  private readonly dialogs = signal<DialogState[]>([]);
+  private dialogCounter = 0;
 
   /**
-   * Abre o dialog com um componente dinâmico
-   * @param config Configuração do dialog incluindo o componente a ser renderizado
+   * Array de diálogos ativos
    */
-  public open<T, I = unknown>(config: DialogConfig<T, I>): void {
-    this.dialogConfig.set(config);
-    this.isVisible.set(true);
+  public readonly activeDialogs = computed(() => this.dialogs());
+
+  /**
+   * Verifica se há diálogos visíveis
+   */
+  public readonly hasVisibleDialogs = computed(() =>
+    this.dialogs().some((dialog) => dialog.isVisible),
+  );
+
+  /**
+   * Gera um ID único para o diálogo
+   */
+  private generateDialogId(): string {
+    return `dialog-${++this.dialogCounter}-${Date.now()}`;
   }
 
   /**
-   * Fecha o dialog e executa callback se fornecido
+   * Abre um novo diálogo com um componente dinâmico
+   * @param config Configuração do dialog incluindo o componente a ser renderizado
+   * @returns ID do diálogo criado
    */
-  public close(): void {
-    const config = this.dialogConfig();
-    this.isVisible.set(false);
+  public open<T, I = unknown>(config: DialogConfig<T, I>): string {
+    const dialogId = config.id || this.generateDialogId();
 
-    if (config?.onClose) {
-      config.onClose();
+    const dialogState: DialogState = {
+      id: dialogId,
+      config: config as DialogConfig<unknown>,
+      isVisible: true,
+    };
+
+    this.dialogs.update((dialogs) => [...dialogs, dialogState]);
+
+    return dialogId;
+  }
+
+  /**
+   * Fecha um diálogo específico pelo ID ou o último aberto se nenhum ID for fornecido
+   * @param dialogId ID do diálogo a ser fechado (opcional - se não fornecido, fecha o último dialog aberto)
+   */
+  public close(dialogId?: string): void {
+    // Se não for fornecido ID, fecha o último dialog visível (mais recente)
+    if (!dialogId) {
+      const visibleDialogs = this.getVisibleDialogs();
+      if (visibleDialogs.length === 0) {
+        return; // Não há diálogos para fechar
+      }
+      // Pega o último dialog da lista (mais recente)
+      dialogId = visibleDialogs[visibleDialogs.length - 1].id;
     }
 
-    // Limpa a configuração após um pequeno delay para permitir animação de saída
+    const dialog = this.dialogs().find((d) => d.id === dialogId);
+
+    if (!dialog) {
+      return;
+    }
+
+    // Marca como não visível para animação
+    this.dialogs.update((dialogs) =>
+      dialogs.map((d) => (d.id === dialogId ? { ...d, isVisible: false } : d)),
+    );
+
+    // Executa callback se fornecido
+    if (dialog.config.onClose) {
+      dialog.config.onClose();
+    }
+
+    // Remove da lista após delay para animação
     setTimeout(() => {
-      this.dialogConfig.set(null);
+      this.dialogs.update((dialogs) =>
+        dialogs.filter((d) => d.id !== dialogId),
+      );
     }, 300);
   }
 
   /**
-   * Retorna a instância do componente atual (se existir)
+   * Fecha todos os diálogos
    */
-  public getComponentRef<T>(): ComponentRef<T> | null {
-    return null; // Será populado pelo DialogComponent
+  public closeAll(): void {
+    const dialogIds = this.dialogs().map((d) => d.id);
+    dialogIds.forEach((id) => this.close(id));
   }
+
+  /**
+   * Verifica se um diálogo específico está aberto
+   * @param dialogId ID do diálogo
+   */
+  public isDialogOpen(dialogId: string): boolean {
+    return this.dialogs().some((d) => d.id === dialogId && d.isVisible);
+  }
+
+  /**
+   * Obtém a configuração de um diálogo específico
+   * @param dialogId ID do diálogo
+   */
+  public getDialogConfig(dialogId: string): DialogConfig<unknown> | null {
+    const dialog = this.dialogs().find((d) => d.id === dialogId);
+    return dialog?.config || null;
+  }
+
+  /**
+   * Obtém todos os diálogos visíveis
+   */
+  public getVisibleDialogs(): DialogState[] {
+    return this.dialogs().filter((d) => d.isVisible);
+  }
+
+  /**
+   * Legacy: Para compatibilidade com código antigo
+   * @deprecated Use open() que retorna o ID do diálogo
+   */
+  public readonly dialogConfig = computed(() => {
+    const visibleDialogs = this.getVisibleDialogs();
+    return visibleDialogs.length > 0 ? visibleDialogs[0].config : null;
+  });
+
+  /**
+   * Legacy: Para compatibilidade com código antigo
+   * @deprecated Use hasVisibleDialogs
+   */
+  public readonly isVisible = computed(() => this.hasVisibleDialogs());
 }

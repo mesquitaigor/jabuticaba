@@ -1,12 +1,14 @@
-<p-dialog
-  [(visible)]="isVisible"
-  [header]="dialogHeader()"
-  [modal]="true"
-  [style]="{ width: dialogWidth() }"
-  [draggable]="false"
-  [resizable]="false"
-  (onHide)="onHide()"
-  [jbtDataTestid]="testId.Dialog"
->
-  <ng-template #dynamicComponentContainer></ng-template>
-</p-dialog>
+@for (dialog of dialogs(); track trackDialogById(dialog)) {
+  <p-dialog
+    [(visible)]="dialog.isVisible"
+    [header]="getDialogHeader(dialog)"
+    [modal]="true"
+    [style]="{ width: getDialogWidth(dialog) }"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="onHide(dialog.id)"
+    [jbtDataTestid]="testId.Dialog + '-' + dialog.id"
+  >
+    <ng-template #dynamicComponentContainer></ng-template>
+  </p-dialog>
+}
