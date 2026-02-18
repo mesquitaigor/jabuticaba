@@ -45,7 +45,6 @@ export class GroceryItemService {
 
     return this.groceryItemApiService.getAll().pipe(
       map((response) => {
-        console.log(response);
         if (response?.length) {
           return response.map((data) => {
             return ShoppingListItemMapper.apiToModel(data);
@@ -66,6 +65,12 @@ export class GroceryItemService {
   }
   public updateHidden(item: GroceryItemModel): Observable<GroceryItem | null> {
     return this.updateModel(item.uuid || '', { hidden: item.hidden });
+  }
+  public editItem(item: GroceryItemModel): Observable<GroceryItem | null> {
+    return this.updateModel(item.uuid || '', {
+      icon: item.icon,
+      name: item.name,
+    });
   }
   private updateModel(
     uuid: string,

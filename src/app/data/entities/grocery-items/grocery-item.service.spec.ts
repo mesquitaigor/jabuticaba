@@ -8,21 +8,13 @@ import {
   uuidTestValue,
   nameTestValue,
 } from '../../../tests/mocks/GroceryItemModel.mock.spec';
+import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;
   let mockGroceryItemApiService: jasmine.SpyObj<GroceryItemApiService>;
 
-  const mockApiResponse: IGroceryItemApi = {
-    uuid: uuidTestValue,
-    name: nameTestValue,
-    missing: false,
-    hidden: false,
-    icon: '',
-    created_at: '2024-01-01T00:00:00.000Z',
-    updated_at: '2024-01-01T00:00:00.000Z',
-    deleted_at: null,
-  };
+  const mockApiResponse: IGroceryItemApi = GroceryItemApiResponseMock.create();
 
   beforeEach(() => {
     const spy = jasmine.createSpyObj('GroceryItemApiService', [
@@ -182,7 +174,37 @@ describe(GroceryItemService.name, () => {
     });
   });
 
-  describe('ao atualizar o nome do item da lista', () => {
+  describe('ao editar um item', () => {
+    it('deve retornar item atualizado quando API retorna dados', (done) => {
+      // Given
+      const mockItem = createGroceryItemModelMock({
+        icon: 'test-icon',
+      });
+      // First populate the signal
+      service['groceryItems$'].set([mockItem]);
+      mockGroceryItemApiService.updateRecord.and.returnValue(
+        of([mockApiResponse]),
+      );
+
+      // When
+      service.editItem(mockItem).subscribe((result) => {
+        // Then
+        expect(result).toBeTruthy();
+        expect(result?.uuid).toBe(uuidTestValue);
+        expect(mockGroceryItemApiService.updateRecord).toHaveBeenCalledWith(
+          mockItem.uuid || '',
+          { name: mockItem.name, icon: mockItem.icon },
+        );
+
+        // Verify signal is updated
+        const groceryList = service.getGroceryList();
+        expect(groceryList().length).toBe(1);
+        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        done();
+      });
+    });
+  });
+  describe('ao atualizar o nome do item', () => {
     it('deve retornar item atualizado quando API retorna dados', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock();
@@ -210,7 +232,7 @@ describe(GroceryItemService.name, () => {
       });
     });
 
-    it('deve lidar com uuid vazio graciosamente', (done) => {
+    it('deve lidar com uuid vazio', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock({ uuid: undefined });
       mockGroceryItemApiService.updateRecord.and.returnValue(of(null));

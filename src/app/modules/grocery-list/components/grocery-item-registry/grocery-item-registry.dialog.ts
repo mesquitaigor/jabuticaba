@@ -46,6 +46,7 @@ export class GroceryItemRegistryDialog
   public readonly itemNameControl = new FormControl<string | null>(null, {
     updateOn: 'change',
   });
+  public readonly selectedIcon = signal<string>('default-icon');
   constructor() {
     this.itemNameControl.valueChanges.subscribe(() => {
       this.setAddButtonDisabledState();
@@ -61,6 +62,7 @@ export class GroceryItemRegistryDialog
     });
     if (this.item) {
       this.itemNameControl.setValue(this.item.name || '');
+      this.selectedIcon.set(this.item.icon || 'default-icon');
     }
   }
   public openIconSelectionDialog(): void {
@@ -75,9 +77,8 @@ export class GroceryItemRegistryDialog
       !this.itemNameControl.value?.trim().length || this.executing(),
     );
   }
-  public exec(): void {
-    if (!this.executing() && this.itemNameControl.value?.trim().length) {
-      this.executing.set(true);
+  public create(): void {
+    if (this.itemNameControl.value) {
       this.groceryItemService
         .create(this.itemNameControl.value)
         .pipe(finalize(() => this.executing.set(false)))
@@ -93,6 +94,37 @@ export class GroceryItemRegistryDialog
             });
           },
         });
+    }
+  }
+  public update(): void {
+    if (this.itemNameControl.value && this.item) {
+      this.item.name = this.itemNameControl.value;
+
+      this.groceryItemService
+        .editItem(this.item)
+        .pipe(finalize(() => this.executing.set(false)))
+        .subscribe({
+          next: () => {
+            this.resetState();
+          },
+          error: () => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Não foi possível atualizar o item',
+            });
+          },
+        });
+    }
+  }
+  public exec(): void {
+    if (!this.executing() && this.itemNameControl.value?.trim().length) {
+      this.executing.set(true);
+      if (!this.item) {
+        this.create();
+      } else {
+        this.update();
+      }
     }
   }
   public handleCancel(): void {
