@@ -19,6 +19,20 @@ export const DataTestId = {
     DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),
     VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
   },
+  GroceryIconListSelectionDialog: {
+    CancelButton: createTestId(
+      'grocery-icon-list-selection-dialog',
+      'cancel-button',
+    ),
+    SaveButton: createTestId(
+      'grocery-icon-list-selection-dialog',
+      'save-button',
+    ),
+    IconOption: createTestId(
+      'grocery-icon-list-selection-dialog',
+      'icon-option',
+    ),
+  },
   GroceryItemRegistryDialog: {
     RegistryCancelButton: createTestId(
       'grocery-list',

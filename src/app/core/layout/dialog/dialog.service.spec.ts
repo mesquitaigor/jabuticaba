@@ -82,6 +82,8 @@ describe('DialogService', () => {
     });
 
     it('precisa permitir múltiplos diálogos abertos simultaneamente', () => {
+      service.open({ component: TestComponent });
+      service.open({ component: TestComponent });
       expect(service.activeDialogs().length).toBe(2);
       expect(service.hasVisibleDialogs()).toBe(true);
     });
@@ -145,6 +147,8 @@ describe('DialogService', () => {
     });
 
     it('precisa manter outros diálogos abertos', () => {
+      service.open({ component: TestComponent });
+
       service.close(dialogId);
 
       expect(service.activeDialogs().length).toBe(2); // Um marked for close, outro aberto

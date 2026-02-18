@@ -28,7 +28,6 @@ import { GroceryIconListSelectionDialog } from '../grocery-icon-list-selection/g
     ButtonModule,
     GroceryItemIconComponent,
     InputTextModule,
-    GroceryIconListSelectionDialog,
   ],
   templateUrl: './grocery-item-registry.dialog.html',
 })

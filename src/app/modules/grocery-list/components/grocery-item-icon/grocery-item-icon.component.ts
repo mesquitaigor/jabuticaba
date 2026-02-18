@@ -17,6 +17,7 @@ export class GroceryItemIconComponent {
     return `w-${this.iconSize()} h-${this.iconSize()}`;
   });
   public readonly iconSrc = computed(
-    () => `icons/${this.iconName() || GroceryItemModel.defaultIconName}.svg`,
+    () =>
+      `icons/grocery-items/${this.iconName() || GroceryItemModel.defaultIconName}.svg`,
   );
 }

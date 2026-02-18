@@ -26,7 +26,7 @@ describe(GroceryItemIconComponent.name, () => {
         fixture.componentRef.setInput('iconName', 'apple');
         fixture.detectChanges();
 
-        expect(component.iconSrc()).toBe('icons/apple.svg');
+        expect(component.iconSrc()).toBe('icons/grocery-items/apple.svg');
       });
     });
 
@@ -36,7 +36,7 @@ describe(GroceryItemIconComponent.name, () => {
         fixture.detectChanges();
 
         const img = fixture.nativeElement.querySelector('img');
-        expect(img.src).toContain('icons/banana.svg');
+        expect(img.src).toContain('icons/grocery-items/banana.svg');
       });
     });
 
@@ -66,7 +66,9 @@ describe(GroceryItemIconComponent.name, () => {
         fixture.componentRef.setInput('iconName', '');
         fixture.detectChanges();
 
-        expect(component.iconSrc()).toBe('icons/default-icon.svg');
+        expect(component.iconSrc()).toBe(
+          'icons/grocery-items/default-icon.svg',
+        );
       });
     });
   });
