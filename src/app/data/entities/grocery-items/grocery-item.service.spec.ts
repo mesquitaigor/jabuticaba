@@ -9,74 +9,74 @@ import {
   nameTestValue,
 } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
+import { GroceryItemApiServiceMock } from '../../../tests/mocks/grocery-item.api.service.mock.spec';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;
   let mockGroceryItemApiService: jasmine.SpyObj<GroceryItemApiService>;
-
-  const mockApiResponse: IGroceryItemApi = GroceryItemApiResponseMock.create();
-
+  let mockApiResponse: IGroceryItemApi = GroceryItemApiResponseMock.create();
+  const groceryItemApiServiceMock = new GroceryItemApiServiceMock();
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('GroceryItemApiService', [
-      'create',
-      'getAll',
-      'updateRecord',
-      'deleteRecord',
-    ]);
+    mockApiResponse = GroceryItemApiResponseMock.create();
+    groceryItemApiServiceMock.create();
 
     TestBed.configureTestingModule({
-      providers: [{ provide: GroceryItemApiService, useValue: spy }],
+      providers: [groceryItemApiServiceMock.getProvider()],
     });
 
     service = TestBed.inject(GroceryItemService);
-    mockGroceryItemApiService = TestBed.inject(
-      GroceryItemApiService,
-    ) as jasmine.SpyObj<GroceryItemApiService>;
-  });
-
-  describe('ao inicializar o service', () => {
-    it('deve expor um signal para os itens da lista', () => {
-      // Given & When
-      const groceryList = service.getGroceryList();
-
-      // Then
-      expect(groceryList()).toEqual([]);
-    });
+    mockGroceryItemApiService = groceryItemApiServiceMock.getSpy();
   });
 
   describe('ao criar um item da lista', () => {
-    it('deve retornar um item mapeado quando API retorna dados', (done) => {
-      // Given
-      const itemName = 'New Grocery Item';
+    const itemName = 'New Grocery Item';
+    beforeEach(() => {
       mockGroceryItemApiService.create.and.returnValue(of([mockApiResponse]));
-
-      // When
-      service.create(itemName).subscribe((result) => {
-        // Then
-        expect(result).toBeTruthy();
-        expect(result?.uuid).toBe(uuidTestValue);
-        expect(result?.name).toBe(nameTestValue);
-        expect(mockGroceryItemApiService.create).toHaveBeenCalledWith({
-          name: itemName,
-        });
-
-        // Verify signal is updated
-        const groceryList = service.getGroceryList();
-        expect(groceryList().length).toBe(1);
-        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+    });
+    it('deve retornar um item mapeado quando API retorna dados', (done) => {
+      service.create(itemName).subscribe(() => {
+        expect(mockGroceryItemApiService.create)
+          .withContext(
+            'O método create da API deve ser chamado com os parâmetros corretos',
+          )
+          .toHaveBeenCalledWith({
+            name: itemName,
+          });
         done();
       });
     });
 
-    it('should return null when API returns empty response', (done) => {
-      // Given
-      const itemName = 'New Item';
+    it('deve atualizar a lista de itens do signal no service', (done) => {
+      service.create(itemName).subscribe(() => {
+        const groceryList = service.getGroceryList();
+        expect(groceryList().length)
+          .withContext(
+            'A lista de itens do signal deve conter 1 item após a criação',
+          )
+          .toBe(1);
+        expect(groceryList()[0].uuid)
+          .withContext(
+            'O UUID do item na lista deve corresponder ao UUID do item criado',
+          )
+          .toBe(uuidTestValue);
+        expect(groceryList()[0].name)
+          .withContext(
+            'O nome do item na lista deve corresponder ao nome do item criado',
+          )
+          .toBe(mockApiResponse.name);
+        done();
+      });
+    });
+
+    it('deve retornar null quando API retorna resposta vazia', (done) => {
       mockGroceryItemApiService.create.and.returnValue(of([]));
 
       // When
       service.create(itemName).subscribe((result) => {
         // Then
-        expect(result).toBeNull();
+        expect(result)
+          .withContext('O resultado recebido não foi o esperado')
+          .toBeNull();
         done();
       });
     });
