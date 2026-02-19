@@ -14,6 +14,9 @@ import { GroceryItemIconModel } from '@models/grocery-items';
 export interface GroceryIconListSelectionDialogData {
   selectedIcon: GroceryItemIconModel | null;
 }
+export interface GroceryIconListSelectionDialogOutput {
+  selectedIcon: GroceryItemIconModel | null;
+}
 @Component({
   selector: 'jbt-grocery-icon-list-selection',
   templateUrl: './grocery-icon-list-selection.dialog.html',
@@ -49,7 +52,10 @@ export class GroceryIconListSelectionDialog
     }
   }
   public save(): void {
-    this.dialogService.close(this.dialogData?.id, this.selectedIcon());
+    this.dialogService.close<GroceryIconListSelectionDialogOutput>(
+      this.dialogData?.id,
+      { selectedIcon: this.selectedIcon() },
+    );
   }
   public handleCancel(): void {
     this.dialogService.close(this.dialogData?.id);

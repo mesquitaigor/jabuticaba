@@ -32,7 +32,9 @@ export class DialogService {
    * @param config Configuração do dialog incluindo o componente a ser renderizado
    * @returns ID do diálogo criado
    */
-  public open<T, I = unknown>(config: DialogConfig<T, I>): string {
+  public open<T, I = unknown, O = unknown>(
+    config: DialogConfig<T, I, O>,
+  ): string {
     const dialogId = config.id || this.generateDialogId();
 
     const dialogState: DialogState = {
@@ -51,7 +53,7 @@ export class DialogService {
    * @param dialogId ID do diálogo a ser fechado (opcional - se não fornecido, fecha o último dialog aberto)
    * @param data Dados a serem passados para o callback de fechamento (opcional)
    */
-  public close(dialogId?: string, data: unknown = null): void {
+  public close<O = null>(dialogId?: string, data: O | null = null): void {
     // Se não for fornecido ID, fecha o último dialog visível (mais recente)
     if (!dialogId) {
       const visibleDialogs = this.getVisibleDialogs();

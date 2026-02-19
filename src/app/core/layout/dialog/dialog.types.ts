@@ -6,7 +6,7 @@ export interface DialogConfig<T, I = unknown, O = unknown> {
   header?: string;
   data?: I;
   width?: string;
-  onClose?: (output?: O) => void;
+  onClose?: (output: O | null) => void;
 }
 
 export interface DialogInstance {

@@ -113,10 +113,9 @@ describe(GroceryIconListSelectionDialog.name, () => {
       expect(dialogServiceSpy.close).toHaveBeenCalled();
     });
     it('deve enviar o ícone selecionado ao fechar o dialog', () => {
-      expect(dialogServiceSpy.close).toHaveBeenCalledWith(
-        'dialog-id',
-        new GroceryItemIconModel('oleo'),
-      );
+      expect(dialogServiceSpy.close).toHaveBeenCalledWith('dialog-id', {
+        selectedIcon: new GroceryItemIconModel('oleo'),
+      });
     });
   });
 });

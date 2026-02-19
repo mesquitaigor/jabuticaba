@@ -24,6 +24,7 @@ import { dialogData, DialogRef, DialogService } from '@layout/dialog';
 import {
   GroceryIconListSelectionDialog,
   GroceryIconListSelectionDialogData,
+  GroceryIconListSelectionDialogOutput,
 } from '../grocery-icon-list-selection/grocery-icon-list-selection.dialog';
 
 @Component({
@@ -81,7 +82,8 @@ export class GroceryItemRegistryDialog
   public openIconSelectionDialog(): void {
     this.dialogService.open<
       GroceryIconListSelectionDialog,
-      GroceryIconListSelectionDialogData
+      GroceryIconListSelectionDialogData,
+      GroceryIconListSelectionDialogOutput
     >({
       component: GroceryIconListSelectionDialog,
       header: 'Selecionar ícone',
@@ -89,8 +91,10 @@ export class GroceryItemRegistryDialog
       data: {
         selectedIcon: this.selectedIcon(),
       },
-      onClose: (output) => {
-        console.log(output);
+      onClose: (output: GroceryIconListSelectionDialogOutput | null) => {
+        if (output) {
+          this.selectedIcon.set(output.selectedIcon);
+        }
       },
     });
   }
@@ -124,7 +128,7 @@ export class GroceryItemRegistryDialog
   public update(): void {
     if (this.itemNameControl.value && this.item) {
       this.item.name = this.itemNameControl.value;
-
+      this.item.icon = this.selectedIcon() || undefined;
       this.groceryItemService
         .editItem(this.item)
         .pipe(finalize(() => this.executing.set(false)))
