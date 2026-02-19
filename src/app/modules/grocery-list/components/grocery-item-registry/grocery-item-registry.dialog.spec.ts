@@ -16,6 +16,7 @@ import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-it
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 import { GroceryItemService } from '@models/grocery-items';
+import { DialogServiceMock } from '../../../../tests/mocks/dialog.service.mock.spec';
 import { DialogService } from '@layout/dialog';
 
 describe(GroceryItemRegistryDialog.name, () => {
@@ -24,9 +25,10 @@ describe(GroceryItemRegistryDialog.name, () => {
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
   let mockMessageService: jasmine.SpyObj<MessageService>;
-  let mockDialogService: jasmine.SpyObj<DialogService>;
-
+  const dialogServiceMocker = new DialogServiceMock();
+  let dialogServiceSpy: jasmine.SpyObj<DialogService>;
   beforeEach(async () => {
+    dialogServiceMocker.create();
     mockSignal = signal<GroceryItemModel[]>([]);
     mockGroceryItemService = jasmine.createSpyObj(GroceryItemService.name, [
       'getAll',
@@ -46,16 +48,12 @@ describe(GroceryItemRegistryDialog.name, () => {
       of(createGroceryItemModelMock()),
     );
     mockMessageService = createMessageServiceMock();
-    mockDialogService = jasmine.createSpyObj('DialogService', [
-      'close',
-      'open',
-    ]);
     await TestBed.configureTestingModule({
       providers: [
         provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
-        { provide: DialogService, useValue: mockDialogService },
         { provide: MessageService, useValue: mockMessageService },
+        dialogServiceMocker.getProvider(),
       ],
       imports: [GroceryItemRegistryDialog],
     }).compileComponents();
@@ -63,6 +61,7 @@ describe(GroceryItemRegistryDialog.name, () => {
     fixture = TestBed.createComponent(GroceryItemRegistryDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    dialogServiceSpy = dialogServiceMocker.getSpy();
   });
 
   it('precisa ser criado', () => {
@@ -179,7 +178,7 @@ describe(GroceryItemRegistryDialog.name, () => {
       component.exec();
       tick(1);
 
-      expect(mockDialogService.close).toHaveBeenCalled();
+      expect(dialogServiceSpy.close).toHaveBeenCalled();
     }));
 
     it('precisa limpar o campo itemNameControl após criar com sucesso', fakeAsync(() => {
@@ -283,7 +282,7 @@ describe(GroceryItemRegistryDialog.name, () => {
 
       component.handleCancel();
 
-      expect(mockDialogService.close).toHaveBeenCalled();
+      expect(dialogServiceSpy.close).toHaveBeenCalled();
     });
 
     it('precisa limpar o campo itemNameControl', () => {
