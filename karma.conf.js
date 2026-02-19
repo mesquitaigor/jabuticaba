@@ -10,6 +10,7 @@ module.exports = function (config) {
       require("karma-chrome-launcher"),
       require("karma-jasmine-html-reporter"),
       require("karma-coverage"),
+      require("karma-junit-reporter"),
     ],
     client: {
       jasmine: {
@@ -27,8 +28,13 @@ module.exports = function (config) {
       subdir: ".",
       reporters: [{ type: "html" }, { type: "text-summary" }],
     },
-    reporters: ["progress", "kjhtml"],
+    reporters: ["progress", "kjhtml", "junit"],
     browsers: ["Chrome"],
     restartOnFileChange: true,
+    junitReporter: {
+      outputDir: "reports", // Pasta onde o arquivo será salvo
+      outputFile: "test-results.xml", // Nome do arquivo
+      useBrowserName: false,
+    },
   });
 };

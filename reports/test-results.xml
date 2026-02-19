@@ -1,0 +1,347 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome 145.0.0.0 (Windows 10)" package="" timestamp="2026-02-19T16:23:05" id="0" hostname="DevReviiv" tests="173" errors="0" failures="0" time="1.359">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36"/>
+  </properties>
+  <testcase name="ErrorListStateComponent2 should create" time="0.044" classname="ErrorListStateComponent2"/>
+  <testcase name="ErrorListStateComponent2 quando usuário clica no botão recarregar precisa emitir o evento reloadList" time="0.011" classname="ErrorListStateComponent2 quando usuário clica no botão recarregar"/>
+  <testcase name="LogoComponent2 quando o componente é renderizado não precisa mostrar o título quando showTitle é false" time="0.004" classname="LogoComponent2 quando o componente é renderizado"/>
+  <testcase name="LogoComponent2 quando o componente é renderizado precisa renderizar o logo com data-testid correto" time="0.004" classname="LogoComponent2 quando o componente é renderizado"/>
+  <testcase name="LogoComponent2 quando o componente é renderizado precisa mostrar o título quando showTitle é true" time="0.002" classname="LogoComponent2 quando o componente é renderizado"/>
+  <testcase name="EmptyListStateComponent2 should create" time="0.003" classname="EmptyListStateComponent2"/>
+  <testcase name="GroceryItemRegistryDialog2 quando componente é inicializado precisa manter o botão de salvar desabilitado quando o input está vazio" time="0.029" classname="GroceryItemRegistryDialog2 quando componente é inicializado"/>
+  <testcase name="GroceryItemRegistryDialog2 quando usuário clicar no botão cancelar precisa exibir mensagem de erro" time="0.021" classname="GroceryItemRegistryDialog2 quando usuário clicar no botão cancelar"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa chamar dialogService.close após criar com sucesso" time="0.014" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa definir executing como false após erro na criação" time="0.012" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa definir executing como false após criar com sucesso" time="0.016" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa exibir loading no botão durante a criação" time="0.021" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa desabilitar o botão de salvar durante a criação" time="0.01" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa definir executing como true ao iniciar a criação" time="0.008" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item não deve chamar o service múltiplas vezes se já está criando" time="0.006" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa limpar o campo itemNameControl após criar com sucesso" time="0.011" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa exibir toast de erro quando a criação falhar" time="0.01" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando salvar um novo item precisa chamar o método create do service" time="0.008" classname="GroceryItemRegistryDialog2 quando salvar um novo item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando dialog é criado precisa manter o input vazio inicialmente" time="0.009" classname="GroceryItemRegistryDialog2 quando dialog é criado"/>
+  <testcase name="GroceryItemRegistryDialog2 quando dialog é criado precisa preencher o input quando item é fornecido" time="0.01" classname="GroceryItemRegistryDialog2 quando dialog é criado"/>
+  <testcase name="GroceryItemRegistryDialog2 quando usuário clicar no botão cancelar precisa chamar dialogService.close" time="0.007" classname="GroceryItemRegistryDialog2 quando usuário clicar no botão cancelar"/>
+  <testcase name="GroceryItemRegistryDialog2 quando usuário clicar no botão cancelar precisa limpar o campo itemNameControl" time="0.008" classname="GroceryItemRegistryDialog2 quando usuário clicar no botão cancelar"/>
+  <testcase name="GroceryItemRegistryDialog2 precisa ser criado" time="0.006" classname="GroceryItemRegistryDialog2"/>
+  <testcase name="GroceryItemRegistryDialog2 quando usuário inserir valor no input de nome do item precisa desabilitar o botão novamente se o input for esvaziado" time="0.008" classname="GroceryItemRegistryDialog2 quando usuário inserir valor no input de nome do item"/>
+  <testcase name="GroceryItemRegistryDialog2 quando usuário inserir valor no input de nome do item precisa habilitar o botão de salvar quando o usuário digita no input" time="0.007" classname="GroceryItemRegistryDialog2 quando usuário inserir valor no input de nome do item"/>
+  <testcase name="LoadingComponent should create" time="0.006" classname="LoadingComponent"/>
+  <testcase name="GroceryItemIconComponent2 quando iconName está vazio precisa computar o caminho com ícone padrão" time="0.001" classname="GroceryItemIconComponent2 quando iconName está vazio"/>
+  <testcase name="GroceryItemIconComponent2 precisa ser criado" time="0.001" classname="GroceryItemIconComponent2"/>
+  <testcase name="GroceryItemIconComponent2 quando iconName é fornecido precisa renderizar a imagem com src correto" time="0.001" classname="GroceryItemIconComponent2 quando iconName é fornecido"/>
+  <testcase name="GroceryItemIconComponent2 quando iconName é fornecido precisa computar o caminho correto do ícone" time="0.001" classname="GroceryItemIconComponent2 quando iconName é fornecido"/>
+  <testcase name="GroceryItemIconComponent2 quando iconName é fornecido precisa aplicar as classes CSS corretas" time="0.002" classname="GroceryItemIconComponent2 quando iconName é fornecido"/>
+  <testcase name="GroceryItemIconComponent2 quando iconName é fornecido precisa renderizar a imagem com alt correto" time="0.002" classname="GroceryItemIconComponent2 quando iconName é fornecido"/>
+  <testcase name="GroceryItemApiService2 quando o serviço é inicializado precisa ser criado corretamente" time="0.001" classname="GroceryItemApiService2 quando o serviço é inicializado"/>
+  <testcase name="GroceryItemApiService2 create quando o cliente Supabase está disponível precisa criar um novo item e retornar os dados" time="0.002" classname="GroceryItemApiService2 create quando o cliente Supabase está disponível"/>
+  <testcase name="GroceryItemApiService2 create quando o cliente Supabase não está disponível precisa retornar null sem chamar o método insert" time="0" classname="GroceryItemApiService2 create quando o cliente Supabase não está disponível"/>
+  <testcase name="GroceryItemApiService2 getAll quando o cliente Supabase está disponível precisa buscar todos os itens e retornar os dados" time="0.001" classname="GroceryItemApiService2 getAll quando o cliente Supabase está disponível"/>
+  <testcase name="GroceryItemApiService2 getAll quando o cliente Supabase não está disponível precisa retornar null sem chamar o método select" time="0" classname="GroceryItemApiService2 getAll quando o cliente Supabase não está disponível"/>
+  <testcase name="GroceryItemApiService2 deleteRecord quando o cliente Supabase está disponível precisa deletar um item e retornar null" time="0" classname="GroceryItemApiService2 deleteRecord quando o cliente Supabase está disponível"/>
+  <testcase name="GroceryItemApiService2 deleteRecord quando o cliente Supabase não está disponível precisa retornar null sem chamar o método delete" time="0" classname="GroceryItemApiService2 deleteRecord quando o cliente Supabase não está disponível"/>
+  <testcase name="GroceryItemApiService2 updateRecord quando o cliente Supabase está disponível precisa atualizar um item existente e retornar os dados" time="0.002" classname="GroceryItemApiService2 updateRecord quando o cliente Supabase está disponível"/>
+  <testcase name="GroceryItemApiService2 updateRecord quando o cliente Supabase não está disponível precisa retornar null sem chamar o método update" time="0.001" classname="GroceryItemApiService2 updateRecord quando o cliente Supabase não está disponível"/>
+  <testcase name="SupabaseService quando realizando operações CRUD insert precisa inserir dados na tabela especificada e retornar resposta" time="0.003" classname="SupabaseService quando realizando operações CRUD insert"/>
+  <testcase name="SupabaseService quando realizando operações CRUD insert precisa retornar undefined quando client não está disponível" time="0.001" classname="SupabaseService quando realizando operações CRUD insert"/>
+  <testcase name="SupabaseService quando realizando operações CRUD delete precisa retornar undefined quando client não está disponível" time="0.001" classname="SupabaseService quando realizando operações CRUD delete"/>
+  <testcase name="SupabaseService quando realizando operações CRUD delete precisa deletar registro da tabela usando uuid" time="0.002" classname="SupabaseService quando realizando operações CRUD delete"/>
+  <testcase name="SupabaseService quando realizando operações CRUD select precisa buscar dados da tabela especificada" time="0.001" classname="SupabaseService quando realizando operações CRUD select"/>
+  <testcase name="SupabaseService quando realizando operações CRUD select precisa retornar undefined quando client não está disponível" time="0.001" classname="SupabaseService quando realizando operações CRUD select"/>
+  <testcase name="SupabaseService quando realizando operações CRUD update precisa atualizar registro da tabela usando uuid e retornar dados atualizados" time="0.001" classname="SupabaseService quando realizando operações CRUD update"/>
+  <testcase name="SupabaseService quando realizando operações CRUD update precisa retornar undefined quando client não está disponível" time="0" classname="SupabaseService quando realizando operações CRUD update"/>
+  <testcase name="SupabaseService quando inicializado precisa retornar undefined para o client quando não inicializado" time="0.001" classname="SupabaseService quando inicializado"/>
+  <testcase name="SupabaseService quando inicializado precisa inicializar o cliente supabase com as credenciais corretas" time="0.004" classname="SupabaseService quando inicializado"/>
+  <testcase name="SupabaseService quando inicializado precisa ser criado corretamente" time="0.001" classname="SupabaseService quando inicializado"/>
+  <testcase name="NavigationService should be created" time="0.002" classname="NavigationService"/>
+  <testcase name="DataTestidDirective2 quando a diretiva é aplicada precisa adicionar o atributo data-testid ao elemento" time="0.002" classname="DataTestidDirective2 quando a diretiva é aplicada"/>
+  <testcase name="DataTestidDirective2 quando a diretiva é aplicada precisa atualizar o atributo quando o valor muda" time="0.001" classname="DataTestidDirective2 quando a diretiva é aplicada"/>
+  <testcase name="DailyTasksComponent2 should create" time="0.002" classname="DailyTasksComponent2"/>
+  <testcase name="GroceryListComponent2 quando o componente é inicializado precisa renderizar o nome dos itens corretamente" time="0.034" classname="GroceryListComponent2 quando o componente é inicializado"/>
+  <testcase name="GroceryListComponent2 quando o componente é inicializado deve renderizar o ícone de exibição do item quando ele estiver configurado como escondido" time="0.017" classname="GroceryListComponent2 quando o componente é inicializado"/>
+  <testcase name="GroceryListComponent2 quando o componente é inicializado não deve renderizar o ícone de exibição quando item estiver configurado como visível" time="0.016" classname="GroceryListComponent2 quando o componente é inicializado"/>
+  <testcase name="GroceryListComponent2 quando o componente é inicializado precisa exibir estado vazio quando não há itens" time="0.02" classname="GroceryListComponent2 quando o componente é inicializado"/>
+  <testcase name="GroceryListComponent2 quando o componente é inicializado precisa carregar os itens do serviço" time="0.015" classname="GroceryListComponent2 quando o componente é inicializado"/>
+  <testcase name="GroceryListComponent2 quando o componente é inicializado precisa listar os itens na interface" time="0.015" classname="GroceryListComponent2 quando o componente é inicializado"/>
+  <testcase name="GroceryListComponent2 quando o botão de visibilidade do menu é clicado deve bloquear múltiplas chamadas enquanto está processando" time="0.013" classname="GroceryListComponent2 quando o botão de visibilidade do menu é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de visibilidade do menu é clicado deve chamar updateHidden do service ao clicar no menu" time="0.017" classname="GroceryListComponent2 quando o botão de visibilidade do menu é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de visibilidade do menu é clicado deve exibir label &quot;Mostrar&quot; quando hidden é true e &quot;Esconder&quot; quando hidden é false" time="0.01" classname="GroceryListComponent2 quando o botão de visibilidade do menu é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de visibilidade do menu é clicado deve atualizar o atributo hidden do item" time="0.011" classname="GroceryListComponent2 quando o botão de visibilidade do menu é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado deve exibir &quot;Marcar&quot; quando missing é false e &quot;Desmarcar&quot; quando missing é true" time="0.014" classname="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado precisa chamar updateMissing do service ao clicar no menu" time="0.015" classname="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado precisa emitir toast de erro quando updateMissing falhar" time="0.02" classname="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado precisa desabilitar o botão enquanto está atualizando" time="0.022" classname="GroceryListComponent2 quando o botão de marcar/desmarcar é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de editar é clicado deve abrir o modal de edição com o item correto" time="0.021" classname="GroceryListComponent2 quando o botão de editar é clicado"/>
+  <testcase name="GroceryListComponent2 quando está carregando os itens precisa exibir estado de loading" time="0.014" classname="GroceryListComponent2 quando está carregando os itens"/>
+  <testcase name="GroceryListComponent2 quando está carregando os itens não deve exibir o estado vazio durante o loading" time="0.02" classname="GroceryListComponent2 quando está carregando os itens"/>
+  <testcase name="GroceryListComponent2 quando está carregando os itens não deve exibir a lista de itens durante o loading" time="0.018" classname="GroceryListComponent2 quando está carregando os itens"/>
+  <testcase name="GroceryListComponent2 quando está carregando os itens precisa definir loading como false após carregar com sucesso" time="0.01" classname="GroceryListComponent2 quando está carregando os itens"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista precisa chamar updateMissing do service com o item correto" time="0.02" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista precisa exibir toast de erro quando updateMissing falhar" time="0.018" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista precisa definir estado de loading no item durante a atualização" time="0.021" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista precisa remover estado de loading após atualização com sucesso" time="0.019" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista precisa alterar o atributo missing antes de chamar o service" time="0.021" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista precisa reverter o atributo missing quando a requisição falhar" time="0.021" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando o usuário clica no item da lista não deve chamar updateMissing se o item já está em processo de atualização" time="0.018" classname="GroceryListComponent2 quando o usuário clica no item da lista"/>
+  <testcase name="GroceryListComponent2 quando itens são renderizados precisa passar o ícone do item para o componente jbt-grocery-item-icon" time="0.024" classname="GroceryListComponent2 quando itens são renderizados"/>
+  <testcase name="GroceryListComponent2 quando botão de visibilidade é clicado deve alternar estado de visibilidade dos items da lista" time="0.021" classname="GroceryListComponent2 quando botão de visibilidade é clicado"/>
+  <testcase name="GroceryListComponent2 quando o botão de adicionar é clicado precisa chamar dialogService.open com o componente correto" time="0.018" classname="GroceryListComponent2 quando o botão de adicionar é clicado"/>
+  <testcase name="GroceryListComponent2 ao excluir item deve desabilitar o botão de excluir enquanto está excluindo" time="0.013" classname="GroceryListComponent2 ao excluir item"/>
+  <testcase name="GroceryListComponent2 ao excluir item deve remover o item da listagem ao excluir com sucesso" time="0.022" classname="GroceryListComponent2 ao excluir item"/>
+  <testcase name="GroceryListComponent2 ao excluir item deve emitir toast de erro ao falhar" time="0.018" classname="GroceryListComponent2 ao excluir item"/>
+  <testcase name="GroceryListComponent2 ao excluir item deve emitir toast de sucesso ao excluir" time="0.018" classname="GroceryListComponent2 ao excluir item"/>
+  <testcase name="GroceryListComponent2 ao excluir item deve chamar o método delete do service ao clicar em excluir" time="0.018" classname="GroceryListComponent2 ao excluir item"/>
+  <testcase name="GroceryListComponent2 ao excluir item deve impedir múltiplas requisições enquanto está excluindo" time="0.019" classname="GroceryListComponent2 ao excluir item"/>
+  <testcase name="GroceryListComponent2 quando ocorre um erro ao carregar os itens precisa renderizar o estado de erro na interface" time="0.019" classname="GroceryListComponent2 quando ocorre um erro ao carregar os itens"/>
+  <testcase name="GroceryListComponent2 quando ocorre um erro ao carregar os itens precisa exibir mensagem de erro" time="0.019" classname="GroceryListComponent2 quando ocorre um erro ao carregar os itens"/>
+  <testcase name="GroceryListComponent2 quando ocorre um erro ao carregar os itens não deve exibir a lista de itens quando houver erro" time="0.021" classname="GroceryListComponent2 quando ocorre um erro ao carregar os itens"/>
+  <testcase name="GroceryListComponent2 quando o botão de menu do item é clicado precisa chamar toggle do menu" time="0.022" classname="GroceryListComponent2 quando o botão de menu do item é clicado"/>
+  <testcase name="DialogComponent2 precisa criar o componente" time="0.014" classname="DialogComponent2"/>
+  <testcase name="DialogComponent2 quando não há diálogos precisa ter array de diálogos vazio" time="0.006" classname="DialogComponent2 quando não há diálogos"/>
+  <testcase name="DialogComponent2 quando há um diálogo precisa retornar header customizado da configuração" time="0.006" classname="DialogComponent2 quando há um diálogo"/>
+  <testcase name="DialogComponent2 quando há um diálogo precisa retornar width customizado da configuração" time="0.007" classname="DialogComponent2 quando há um diálogo"/>
+  <testcase name="DialogComponent2 quando há um diálogo precisa exibir o diálogo corretamente" time="0.006" classname="DialogComponent2 quando há um diálogo"/>
+  <testcase name="DialogComponent2 quando há um diálogo precisa chamar dialogService.close com ID correto quando onHide é executado" time="0.007" classname="DialogComponent2 quando há um diálogo"/>
+  <testcase name="DialogComponent2 quando há múltiplos diálogos precisa fechar diálogo específico quando onHide é chamado" time="0.007" classname="DialogComponent2 quando há múltiplos diálogos"/>
+  <testcase name="DialogComponent2 quando há múltiplos diálogos precisa retornar widths corretos para cada diálogo" time="0.006" classname="DialogComponent2 quando há múltiplos diálogos"/>
+  <testcase name="DialogComponent2 quando há múltiplos diálogos precisa retornar headers corretos para cada diálogo" time="0.005" classname="DialogComponent2 quando há múltiplos diálogos"/>
+  <testcase name="DialogComponent2 quando há múltiplos diálogos precisa exibir todos os diálogos" time="0.004" classname="DialogComponent2 quando há múltiplos diálogos"/>
+  <testcase name="DialogComponent2 métodos de suporte precisa retornar header padrão quando não configurado" time="0.005" classname="DialogComponent2 métodos de suporte"/>
+  <testcase name="DialogComponent2 métodos de suporte precisa rastrear diálogos corretamente pelo ID" time="0.004" classname="DialogComponent2 métodos de suporte"/>
+  <testcase name="DialogComponent2 métodos de suporte precisa retornar width padrão quando não configurado" time="0.004" classname="DialogComponent2 métodos de suporte"/>
+  <testcase name="HeaderComponent2 deve renderizar o logo" time="0.011" classname="HeaderComponent2"/>
+  <testcase name="HeaderComponent2 deve criar o componente" time="0.008" classname="HeaderComponent2"/>
+  <testcase name="HeaderComponent2 deve chamar sidebarService.sidebarOpen.set(true) ao clicar no botão de menu" time="0.008" classname="HeaderComponent2"/>
+  <testcase name="HeaderComponent2 deve renderizar o avatar com label U" time="0.009" classname="HeaderComponent2"/>
+  <testcase name="DialogService métodos utilitários precisa verificar se um diálogo específico está aberto" time="0.001" classname="DialogService métodos utilitários"/>
+  <testcase name="DialogService métodos utilitários precisa retornar null para configuração de ID inexistente" time="0" classname="DialogService métodos utilitários"/>
+  <testcase name="DialogService métodos utilitários precisa retornar configuração de diálogo específico" time="0" classname="DialogService métodos utilitários"/>
+  <testcase name="DialogService métodos utilitários precisa retornar apenas diálogos visíveis" time="0" classname="DialogService métodos utilitários"/>
+  <testcase name="DialogService quando closeAll é chamado precisa fechar todos os diálogos" time="0.002" classname="DialogService quando closeAll é chamado"/>
+  <testcase name="DialogService precisa criar o service" time="0.002" classname="DialogService"/>
+  <testcase name="DialogService quando close é chamado precisa não fazer nada quando ID não existe" time="0.001" classname="DialogService quando close é chamado"/>
+  <testcase name="DialogService quando close é chamado precisa marcar o diálogo como não visível" time="0.001" classname="DialogService quando close é chamado"/>
+  <testcase name="DialogService quando close é chamado precisa remover o diálogo da lista após 300ms" time="0.001" classname="DialogService quando close é chamado"/>
+  <testcase name="DialogService quando close é chamado precisa executar callback onClose se fornecido" time="0.002" classname="DialogService quando close é chamado"/>
+  <testcase name="DialogService quando close é chamado precisa manter outros diálogos abertos" time="0.002" classname="DialogService quando close é chamado"/>
+  <testcase name="DialogService quando o service é inicializado precisa manter compatibilidade com isVisible retornando false" time="0" classname="DialogService quando o service é inicializado"/>
+  <testcase name="DialogService quando o service é inicializado precisa ter activeDialogs como array vazio" time="0.001" classname="DialogService quando o service é inicializado"/>
+  <testcase name="DialogService quando o service é inicializado precisa ter hasVisibleDialogs como false" time="0.001" classname="DialogService quando o service é inicializado"/>
+  <testcase name="DialogService quando o service é inicializado precisa manter compatibilidade com dialogConfig retornando null" time="0" classname="DialogService quando o service é inicializado"/>
+  <testcase name="DialogService quando open é chamado precisa retornar um ID único para o diálogo" time="0.001" classname="DialogService quando open é chamado"/>
+  <testcase name="DialogService quando open é chamado precisa atualizar compatibilidade com dialogConfig para primeiro diálogo" time="0" classname="DialogService quando open é chamado"/>
+  <testcase name="DialogService quando open é chamado precisa adicionar o diálogo à lista de ativos" time="0.001" classname="DialogService quando open é chamado"/>
+  <testcase name="DialogService quando open é chamado precisa usar ID customizado quando fornecido" time="0.001" classname="DialogService quando open é chamado"/>
+  <testcase name="DialogService quando open é chamado precisa permitir múltiplos diálogos abertos simultaneamente" time="0" classname="DialogService quando open é chamado"/>
+  <testcase name="DialogService quando open é chamado precisa atualizar compatibilidade com isVisible quando há diálogos" time="0.001" classname="DialogService quando open é chamado"/>
+  <testcase name="GroceryIconListSelectionDialog2 deve ser criado" time="0.004" classname="GroceryIconListSelectionDialog2"/>
+  <testcase name="GroceryIconListSelectionDialog2 quando usuário clicar no botão de cancelar deve fechar o dialog sem enviar dados" time="0.008" classname="GroceryIconListSelectionDialog2 quando usuário clicar no botão de cancelar"/>
+  <testcase name="GroceryIconListSelectionDialog2 quando ícone na lista é clicado deve exibir o ícone clicado como pré-visualização" time="0.013" classname="GroceryIconListSelectionDialog2 quando ícone na lista é clicado"/>
+  <testcase name="GroceryIconListSelectionDialog2 quando ícone na lista é clicado deve exibir o nome do ícone corretamente" time="0.013" classname="GroceryIconListSelectionDialog2 quando ícone na lista é clicado"/>
+  <testcase name="GroceryIconListSelectionDialog2 quando usuário clicar no botão de confirmar deve fechar o dialog" time="0.015" classname="GroceryIconListSelectionDialog2 quando usuário clicar no botão de confirmar"/>
+  <testcase name="GroceryIconListSelectionDialog2 quando usuário clicar no botão de confirmar deve enviar o ícone selecionado ao fechar o dialog" time="0.012" classname="GroceryIconListSelectionDialog2 quando usuário clicar no botão de confirmar"/>
+  <testcase name="GroceryIconListSelectionDialog2 quando componente é inicializado deve exibir o ícone selecionado no dialogData" time="0.007" classname="GroceryIconListSelectionDialog2 quando componente é inicializado"/>
+  <testcase name="SidebarService2 deve ser criado corretamente" time="0.001" classname="SidebarService2"/>
+  <testcase name="GroceryItemService2 ao atualizar status de falta do item da lista deve retornar item atualizado quando API retorna dados" time="0.001" classname="GroceryItemService2 ao atualizar status de falta do item da lista"/>
+  <testcase name="GroceryItemService2 ao atualizar status de falta do item da lista deve retornar null quando API retorna resposta vazia" time="0.001" classname="GroceryItemService2 ao atualizar status de falta do item da lista"/>
+  <testcase name="GroceryItemService2 ao deletar um item da lista deve chamar método delete da API com uuid correto" time="0.001" classname="GroceryItemService2 ao deletar um item da lista"/>
+  <testcase name="GroceryItemService2 ao editar um item deve retornar item atualizado quando API retorna dados" time="0.002" classname="GroceryItemService2 ao editar um item"/>
+  <testcase name="GroceryItemService2 ao atualizar o nome do item deve lidar com uuid vazio" time="0.001" classname="GroceryItemService2 ao atualizar o nome do item"/>
+  <testcase name="GroceryItemService2 ao atualizar o nome do item deve retornar item atualizado quando API retorna dados" time="0.001" classname="GroceryItemService2 ao atualizar o nome do item"/>
+  <testcase name="GroceryItemService2 ao criar um item da lista deve retornar null quando API retorna null" time="0.001" classname="GroceryItemService2 ao criar um item da lista"/>
+  <testcase name="GroceryItemService2 ao criar um item da lista deve retornar um item mapeado quando API retorna dados" time="0" classname="GroceryItemService2 ao criar um item da lista"/>
+  <testcase name="GroceryItemService2 ao criar um item da lista deve retornar null quando API retorna resposta vazia" time="0" classname="GroceryItemService2 ao criar um item da lista"/>
+  <testcase name="GroceryItemService2 ao criar um item da lista deve atualizar a lista de itens do signal no service" time="0.001" classname="GroceryItemService2 ao criar um item da lista"/>
+  <testcase name="GroceryItemService2 ao buscar todos os itens da lista deve retornar itens mapeados quando API retorna dados" time="0.001" classname="GroceryItemService2 ao buscar todos os itens da lista"/>
+  <testcase name="GroceryItemService2 ao buscar todos os itens da lista deve retornar array vazio quando API retorna resposta vazia" time="0" classname="GroceryItemService2 ao buscar todos os itens da lista"/>
+  <testcase name="GroceryItemService2 ao buscar todos os itens da lista deve chamar API apenas quando signal está vazio" time="0.001" classname="GroceryItemService2 ao buscar todos os itens da lista"/>
+  <testcase name="GroceryItemService2 ao buscar todos os itens da lista deve retornar array vazio quando API retorna null" time="0" classname="GroceryItemService2 ao buscar todos os itens da lista"/>
+  <testcase name="GroceryItemService2 ao buscar todos os itens da lista não deve chamar API quando signal já tem dados" time="0" classname="GroceryItemService2 ao buscar todos os itens da lista"/>
+  <testcase name="GroceryItemMapper quando trabalhando com diferentes valores de entrada precisa processar UUIDs diferentes corretamente" time="0" classname="GroceryItemMapper quando trabalhando com diferentes valores de entrada"/>
+  <testcase name="GroceryItemMapper quando trabalhando com diferentes valores de entrada precisa manter false para missing quando definido na API" time="0.001" classname="GroceryItemMapper quando trabalhando com diferentes valores de entrada"/>
+  <testcase name="GroceryItemMapper quando trabalhando com diferentes valores de entrada precisa processar nomes vazios corretamente" time="0" classname="GroceryItemMapper quando trabalhando com diferentes valores de entrada"/>
+  <testcase name="GroceryItemMapper quando trabalhando com diferentes valores de entrada precisa manter true para missing quando definido na API" time="0" classname="GroceryItemMapper quando trabalhando com diferentes valores de entrada"/>
+  <testcase name="GroceryItemMapper quando convertendo dados da API para o modelo precisa converter created_at de string para Date corretamente" time="0" classname="GroceryItemMapper quando convertendo dados da API para o modelo"/>
+  <testcase name="GroceryItemMapper quando convertendo dados da API para o modelo precisa criar uma instância do modelo com todas as propriedades básicas" time="0" classname="GroceryItemMapper quando convertendo dados da API para o modelo"/>
+  <testcase name="GroceryItemMapper quando convertendo dados da API para o modelo precisa converter deleted_at de string para Date quando não for null" time="0" classname="GroceryItemMapper quando convertendo dados da API para o modelo"/>
+  <testcase name="GroceryItemMapper quando convertendo dados da API para o modelo precisa converter updated_at de string para Date corretamente" time="0" classname="GroceryItemMapper quando convertendo dados da API para o modelo"/>
+  <testcase name="GroceryItemMapper quando convertendo dados da API para o modelo precisa configurar ícone do item como ícone padrão quando for null" time="0.001" classname="GroceryItemMapper quando convertendo dados da API para o modelo"/>
+  <testcase name="GroceryItemMapper quando convertendo dados da API para o modelo precisa manter deleted_at como undefined quando for null na API" time="0" classname="GroceryItemMapper quando convertendo dados da API para o modelo"/>
+  <testcase name="BillingAndAccountsComponent2 should create" time="0.001" classname="BillingAndAccountsComponent2"/>
+  <testcase name="App should create the app" time="0" classname="App">
+    <skipped/>
+  </testcase>
+  <testcase name="SidebarComponent2 deve criar o componente" time="0.025" classname="SidebarComponent2"/>
+  <testcase name="SidebarComponent2 deve renderizar o logo" time="0.024" classname="SidebarComponent2"/>
+  <testcase name="SidebarComponent2 deve renderizar o menu" time="0.02" classname="SidebarComponent2"/>
+  <testcase name="SidebarComponent2 deve fechar o drawer ao clicar no botão de fechar" time="0.02" classname="SidebarComponent2"/>
+  <testcase name="BudgetComponent2 should create" time="0.003" classname="BudgetComponent2"/>
+  <system-out>
+    <![CDATA[Chrome 145.0.0.0 (Windows 10) ERROR: Error: Acquiring an exclusive Navigator LockManager lock "lock:sb-vwjzpmpwhpoozbtfueqf-auth-token" immediately failed
+Error: Acquiring an exclusive Navigator LockManager lock "lock:sb-vwjzpmpwhpoozbtfueqf-auth-token" immediately failed
+    at http://localhost:9876/base/node_modules/@supabase/auth-js/dist/module/lib/locks.js:139:23
+    at Generator.next (<anonymous>)
+    at http://localhost:9876/base/chunk-IWVXQVUY.js:63:61
+    at new ZoneAwarePromise (http://localhost:9876/base/node_modules/zone.js/fesm2015/zone.js:2701:25)
+    at __async (http://localhost:9876/base/chunk-IWVXQVUY.js:47:10)
+    at http://localhost:9876/base/node_modules/@supabase/auth-js/dist/module/lib/locks.js:120:28
+,Chrome 145.0.0.0 (Windows 10) WARN: 'NG0955: The provided track expression resulted in duplicated keys for a given collection. Adjust the tracking expression such that it uniquely identifies all the items in the collection. Duplicated keys were: 
+key "test-uuid-123" at index "0" and "1", 
+key "test-uuid-123" at index "1" and "2". Find more at https://v20.angular.dev/errors/NG0955'
+,Chrome 145.0.0.0 (Windows 10) WARN: 'NG0955: The provided track expression resulted in duplicated keys for a given collection. Adjust the tracking expression such that it uniquely identifies all the items in the collection. Duplicated keys were: 
+key "test-uuid-123" at index "0" and "1", 
+key "test-uuid-123" at index "1" and "2". Find more at https://v20.angular.dev/errors/NG0955'
+,Chrome 145.0.0.0 (Windows 10) WARN: 'NG0955: The provided track expression resulted in duplicated keys for a given collection. Adjust the tracking expression such that it uniquely identifies all the items in the collection. Duplicated keys were: 
+key "test-uuid-123" at index "0" and "1", 
+key "test-uuid-123" at index "1" and "2". Find more at https://v20.angular.dev/errors/NG0955'
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-2:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-2:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-2:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-1:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+,Chrome 145.0.0.0 (Windows 10) ERROR: 'Erro ao carregar componente para o diálogo dialog-2:', Error: NG0205: Injector has already been destroyed.
+Error: NG0205: Injector has already been destroyed.
+    at assertNotDestroyed (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2322:15)
+    at R3Injector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/root_effect_scheduler.mjs:2002:9)
+    at ChainedInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:13494:36)
+    at lookupTokenUsingModuleInjector (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1718:39)
+    at getOrCreateInjectable (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:1766:12)
+    at NodeInjector.get (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:2080:16)
+    at ViewContainerRef2.createComponent (http://localhost:9876/base/node_modules/@angular/core/fesm2022/debug_node.mjs:15068:38)
+    at DialogComponent2.loadComponent (http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:96:19)
+    at http://localhost:9876/base/src/app/core/layout/dialog/dialog.component.ts:80:16
+    at Array.forEach (<anonymous>)
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

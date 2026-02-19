@@ -23,7 +23,7 @@ Sistema para ajudar no planejamento pessoal, incluindo lista de compras do super
 1. Clone o repositório:
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/mesquitaigor/jabuticaba.git
 cd jabuticaba
 ```
 
