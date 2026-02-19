@@ -15,10 +15,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import { GroceryItemRegistryDialogInput } from './grocery-item-registry.dialog.types';
-import { GroceryItemService } from '@models/grocery-items';
+import {
+  GroceryItemIconModel,
+  GroceryItemService,
+} from '@models/grocery-items';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
-import { DialogService } from '@layout/dialog';
-import { GroceryIconListSelectionDialog } from '../grocery-icon-list-selection/grocery-icon-list-selection.dialog';
+import { dialogData, DialogRef, DialogService } from '@layout/dialog';
+import {
+  GroceryIconListSelectionDialog,
+  GroceryIconListSelectionDialogData,
+} from '../grocery-icon-list-selection/grocery-icon-list-selection.dialog';
 
 @Component({
   selector: 'jbt-grocery-item-registry-dialog',
@@ -32,21 +38,27 @@ import { GroceryIconListSelectionDialog } from '../grocery-icon-list-selection/g
   templateUrl: './grocery-item-registry.dialog.html',
 })
 export class GroceryItemRegistryDialog
-  implements AfterViewInit, GroceryItemRegistryDialogInput
+  implements
+    DialogRef<GroceryItemRegistryDialogInput>,
+    AfterViewInit,
+    GroceryItemRegistryDialogInput
 {
   private readonly messageService: MessageService = inject(MessageService);
   private readonly groceryItemService = inject(GroceryItemService);
   private readonly dialogService = inject(DialogService);
-  public readonly item: GroceryItemModel | null = null;
+  public item: GroceryItemModel | null = null;
   public readonly dialogComponent = viewChild(Dialog);
   public readonly testIds = DataTestId.GroceryItemRegistryDialog;
   public readonly executing = signal(false);
   public readonly saveButtonDisabledStt = signal(true);
   public readonly dialogHeader?: string;
+  public dialogData?: dialogData<GroceryItemRegistryDialogInput>;
   public readonly itemNameControl = new FormControl<string | null>(null, {
     updateOn: 'change',
   });
-  public readonly selectedIcon = signal<string>('default-icon');
+  public readonly selectedIcon = signal<GroceryItemIconModel | null>(
+    GroceryItemIconModel.defaultIcon,
+  );
   constructor() {
     this.itemNameControl.valueChanges.subscribe(() => {
       this.setAddButtonDisabledState();
@@ -60,16 +72,26 @@ export class GroceryItemRegistryDialog
     this.dialogComponent()?.onHide.subscribe(() => {
       this.resetState();
     });
+    this.item = this.dialogData?.item || null;
     if (this.item) {
       this.itemNameControl.setValue(this.item.name || '');
-      this.selectedIcon.set(this.item.icon || 'default-icon');
+      this.selectedIcon.set(this.item.icon || GroceryItemIconModel.defaultIcon);
     }
   }
   public openIconSelectionDialog(): void {
-    this.dialogService.open<GroceryIconListSelectionDialog>({
+    this.dialogService.open<
+      GroceryIconListSelectionDialog,
+      GroceryIconListSelectionDialogData
+    >({
       component: GroceryIconListSelectionDialog,
       header: 'Selecionar ícone',
       width: '90%',
+      data: {
+        selectedIcon: this.selectedIcon(),
+      },
+      onClose: (output) => {
+        console.log(output);
+      },
     });
   }
   private setAddButtonDisabledState(): void {

@@ -10,6 +10,7 @@ import {
 } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
 import { GroceryItemApiServiceMock } from '../../../tests/mocks/grocery-item.api.service.mock.spec';
+import { GroceryItemIconModel } from './grocery-item-icon.model';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;
@@ -178,7 +179,7 @@ describe(GroceryItemService.name, () => {
     it('deve retornar item atualizado quando API retorna dados', (done) => {
       // Given
       const mockItem = createGroceryItemModelMock({
-        icon: 'test-icon',
+        icon: new GroceryItemIconModel('test-icon'),
       });
       // First populate the signal
       service['groceryItems$'].set([mockItem]);
@@ -193,7 +194,7 @@ describe(GroceryItemService.name, () => {
         expect(result?.uuid).toBe(uuidTestValue);
         expect(mockGroceryItemApiService.updateRecord).toHaveBeenCalledWith(
           mockItem.uuid || '',
-          { name: mockItem.name, icon: mockItem.icon },
+          { name: mockItem.name, icon: 'test-icon' },
         );
 
         // Verify signal is updated

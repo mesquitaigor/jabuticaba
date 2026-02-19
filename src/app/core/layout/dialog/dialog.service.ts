@@ -49,8 +49,9 @@ export class DialogService {
   /**
    * Fecha um diálogo específico pelo ID ou o último aberto se nenhum ID for fornecido
    * @param dialogId ID do diálogo a ser fechado (opcional - se não fornecido, fecha o último dialog aberto)
+   * @param data Dados a serem passados para o callback de fechamento (opcional)
    */
-  public close(dialogId?: string): void {
+  public close(dialogId?: string, data: unknown = null): void {
     // Se não for fornecido ID, fecha o último dialog visível (mais recente)
     if (!dialogId) {
       const visibleDialogs = this.getVisibleDialogs();
@@ -74,7 +75,7 @@ export class DialogService {
 
     // Executa callback se fornecido
     if (dialog.config.onClose) {
-      dialog.config.onClose();
+      dialog.config.onClose(data);
     }
 
     // Remove da lista após delay para animação

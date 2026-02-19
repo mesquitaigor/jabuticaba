@@ -12,7 +12,10 @@ import { DialogModule } from 'primeng/dialog';
 import { DialogService } from './dialog.service';
 import { DialogState } from './dialog.types';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
-
+export type dialogData<T> = T & { id: string };
+export interface DialogRef<T> {
+  dialogData?: dialogData<T>;
+}
 @Component({
   selector: 'jbt-dialog',
   imports: [DialogModule, DataTestidDirective],
@@ -88,21 +91,19 @@ export class DialogComponent {
     container: ViewContainerRef,
   ): void {
     try {
-      // Limpa o container
       container.clear();
+      const componentRef: ComponentRef<DialogRef<unknown>> =
+        container.createComponent(dialog.config.component) as ComponentRef<
+          DialogRef<unknown>
+        >;
 
-      // Cria o componente dinamicamente
-      const componentRef = container.createComponent(dialog.config.component);
-
-      // Se houver dados, injeta no componente
       if (dialog.config.data && componentRef.instance) {
-        Object.assign(componentRef.instance, dialog.config.data);
+        componentRef.instance.dialogData = {
+          ...dialog.config.data,
+          id: dialog.id,
+        };
       }
-
-      // Detecta mudanças
       componentRef.changeDetectorRef.detectChanges();
-
-      // Armazena a referência
       this.componentRefs.set(dialog.id, componentRef);
     } catch (error) {
       console.error(

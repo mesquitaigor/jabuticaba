@@ -1,3 +1,4 @@
+import { GroceryItemIconModel } from './grocery-item-icon.model';
 import { IGroceryItemApi } from './grocery-item.dto';
 import GroceryItem from './grocery-item.model';
 
@@ -9,7 +10,7 @@ export default class GroceryItemMapper {
     groceryItem.created_at = new Date(data.created_at);
     groceryItem.updated_at = new Date(data.updated_at);
     groceryItem.hidden = data.hidden;
-    groceryItem.icon = data.icon || GroceryItem.defaultIconName;
+    groceryItem.icon = new GroceryItemIconModel(data.icon);
     groceryItem.deleted_at = data.deleted_at
       ? new Date(data.deleted_at)
       : undefined;

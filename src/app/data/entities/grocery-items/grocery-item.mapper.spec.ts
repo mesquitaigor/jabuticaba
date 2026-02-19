@@ -1,6 +1,7 @@
 import { IGroceryItemApi } from './grocery-item.dto';
 import GroceryItem from './grocery-item.model';
 import GroceryItemMapper from './grocery-item.mapper';
+import { GroceryItemIconModel } from './grocery-item-icon.model';
 
 describe(GroceryItemMapper.name, () => {
   const mockApiData: () => IGroceryItemApi = () => ({
@@ -26,7 +27,7 @@ describe(GroceryItemMapper.name, () => {
       expect(result).toBeInstanceOf(GroceryItem);
       expect(result.uuid).toBe(apiData.uuid);
       expect(result.name).toBe(apiData.name);
-      expect(result.icon).toBe(apiData.icon);
+      expect(result.icon?.name).toBe(apiData.icon as string);
       expect(result.missing).toBe(apiData.missing);
     });
 
@@ -38,7 +39,7 @@ describe(GroceryItemMapper.name, () => {
       // Act
       const result = GroceryItemMapper.apiToModel(apiData);
 
-      expect(result.icon).toEqual(GroceryItem.defaultIconName);
+      expect(result.icon?.name).toEqual(GroceryItemIconModel.defaultIconName);
     });
 
     it('precisa converter created_at de string para Date corretamente', () => {

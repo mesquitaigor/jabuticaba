@@ -1,12 +1,12 @@
 import { Type } from '@angular/core';
 
-export interface DialogConfig<T, I = unknown> {
+export interface DialogConfig<T, I = unknown, O = unknown> {
   id?: string;
   component: Type<T>;
   header?: string;
   data?: I;
   width?: string;
-  onClose?: () => void;
+  onClose?: (output?: O) => void;
 }
 
 export interface DialogInstance {
