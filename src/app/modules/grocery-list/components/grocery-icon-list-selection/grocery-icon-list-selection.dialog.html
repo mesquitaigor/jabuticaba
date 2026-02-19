@@ -3,6 +3,7 @@
     <jbt-grocery-item-icon
       iconSize="20"
       [iconName]="showingIcon()"
+      [jbtDataTestid]="testIds.SelectedIcon"
     ></jbt-grocery-item-icon>
     <p [jbtDataTestid]="testIds.IconName">{{ showingIcon().description }}</p>
   </div>
@@ -27,8 +28,7 @@
     [jbtDataTestid]="testIds.CancelButton"
   />
   <p-button
-    [disabled]="saveButtonDisabledStt()"
-    [label]="saving() ? 'Adicionando...' : 'Adicionar'"
+    label="Confirmar"
     severity="primary"
     (onClick)="save()"
     [jbtDataTestid]="testIds.SaveButton"

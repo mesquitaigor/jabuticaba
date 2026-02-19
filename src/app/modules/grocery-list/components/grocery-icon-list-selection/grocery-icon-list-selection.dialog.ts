@@ -1,4 +1,11 @@
-import { Component, computed, inject, signal, Signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  inject,
+  signal,
+  Signal,
+} from '@angular/core';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import { ButtonModule } from 'primeng/button';
 import { DataTestId, DataTestidDirective } from '@directives/data-testid';
@@ -12,10 +19,11 @@ export interface GroceryIconListSelectionDialogData {
   templateUrl: './grocery-icon-list-selection.dialog.html',
   imports: [GroceryItemIconComponent, ButtonModule, DataTestidDirective],
 })
-export class GroceryIconListSelectionDialog implements DialogRef<GroceryIconListSelectionDialogData> {
+export class GroceryIconListSelectionDialog
+  implements DialogRef<GroceryIconListSelectionDialogData>, AfterViewInit
+{
   private readonly dialogService = inject(DialogService);
   public readonly testIds = DataTestId.GroceryIconListSelectionDialog;
-  public readonly saving = signal(false);
   public readonly icons: Signal<GroceryItemIconModel[]> = signal([
     new GroceryItemIconModel('alvejante'),
     new GroceryItemIconModel('default-icon'),
@@ -34,8 +42,12 @@ export class GroceryIconListSelectionDialog implements DialogRef<GroceryIconList
       this.selectedIcon() ||
       GroceryItemIconModel.defaultIcon,
   );
-  public readonly saveButtonDisabledStt = signal(false);
   public dialogData?: dialogData<GroceryIconListSelectionDialogData>;
+  public ngAfterViewInit(): void {
+    if (this.dialogData?.selectedIcon) {
+      this.selectedIcon.set(this.dialogData.selectedIcon);
+    }
+  }
   public save(): void {
     this.dialogService.close(this.dialogData?.id, this.selectedIcon());
   }

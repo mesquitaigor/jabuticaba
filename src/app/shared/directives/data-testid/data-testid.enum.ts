@@ -29,6 +29,10 @@ export const DataTestId = {
       'grocery-icon-list-selection-dialog',
       'save-button',
     ),
+    SelectedIcon: createTestId(
+      'grocery-icon-list-selection-dialog',
+      'selected-icon',
+    ),
     IconOption: createTestId(
       'grocery-icon-list-selection-dialog',
       'icon-option',
