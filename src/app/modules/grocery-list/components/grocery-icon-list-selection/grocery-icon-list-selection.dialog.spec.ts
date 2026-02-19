@@ -29,7 +29,23 @@ fdescribe(GroceryIconListSelectionDialog.name, () => {
   it('deve ser criado', () => {
     expect(component).toBeTruthy();
   });
-  describe('quando ícone na lista é selecionado', () => {
+  describe('quando ícone na lista é clicado', () => {
+    it('deve exibir o ícone clicado como pré-visualização', () => {
+      fixture.detectChanges();
+      const iconOption = DataTestIdHelper.queryOrFail(
+        fixture.debugElement,
+        component.testIds.IconOption,
+      );
+      iconOption.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      const previewIcon = DataTestIdHelper.queryOrFail(
+        fixture.debugElement,
+        component.testIds.SelectedIcon,
+      );
+      const groceryItemIconComponent =
+        previewIcon.componentInstance as GroceryItemIconComponent;
+      expect(groceryItemIconComponent.iconName()).toBe(component.icons()[0]);
+    });
     it('deve exibir o nome do ícone corretamente', () => {
       component.dialogData = {
         id: '',
