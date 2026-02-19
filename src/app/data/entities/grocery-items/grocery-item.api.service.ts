@@ -9,9 +9,10 @@ import { SupabaseService } from '@api/supabase.service';
 export class GroceryItemApiService {
   private readonly tableName = 'grocery_item';
   private readonly supabaseService: SupabaseService = inject(SupabaseService);
-  public create(
-    payload: Pick<IGroceryItemApi, 'name'>,
-  ): Observable<IGroceryItemApi[] | null> {
+  public create(payload: {
+    name: string;
+    icon: string;
+  }): Observable<IGroceryItemApi[] | null> {
     if (this.supabaseService.client) {
       const promise = this.supabaseService.insert<IGroceryItemApi>(
         payload,

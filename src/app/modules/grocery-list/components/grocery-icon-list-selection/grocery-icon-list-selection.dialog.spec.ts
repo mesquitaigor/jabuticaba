@@ -9,7 +9,7 @@ import ButtonHelper from '../../../../tests/helpers/button.helper.spec';
 import { DataTestId } from '@directives/data-testid';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 
-fdescribe(GroceryIconListSelectionDialog.name, () => {
+describe(GroceryIconListSelectionDialog.name, () => {
   let component: GroceryIconListSelectionDialog;
   let fixture: ComponentFixture<GroceryIconListSelectionDialog>;
   const dialogServiceMock = new DialogServiceMock();

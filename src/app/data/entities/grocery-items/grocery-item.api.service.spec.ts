@@ -45,7 +45,7 @@ describe(GroceryItemApiService.name, () => {
     describe('quando o cliente Supabase está disponível', () => {
       it('precisa criar um novo item e retornar os dados', (done) => {
         // Arrange
-        const payload = { name: 'New Item' };
+        const payload = { name: 'New Item', icon: 'test-icon' };
         const expectedResponse = PostgresMockHelper.createSuccessResponse([
           mockGroceryItem,
         ]);
@@ -69,7 +69,7 @@ describe(GroceryItemApiService.name, () => {
     describe('quando o cliente Supabase não está disponível', () => {
       it('precisa retornar null sem chamar o método insert', (done) => {
         // Arrange
-        const payload = { name: 'New Item' };
+        const payload = { name: 'New Item', icon: 'test-icon' };
         Object.defineProperty(mockSupabaseService, 'client', {
           get: () => undefined,
         });

@@ -15,7 +15,10 @@ import { signal } from '@angular/core';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { MessageService } from 'primeng/api';
 import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
-import { GroceryItemService } from '@models/grocery-items';
+import {
+  GroceryItemIconModel,
+  GroceryItemService,
+} from '@models/grocery-items';
 import { DialogServiceMock } from '../../../../tests/mocks/dialog.service.mock.spec';
 import { DialogService } from '@layout/dialog';
 
@@ -124,12 +127,16 @@ describe(GroceryItemRegistryDialog.name, () => {
     it('precisa chamar o método create do service', () => {
       TestBed.runInInjectionContext(() => {
         const itemName = 'Novo Item';
+        const item = new GroceryItemModel();
+        item.name = itemName;
+        item.icon = new GroceryItemIconModel('test-icon');
+        component.selectedIcon.set(item.icon);
         component.itemNameControl.setValue(itemName);
         fixture.detectChanges();
 
         component.exec();
 
-        expect(mockGroceryItemService.create).toHaveBeenCalledWith(itemName);
+        expect(mockGroceryItemService.create).toHaveBeenCalledWith(item);
       });
     });
 

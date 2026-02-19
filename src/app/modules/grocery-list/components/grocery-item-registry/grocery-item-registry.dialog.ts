@@ -101,8 +101,11 @@ export class GroceryItemRegistryDialog
   }
   public create(): void {
     if (this.itemNameControl.value) {
+      const item = new GroceryItemModel();
+      item.name = this.itemNameControl.value;
+      item.icon = this.selectedIcon() || undefined;
       this.groceryItemService
-        .create(this.itemNameControl.value)
+        .create(item)
         .pipe(finalize(() => this.executing.set(false)))
         .subscribe({
           next: () => {

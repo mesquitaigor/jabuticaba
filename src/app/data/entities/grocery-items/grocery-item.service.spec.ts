@@ -11,6 +11,7 @@ import {
 import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
 import { GroceryItemApiServiceMock } from '../../../tests/mocks/grocery-item.api.service.mock.spec';
 import { GroceryItemIconModel } from './grocery-item-icon.model';
+import GroceryItemModel from './grocery-item.model';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;
@@ -35,20 +36,27 @@ describe(GroceryItemService.name, () => {
       mockGroceryItemApiService.create.and.returnValue(of([mockApiResponse]));
     });
     it('deve retornar um item mapeado quando API retorna dados', (done) => {
-      service.create(itemName).subscribe(() => {
+      const item = new GroceryItemModel();
+      item.name = itemName;
+      item.icon = new GroceryItemIconModel('test-icon');
+      service.create(item).subscribe(() => {
         expect(mockGroceryItemApiService.create)
           .withContext(
             'O método create da API deve ser chamado com os parâmetros corretos',
           )
           .toHaveBeenCalledWith({
             name: itemName,
+            icon: item.icon!.name,
           });
         done();
       });
     });
 
     it('deve atualizar a lista de itens do signal no service', (done) => {
-      service.create(itemName).subscribe(() => {
+      const item = new GroceryItemModel();
+      item.name = itemName;
+      item.icon = new GroceryItemIconModel('test-icon');
+      service.create(item).subscribe(() => {
         const groceryList = service.getGroceryList();
         expect(groceryList().length)
           .withContext(
@@ -73,7 +81,10 @@ describe(GroceryItemService.name, () => {
       mockGroceryItemApiService.create.and.returnValue(of([]));
 
       // When
-      service.create(itemName).subscribe((result) => {
+      const item = new GroceryItemModel();
+      item.name = itemName;
+      item.icon = new GroceryItemIconModel('test-icon');
+      service.create(item).subscribe((result) => {
         // Then
         expect(result)
           .withContext('O resultado recebido não foi o esperado')
@@ -88,7 +99,10 @@ describe(GroceryItemService.name, () => {
       mockGroceryItemApiService.create.and.returnValue(of(null));
 
       // When
-      service.create(itemName).subscribe((result) => {
+      const item = new GroceryItemModel();
+      item.name = itemName;
+      item.icon = new GroceryItemIconModel('test-icon');
+      service.create(item).subscribe((result) => {
         // Then
         expect(result).toBeNull();
         done();

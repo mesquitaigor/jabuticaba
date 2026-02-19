@@ -15,23 +15,32 @@ export class GroceryItemService {
   );
 
   private readonly groceryItems$ = signal<GroceryItem[]>([]);
-  public create(name: string): Observable<GroceryItem | null> {
-    return this.groceryItemApiService.create({ name: name }).pipe(
-      map((response) => {
-        if (response?.length) {
-          return response.map((data) => {
-            return ShoppingListItemMapper.apiToModel(data);
-          })[0];
-        }
-        return null;
-      }),
-      tap((newItem) => {
-        if (newItem) {
-          const currentItems = this.groceryItems$();
-          this.groceryItems$.set([...currentItems, newItem]);
-        }
-      }),
-    );
+  public create(groceryItem: GroceryItemModel): Observable<GroceryItem | null> {
+    if (
+      !groceryItem?.name ||
+      groceryItem.name.trim() === '' ||
+      !groceryItem.icon?.name
+    ) {
+      return of(null);
+    }
+    return this.groceryItemApiService
+      .create({ name: groceryItem.name, icon: groceryItem.icon.name })
+      .pipe(
+        map((response) => {
+          if (response?.length) {
+            return response.map((data) => {
+              return ShoppingListItemMapper.apiToModel(data);
+            })[0];
+          }
+          return null;
+        }),
+        tap((newItem) => {
+          if (newItem) {
+            const currentItems = this.groceryItems$();
+            this.groceryItems$.set([...currentItems, newItem]);
+          }
+        }),
+      );
   }
   public getGroceryList(): WritableSignal<GroceryItem[]> {
     return this.groceryItems$;
