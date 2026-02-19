@@ -69,6 +69,17 @@ fdescribe(GroceryIconListSelectionDialog.name, () => {
       expect(iconElement.iconName()).toBe(expectedIcon);
     });
   });
+  describe('quando usuário clicar no botão de cancelar', () => {
+    it('deve fechar o dialog sem enviar dados', () => {
+      fixture.detectChanges();
+      ButtonHelper.clickButton(
+        fixture,
+        DataTestId.GroceryIconListSelectionDialog.CancelButton,
+      );
+      fixture.detectChanges();
+      expect(dialogServiceSpy.close).toHaveBeenCalled();
+    });
+  });
   describe('quando usuário clicar no botão de confirmar', () => {
     beforeEach(() => {
       component.dialogData = {
