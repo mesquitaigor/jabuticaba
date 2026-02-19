@@ -68,7 +68,7 @@ export class GroceryItemService {
   }
   public editItem(item: GroceryItemModel): Observable<GroceryItem | null> {
     return this.updateModel(item.uuid || '', {
-      icon: item.icon,
+      icon: item.icon?.name,
       name: item.name,
     });
   }

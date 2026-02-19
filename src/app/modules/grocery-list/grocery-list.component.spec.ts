@@ -18,7 +18,10 @@ import { DataTestId } from '../../shared/directives/data-testid';
 import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
 import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
-import { GroceryItemService } from '@models/grocery-items';
+import {
+  GroceryItemIconModel,
+  GroceryItemService,
+} from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
 
 @Component({
@@ -895,7 +898,9 @@ describe(GroceryListComponent.name, () => {
   describe('quando itens são renderizados', () => {
     it('precisa passar o ícone do item para o componente jbt-grocery-item-icon', fakeAsync(() => {
       runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ icon: 'apple' });
+        const mockItem = createGroceryItemModelMock({
+          icon: new GroceryItemIconModel('apple'),
+        });
         mockSignal.set([mockItem]);
 
         fixture.detectChanges();
@@ -908,7 +913,7 @@ describe(GroceryListComponent.name, () => {
         expect(iconElement).toBeTruthy();
         const iconInstance: GroceryItemIconComponent =
           iconElement?.componentInstance;
-        expect(iconInstance.iconName()).toBe('apple');
+        expect(iconInstance.iconName()?.name).toBe('apple');
       });
     }));
   });
