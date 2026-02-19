@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroceryItemIconComponent } from './grocery-item-icon.component';
+import { GroceryItemIconModel } from '@models/grocery-items/grocery-item-icon.model';
 
 describe(GroceryItemIconComponent.name, () => {
   let component: GroceryItemIconComponent;
@@ -23,7 +24,10 @@ describe(GroceryItemIconComponent.name, () => {
   describe('quando iconName é fornecido', () => {
     it('precisa computar o caminho correto do ícone', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('iconName', 'apple');
+        fixture.componentRef.setInput(
+          'iconName',
+          new GroceryItemIconModel('apple'),
+        );
         fixture.detectChanges();
 
         expect(component.iconSrc()).toBe('icons/grocery-items/apple.svg');
@@ -32,7 +36,10 @@ describe(GroceryItemIconComponent.name, () => {
 
     it('precisa renderizar a imagem com src correto', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('iconName', 'banana');
+        fixture.componentRef.setInput(
+          'iconName',
+          new GroceryItemIconModel('banana'),
+        );
         fixture.detectChanges();
 
         const img = fixture.nativeElement.querySelector('img');
@@ -42,7 +49,10 @@ describe(GroceryItemIconComponent.name, () => {
 
     it('precisa renderizar a imagem com alt correto', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('iconName', 'orange');
+        fixture.componentRef.setInput(
+          'iconName',
+          new GroceryItemIconModel('orange'),
+        );
         fixture.detectChanges();
 
         const img = fixture.nativeElement.querySelector('img');
@@ -52,7 +62,10 @@ describe(GroceryItemIconComponent.name, () => {
 
     it('precisa aplicar as classes CSS corretas', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('iconName', '10');
+        fixture.componentRef.setInput(
+          'iconName',
+          new GroceryItemIconModel('10'),
+        );
         fixture.detectChanges();
         expect(fixture.nativeElement.classList.contains('w-10')).toBe(true);
         expect(fixture.nativeElement.classList.contains('h-10')).toBe(true);
@@ -63,7 +76,7 @@ describe(GroceryItemIconComponent.name, () => {
   describe('quando iconName está vazio', () => {
     it('precisa computar o caminho com ícone padrão', () => {
       TestBed.runInInjectionContext(() => {
-        fixture.componentRef.setInput('iconName', '');
+        fixture.componentRef.setInput('iconName', new GroceryItemIconModel(''));
         fixture.detectChanges();
 
         expect(component.iconSrc()).toBe(

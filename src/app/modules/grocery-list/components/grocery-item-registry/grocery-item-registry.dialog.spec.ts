@@ -303,10 +303,13 @@ describe(GroceryItemRegistryDialog.name, () => {
     it('precisa preencher o input quando item é fornecido', async () => {
       // Simula definição do item via input
       fixture.detectChanges();
-      Object.defineProperty(component, 'item', {
-        value: createGroceryItemModelMock({
-          name: 'Item Editável',
-        }),
+      Object.defineProperty(component, 'dialogData', {
+        value: {
+          id: '1',
+          item: createGroceryItemModelMock({
+            name: 'Item Editável',
+          }),
+        },
         writable: true,
       });
       component.ngAfterViewInit();
