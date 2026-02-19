@@ -15,10 +15,11 @@ export const getIconsList = (): GroceryItemIcons[] =>
 export class GroceryItemIconModel {
   public static readonly defaultIconName = 'default-icon';
   public name: string;
-  public label?: string;
+  public description?: string;
   public constructor(name?: string | null) {
     this.name = name || GroceryItemIconModel.defaultIconName;
-    this.label = iconDictionary.get(this.name as GroceryItemIcons) || this.name;
+    this.description =
+      iconDictionary.get(this.name as GroceryItemIcons) || this.name;
   }
   public static get defaultIcon(): GroceryItemIconModel {
     return new GroceryItemIconModel(GroceryItemIconModel.defaultIconName);

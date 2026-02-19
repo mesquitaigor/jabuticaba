@@ -20,6 +20,7 @@ export const DataTestId = {
     VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
   },
   GroceryIconListSelectionDialog: {
+    IconName: createTestId('grocery-icon-list-selection-dialog', 'icon-name'),
     CancelButton: createTestId(
       'grocery-icon-list-selection-dialog',
       'cancel-button',

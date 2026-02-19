@@ -1,9 +1,10 @@
 <div class="p-4 w-full flex align-center justify-center mb-4">
-  <div class="p-6">
+  <div class="p-6 flex flex-col items-center gap-6">
     <jbt-grocery-item-icon
       iconSize="20"
       [iconName]="showingIcon()"
     ></jbt-grocery-item-icon>
+    <p [jbtDataTestid]="testIds.IconName">{{ showingIcon().description }}</p>
   </div>
 </div>
 <div class="flex wrap gap-4 justify-center">
@@ -13,6 +14,7 @@
       (mouseLeave)="resetPreviewIcon()"
       (click)="selectIcon(icon)"
       [iconName]="icon"
+      [jbtDataTestid]="testIds.IconOption"
     ></jbt-grocery-item-icon>
   }
 </div>
