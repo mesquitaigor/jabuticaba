@@ -2,16 +2,12 @@ import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { delay, finalize } from 'rxjs';
 import { TemplateGroceryItem } from './resources/template-grocery-item.model';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
-import { PopoverModule } from 'primeng/popover';
-import { Menu, MenuModule } from 'primeng/menu';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
-import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
 import { GroceryItemRegistryDialog } from './components/grocery-item-registry/grocery-item-registry.dialog';
 import { GroceryItemRegistryDialogInput } from './components/grocery-item-registry/grocery-item-registry.dialog.types';
 import { GroceryItemService } from '@models/grocery-items';
@@ -20,24 +16,23 @@ import { DialogService } from '@layout/dialog';
 import { LoadingComponent } from '@atoms/loading';
 import { EmptyListStateComponent } from '@atoms/empty-list-state';
 import { ErrorListStateComponent } from '@atoms/error-list-state';
+import { GroceryListItemComponent } from './components/grocery-list-item/grocery-list-item.component';
+import TemplateGroceryItemMapper from './resources/template-grocery-item.mapper';
+import { EmptyFn } from '@jbt-types/empty-fn';
 
 @Component({
   selector: 'jbt-grocery-list',
   imports: [
     CommonModule,
     ButtonModule,
-    CheckboxModule,
     FormsModule,
     InputTextModule,
     ToastModule,
-    ReactiveFormsModule,
     DataTestidDirective,
-    PopoverModule,
-    MenuModule,
     LoadingComponent,
-    GroceryItemIconComponent,
     EmptyListStateComponent,
     ErrorListStateComponent,
+    GroceryListItemComponent,
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.scss',
@@ -139,41 +134,42 @@ export class GroceryListComponent implements OnInit {
           return showAll || !item.hidden;
         })
         .map((item) => {
-          const groceryListItem = new TemplateGroceryItem();
-          groceryListItem.parse({
-            item,
-            onDelete: (stopState: () => void): void => {
+          return TemplateGroceryItemMapper.toTemplateGroceryItem(item, {
+            onDelete: (stopState: EmptyFn): void => {
               this.deleteItem(item, stopState);
             },
             onChangeMissing: (
               item: TemplateGroceryItem,
-              stopState: () => void,
+              stopState: EmptyFn,
             ): void => {
               this.changeMissing(item, stopState);
             },
-            onEdit: (item: TemplateGroceryItem): void => {
-              if (item.name) {
-                this.dialogService.open<
-                  GroceryItemRegistryDialog,
-                  GroceryItemRegistryDialogInput
-                >({
-                  component: GroceryItemRegistryDialog,
-                  header: 'Editar item',
-                  width: '90%',
-                  data: { item },
-                });
-              }
-            },
             onChangeVisibility: (
               item: TemplateGroceryItem,
-              stopState: () => void,
+              stopState: EmptyFn,
             ): void => {
               this.changeVisibility(item, stopState);
             },
+            onEdit: (item: TemplateGroceryItem): void => {
+              if (item.name) {
+                this.openEditDialog(item);
+              }
+            },
           });
-          return groceryListItem;
         }),
     );
+  }
+
+  private openEditDialog(item: TemplateGroceryItem): void {
+    this.dialogService.open<
+      GroceryItemRegistryDialog,
+      GroceryItemRegistryDialogInput
+    >({
+      component: GroceryItemRegistryDialog,
+      header: 'Editar item',
+      width: '90%',
+      data: { item },
+    });
   }
 
   public changeMissing(item: TemplateGroceryItem, stop?: () => void): void {
@@ -200,24 +196,11 @@ export class GroceryListComponent implements OnInit {
       });
   }
 
-  public onMissingCheck(item: TemplateGroceryItem): void {
-    if (!item.changingMissing) {
-      item.missing = !item.missing;
-      item.changingMissing = true;
-      this.changeMissing(item);
-    }
-  }
-
   public onAdd(): void {
     this.dialogService.open({
       component: GroceryItemRegistryDialog,
       header: 'Cadastrar item',
       width: '90%',
     });
-  }
-
-  public onShowPopover(event: Event, popover: Menu): void {
-    event.stopPropagation();
-    popover.toggle(event);
   }
 }

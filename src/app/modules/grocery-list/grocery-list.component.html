@@ -22,51 +22,10 @@
   >
     @for (item of groceryItems(); track item.uuid) {
       @if (!loading) {
-        <div
-          class="flex items-center gap-4 py-2 hover:bg-gray-50 transition-colors"
+        <jbt-grocery-list-item
           [jbtDataTestid]="testIds.Item"
-          [class]="'grocery-item-content-' + item.uuid"
-          (click)="onMissingCheck(item)"
-          (keypress)="onMissingCheck(item)"
-          tabindex="0"
-        >
-          <!-- Icon -->
-          <div
-            class="relative w-15 h-15 rounded-full bg-gray-100 flex items-center justify-center"
-            [class.opacity-50]="item.missing"
-          >
-            @if (item.hidden) {
-              <i
-                class="pi pi-eye-slash text-gray-400 text-xl bg-[#cacaca] p-[0.4rem] rounded-full absolute right-0 top-0 translate-x-[30%] -translate-y-[30%]"
-              ></i>
-            }
-            <jbt-grocery-item-icon
-              [iconName]="item.icon"
-            ></jbt-grocery-item-icon>
-          </div>
-          <span
-            class="flex-1 text-gray-800"
-            [class.line-through]="item.missing"
-            [class.opacity-50]="item.missing"
-            [jbtDataTestid]="testIds.ItemName"
-            >{{ item.name }}</span
-          >
-          <p-button
-            (click)="onShowPopover($event, menu)"
-            icon="pi pi-ellipsis-h"
-            severity="secondary"
-            [rounded]="true"
-            [text]="true"
-            [jbtDataTestid]="testIds.DetailsItemButton"
-          />
-          <p-menu
-            appendTo="body"
-            #menu
-            [model]="item.menu()"
-            [popup]="true"
-            [jbtDataTestid]="testIds.DetailsMenu"
-          />
-        </div>
+          [item]="item"
+        ></jbt-grocery-list-item>
       }
     }
 

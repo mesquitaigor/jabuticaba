@@ -15,14 +15,10 @@ import { createMessageServiceMock } from '../../tests/mocks/message.service.mock
 import { ToastModule } from 'primeng/toast';
 import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../shared/directives/data-testid';
-import { Menu } from 'primeng/menu';
 import { Button } from 'primeng/button';
-import { GroceryItemIconComponent } from './components/grocery-item-icon/grocery-item-icon.component';
-import {
-  GroceryItemIconModel,
-  GroceryItemService,
-} from '@models/grocery-items';
+import { GroceryItemService } from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
+import GroceryItemServiceMocker from '../../tests/mocks/grocery-item.service.mock.spec';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -35,7 +31,8 @@ class MockToastComponent {}
 describe(GroceryListComponent.name, () => {
   let component: GroceryListComponent;
   let fixture: ComponentFixture<GroceryListComponent>;
-  let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
+  const groceryItemServiceMocker = new GroceryItemServiceMocker();
+  let groceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockDialogService: jasmine.SpyObj<DialogService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
@@ -48,24 +45,7 @@ describe(GroceryListComponent.name, () => {
 
   beforeEach(async () => {
     mockSignal = signal<GroceryItemModel[]>([]);
-
-    mockGroceryItemService = jasmine.createSpyObj(GroceryItemService.name, [
-      'getAll',
-      'getGroceryList',
-      'create',
-      'updateMissing',
-      'delete',
-    ]);
-    mockGroceryItemService.delete.and.returnValue(of(null));
-
-    mockGroceryItemService.getGroceryList.and.returnValue(mockSignal);
-    mockGroceryItemService.getAll.and.returnValue(of([]));
-    mockGroceryItemService.create.and.returnValue(
-      of(createGroceryItemModelMock()),
-    );
-    mockGroceryItemService.updateMissing.and.returnValue(
-      of(createGroceryItemModelMock()),
-    );
+    groceryItemServiceMocker.create();
     mockMessageService = createMessageServiceMock();
     mockDialogService = jasmine.createSpyObj('DialogService', [
       'open',
@@ -76,7 +56,7 @@ describe(GroceryListComponent.name, () => {
       imports: [GroceryListComponent, MockToastComponent],
       providers: [
         provideAnimationsAsync(),
-        { provide: GroceryItemService, useValue: mockGroceryItemService },
+        groceryItemServiceMocker.getProvider(),
         { provide: MessageService, useValue: mockMessageService },
         { provide: DialogService, useValue: mockDialogService },
       ],
@@ -94,10 +74,11 @@ describe(GroceryListComponent.name, () => {
     fixture = TestBed.createComponent(GroceryListComponent);
     component = fixture.componentInstance;
     loadDelay = component['loadDelay'];
+    groceryItemService = groceryItemServiceMocker.getSpy();
   });
   describe('quando o botão de visibilidade do menu é clicado', () => {
     beforeEach(() => {
-      mockGroceryItemService.updateHidden = jasmine
+      groceryItemService.updateHidden = jasmine
         .createSpy('updateHidden')
         .and.returnValue(of(createGroceryItemModelMock()));
     });
@@ -106,7 +87,7 @@ describe(GroceryListComponent.name, () => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ hidden: false });
         mockSignal.set([mockItem]);
-        mockGroceryItemService.updateHidden.and.returnValue(
+        groceryItemService.updateHidden.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, hidden: true })),
         );
         fixture.detectChanges();
@@ -117,7 +98,7 @@ describe(GroceryListComponent.name, () => {
           .command?.({ item: { label: 'Esconder' } } as MenuItemCommandEvent);
         fixture.detectChanges();
         tick(1);
-        expect(mockGroceryItemService.updateHidden).toHaveBeenCalledWith(
+        expect(groceryItemService.updateHidden).toHaveBeenCalledWith(
           jasmine.objectContaining({ uuid: mockItem.uuid }),
         );
       });
@@ -127,7 +108,7 @@ describe(GroceryListComponent.name, () => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ hidden: false });
         mockSignal.set([mockItem]);
-        mockGroceryItemService.updateHidden.and.returnValue(
+        groceryItemService.updateHidden.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, hidden: true })).pipe(
             delay(100),
           ),
@@ -144,7 +125,7 @@ describe(GroceryListComponent.name, () => {
           .menu()[1]
           .command?.({ item: { label: 'Esconder' } } as MenuItemCommandEvent);
         tick(100);
-        expect(mockGroceryItemService.updateHidden).toHaveBeenCalledTimes(1);
+        expect(groceryItemService.updateHidden).toHaveBeenCalledTimes(1);
       });
     }));
 
@@ -152,7 +133,7 @@ describe(GroceryListComponent.name, () => {
       runInContext(() => {
         const mockItem = createGroceryItemModelMock({ hidden: false });
         mockSignal.set([mockItem]);
-        mockGroceryItemService.updateHidden.and.returnValue(
+        groceryItemService.updateHidden.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, hidden: true })),
         );
         fixture.detectChanges();
@@ -181,86 +162,7 @@ describe(GroceryListComponent.name, () => {
       });
     });
   });
-  describe('quando o botão de marcar/desmarcar é clicado', () => {
-    it('deve exibir "Marcar" quando missing é false e "Desmarcar" quando missing é true', () => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        // missing false
-        expect(component.groceryItems()?.[0].menu()[2].label).toBe('Marcar');
-        // Simula mudança para missing true
-        const item = component.groceryItems()[0];
-        item.missing = true;
-        item['defineMissingLabel']();
-        fixture.detectChanges();
-        expect(component.groceryItems()?.[0].menu()[2].label).toBe('Desmarcar');
-      });
-    });
-    it('precisa chamar updateMissing do service ao clicar no menu', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          of(createGroceryItemModelMock({ ...mockItem, missing: true })),
-        );
-        fixture.detectChanges();
-        // Simula clique no botão de editar missing no menu
-        component
-          .groceryItems()?.[0]
-          .menu()[2] // índice do botão 'Marcar' (editar missing)
-          .command?.({
-            item: { label: 'Marcar' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-        expect(mockGroceryItemService.updateMissing).toHaveBeenCalledWith(
-          jasmine.objectContaining({ uuid: mockItem.uuid }),
-        );
-      });
-    }));
-    it('precisa emitir toast de erro quando updateMissing falhar', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          throwError(() => new Error('Erro ao atualizar')),
-        );
-        fixture.detectChanges();
-        component
-          .groceryItems()?.[0]
-          .menu()[2]
-          .command?.({
-            item: { label: 'Marcar' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-        expect(mockMessageService.add).toHaveBeenCalledWith(
-          jasmine.objectContaining({ severity: 'error' }),
-        );
-      });
-    }));
-    it('precisa desabilitar o botão enquanto está atualizando', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
-            delay(100),
-          ),
-        );
-        fixture.detectChanges();
-        component
-          .groceryItems()?.[0]
-          .menu()[2]
-          .command?.({
-            item: { label: 'Marcar' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        expect(component.groceryItems()?.[0].menu()[2].disabled).toBe(true);
-      });
-    }));
-  });
+
   describe('quando botão de visibilidade é clicado', () => {
     it('deve alternar estado de visibilidade dos items da lista', () => {
       runInContext(() => {
@@ -277,196 +179,12 @@ describe(GroceryListComponent.name, () => {
       });
     });
   });
-  describe('ao excluir item', () => {
-    it('deve chamar o método delete do service ao clicar em excluir', () => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
 
-        component
-          .groceryItems()?.[0]
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-
-        expect(mockGroceryItemService.delete).toHaveBeenCalled();
-      });
-    });
-
-    it('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.delete.and.returnValue(
-          of(null).pipe(delay(100)),
-        );
-        fixture.detectChanges();
-
-        component
-          .groceryItems()?.[0]
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-
-        expect(mockGroceryItemService.delete).toHaveBeenCalledTimes(1);
-      });
-    }));
-
-    it('deve emitir toast de erro ao falhar', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.delete.and.returnValue(
-          throwError(() => new Error('Erro ao excluir')),
-        );
-        fixture.detectChanges();
-        component
-          .groceryItems()?.[0]
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-
-        expect(mockMessageService.add).toHaveBeenCalledWith(
-          jasmine.objectContaining({
-            severity: 'error',
-          }),
-        );
-      });
-    }));
-
-    it('deve emitir toast de sucesso ao excluir', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.delete.and.returnValue(of(null));
-        fixture.detectChanges();
-        component
-          .groceryItems()?.[0]
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-
-        expect(mockMessageService.add).toHaveBeenCalledWith(
-          jasmine.objectContaining({
-            severity: 'success',
-          }),
-        );
-      });
-    }));
-
-    it('deve desabilitar o botão de excluir enquanto está excluindo', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.delete.and.returnValue(
-          of(null).pipe(delay(100)),
-        );
-        fixture.detectChanges();
-        component
-          .groceryItems()?.[0]
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        expect(component.groceryItems()?.[0].menu()[3].disabled).toBe(true);
-      });
-    }));
-
-    it('deve remover o item da listagem ao excluir com sucesso', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.delete.and.returnValue(of(null));
-        fixture.detectChanges();
-
-        component
-          .groceryItems()?.[0]
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-        mockGroceryItemService.getGroceryList().set([]);
-        fixture.detectChanges();
-
-        const items = DataTestIdHelper.queryAll(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        expect(items.length).toBe(0);
-      });
-    }));
-  });
-  describe('quando o botão de menu do item é clicado', () => {
-    it('precisa chamar toggle do menu', fakeAsync(() => {
-      runInContext(() => {
-        // Cria um item na lista
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-        // Busca o item
-        const itemDebug = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        if (!itemDebug) {
-          fail(
-            'Teste falhou: precisa implementar busca pelo item usando data-testid',
-          );
-          return;
-        }
-        // Busca o botão de menu pelo ícone
-        const menuButton = DataTestIdHelper.query(
-          itemDebug,
-          DataTestId.GroceryList.DetailsItemButton,
-        );
-        if (!menuButton) {
-          fail(
-            'Teste falhou: precisa implementar busca pelo botão de menu usando data-testid',
-          );
-          return;
-        }
-        // Busca o menu pelo seletor p-menu
-        const menuEl = DataTestIdHelper.query(
-          itemDebug,
-          DataTestId.GroceryList.DetailsMenu,
-        );
-        if (!menuEl) {
-          fail(
-            'Teste falhou: precisa implementar busca pelo menu usando data-testid',
-          );
-          return;
-        }
-        const menuInstance: Menu = menuEl.componentInstance;
-        spyOn(menuInstance, 'toggle');
-        // Simula clique no botão de menu
-        menuButton.nativeElement.click();
-        fixture.detectChanges();
-        expect(menuInstance.toggle).toHaveBeenCalled();
-      });
-    }));
-  });
   describe('quando o componente é inicializado', () => {
     it('precisa exibir estado vazio quando não há itens', fakeAsync(() => {
       runInContext(() => {
         mockSignal.set([]);
-        mockGroceryItemService.getAll.and.returnValue(of([]));
+        groceryItemService.getAll.and.returnValue(of([]));
 
         fixture.detectChanges();
         tick(loadDelay);
@@ -480,42 +198,11 @@ describe(GroceryListComponent.name, () => {
         expect(emptyState).toBeTruthy();
       });
     }));
-    it('deve renderizar o ícone de exibição do item quando ele estiver configurado como escondido', fakeAsync(() => {
-      runInContext(() => {
-        component.showAllItems.set(true);
-        const mockItem = createGroceryItemModelMock({ hidden: true });
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-        const itemDebug = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        expect(itemDebug).toBeTruthy();
-        const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
-        expect(icon).toBeTruthy();
-      });
-    }));
-    it('não deve renderizar o ícone de exibição quando item estiver configurado como visível', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ hidden: false });
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-        const itemDebug = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
-        expect(icon).toBeFalsy();
-      });
-    }));
+
     it('precisa carregar os itens do serviço', () => {
       runInContext(() => {
         fixture.detectChanges();
-        expect(mockGroceryItemService.getAll).toHaveBeenCalled();
+        expect(groceryItemService.getAll).toHaveBeenCalled();
       });
     });
 
@@ -540,32 +227,11 @@ describe(GroceryListComponent.name, () => {
         expect(items.length).toBe(mockItems.length);
       });
     }));
-
-    it('precisa renderizar o nome dos itens corretamente', fakeAsync(() => {
-      runInContext(() => {
-        const mockItems = [createGroceryItemModelMock()];
-        mockSignal.set(mockItems);
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemNames = DataTestIdHelper.queryAll(
-          fixture.debugElement,
-          DataTestId.GroceryList.ItemName,
-        );
-
-        expect(itemNames.length).toBeGreaterThan(0);
-        expect(itemNames[0].nativeElement.textContent.trim()).toBe(
-          component.groceryItems()[0].name,
-        );
-      });
-    }));
   });
   describe('quando ocorre um erro ao carregar os itens', () => {
     it('precisa exibir mensagem de erro', () => {
       runInContext(() => {
-        mockGroceryItemService.getAll.and.returnValue(
+        groceryItemService.getAll.and.returnValue(
           throwError(() => new Error('Erro ao carregar')),
         );
         fixture.detectChanges();
@@ -575,7 +241,7 @@ describe(GroceryListComponent.name, () => {
 
     it('precisa renderizar o estado de erro na interface', () => {
       runInContext(() => {
-        mockGroceryItemService.getAll.and.returnValue(
+        groceryItemService.getAll.and.returnValue(
           throwError(() => new Error('Erro ao carregar')),
         );
 
@@ -591,7 +257,7 @@ describe(GroceryListComponent.name, () => {
 
     it('não deve exibir a lista de itens quando houver erro', () => {
       runInContext(() => {
-        mockGroceryItemService.getAll.and.returnValue(
+        groceryItemService.getAll.and.returnValue(
           throwError(() => new Error('Erro ao carregar')),
         );
 
@@ -609,7 +275,7 @@ describe(GroceryListComponent.name, () => {
   describe('quando está carregando os itens', () => {
     it('precisa exibir estado de loading', () => {
       runInContext(() => {
-        mockGroceryItemService.getAll.and.returnValue(of([]).pipe(delay(1000)));
+        groceryItemService.getAll.and.returnValue(of([]).pipe(delay(1000)));
         component.loading = true;
 
         fixture.detectChanges();
@@ -644,7 +310,7 @@ describe(GroceryListComponent.name, () => {
     it('não deve exibir o estado vazio durante o loading', () => {
       runInContext(() => {
         mockSignal.set([]);
-        mockGroceryItemService.getAll.and.returnValue(of([]).pipe(delay(1000)));
+        groceryItemService.getAll.and.returnValue(of([]).pipe(delay(1000)));
         component.loading = true;
 
         fixture.detectChanges();
@@ -660,7 +326,7 @@ describe(GroceryListComponent.name, () => {
 
     it('precisa definir loading como false após carregar com sucesso', fakeAsync(() => {
       const mockItems = [createGroceryItemModelMock()];
-      mockGroceryItemService.getAll.and.returnValue(of(mockItems));
+      groceryItemService.getAll.and.returnValue(of(mockItems));
 
       component.loadItems();
       tick(loadDelay);
@@ -682,239 +348,5 @@ describe(GroceryListComponent.name, () => {
         );
       });
     });
-  });
-  describe('quando o botão de editar é clicado', () => {
-    it('deve abrir o modal de edição com o item correto', () => {
-      runInContext(() => {
-        fixture.detectChanges();
-        // Simula um item na lista
-        const mockItem = createGroceryItemModelMock({ name: 'Item Editável' });
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        // Simula clique no botão de editar (índice 0 do menu)
-        component
-          .groceryItems()?.[0]
-          .menu()[0]
-          .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        expect(mockDialogService.open).toHaveBeenCalledWith(
-          jasmine.objectContaining({
-            header: 'Editar item',
-            data: jasmine.objectContaining({ item: jasmine.any(Object) }),
-          }),
-        );
-      });
-    });
-  });
-  describe('quando o usuário clica no item da lista', () => {
-    it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          of(createGroceryItemModelMock({ ...mockItem, missing: true })),
-        );
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-        tick(1);
-
-        expect(mockGroceryItemService.updateMissing).toHaveBeenCalled();
-      });
-    }));
-
-    it('precisa exibir toast de erro quando updateMissing falhar', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          throwError(() => new Error('Erro ao atualizar')),
-        );
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-        tick(1);
-
-        expect(mockMessageService.add).toHaveBeenCalled();
-      });
-    }));
-
-    it('precisa definir estado de loading no item durante a atualização', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
-            delay(100),
-          ),
-        );
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-        fixture.detectChanges();
-
-        const itemInList = component
-          .groceryItems()
-          .find((item) => item.uuid === mockItem.uuid);
-
-        expect(itemInList?.changingMissing).toBe(true);
-      });
-    }));
-
-    it('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          of(createGroceryItemModelMock({ ...mockItem, missing: true })),
-        );
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-        tick(1);
-
-        const itemInList = component
-          .groceryItems()
-          .find((item) => item.uuid === mockItem.uuid);
-
-        expect(itemInList?.adding).toBe(false);
-      });
-    }));
-
-    it('precisa alterar o atributo missing antes de chamar o service', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-
-        let missingValueWhenServiceCalled: boolean | undefined;
-        mockGroceryItemService.updateMissing.and.callFake((item) => {
-          missingValueWhenServiceCalled = component
-            .groceryItems()
-            .find((i) => i.uuid === item.uuid)?.missing;
-          return of(
-            createGroceryItemModelMock({ ...item, missing: true }),
-          ).pipe(delay(50));
-        });
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-
-        expect(missingValueWhenServiceCalled).toBe(true);
-      });
-    }));
-
-    it('precisa reverter o atributo missing quando a requisição falhar', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          throwError(() => new Error('Erro ao atualizar')),
-        );
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-        tick(1);
-
-        const itemInList = component
-          .groceryItems()
-          .find((item) => item.uuid === mockItem.uuid);
-
-        expect(itemInList?.missing).toBe(false);
-      });
-    }));
-
-    it('não deve chamar updateMissing se o item já está em processo de atualização', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
-        mockGroceryItemService.updateMissing.and.returnValue(
-          of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
-            delay(100),
-          ),
-        );
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const itemElement = DataTestIdHelper.queryOrFail(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        itemElement.nativeElement.click();
-        fixture.detectChanges();
-
-        // Segundo clique enquanto ainda está processando
-        itemElement.nativeElement.click();
-        tick(100);
-
-        expect(mockGroceryItemService.updateMissing).toHaveBeenCalledTimes(1);
-      });
-    }));
-  });
-
-  describe('quando itens são renderizados', () => {
-    it('precisa passar o ícone do item para o componente jbt-grocery-item-icon', fakeAsync(() => {
-      runInContext(() => {
-        const mockItem = createGroceryItemModelMock({
-          icon: new GroceryItemIconModel('apple'),
-        });
-        mockSignal.set([mockItem]);
-
-        fixture.detectChanges();
-        tick(loadDelay);
-        fixture.detectChanges();
-
-        const iconElement = fixture.debugElement.query(
-          (el) => el.nativeElement.tagName === 'JBT-GROCERY-ITEM-ICON',
-        );
-        expect(iconElement).toBeTruthy();
-        const iconInstance: GroceryItemIconComponent =
-          iconElement?.componentInstance;
-        expect(iconInstance.iconName()?.name).toBe('apple');
-      });
-    }));
   });
 });

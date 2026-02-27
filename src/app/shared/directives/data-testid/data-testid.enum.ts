@@ -10,14 +10,16 @@ export const DataTestId = {
   // Grocery List Module
   GroceryList: {
     Item: createTestId('grocery-list', 'item'),
-    ItemName: createTestId('grocery-list', 'item-name'),
     LoadingState: createTestId('grocery-list', 'loading-state'),
     ErrorState: createTestId('grocery-list', 'error-state'),
     EmptyState: createTestId('grocery-list', 'empty-state'),
-    DetailsItemButton: createTestId('grocery-list', 'details-item-button'),
-    DetailsMenu: createTestId('grocery-list', 'details-menu'),
-    DeleteItemMenu: createTestId('grocery-list', 'delete-item-menu'),
     VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
+  },
+  GroceryListItemComponent: {
+    Item: createTestId('grocery-list-item', 'item'),
+    ItemName: createTestId('grocery-list-item', 'item-name'),
+    DetailsItemButton: createTestId('grocery-list-item', 'details-item-button'),
+    DetailsMenu: createTestId('grocery-list-item', 'details-menu'),
   },
   GroceryIconListSelectionDialog: {
     IconName: createTestId('grocery-icon-list-selection-dialog', 'icon-name'),

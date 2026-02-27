@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 export default abstract class Mocker<T> {
   public spy?: jasmine.SpyObj<T>;
-  public abstract readonly token: Type<T>;
+  protected abstract readonly token: Type<T>;
   public abstract create(): jasmine.SpyObj<T>;
   public getSpy(): jasmine.SpyObj<T> {
     return TestBed.inject(this.token) as jasmine.SpyObj<T>;
