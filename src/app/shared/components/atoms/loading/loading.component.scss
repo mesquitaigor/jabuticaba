@@ -1,71 +1,67 @@
-.loading {
-  width: 100%;
-  justify-content: center;
-  padding: 1rem;
-  height: 150px;
-  .jabuticaba-content {
-    animation: jello-horizontal 1.2s ease-in-out 2.5s both;
-    position: absolute;
-    svg {
-      animation: scale-up-top 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
-      .jabuticaba-ball {
-        animation: amadurecendo ease-in-out 2s both;
-      }
-      .brilho {
-        animation: brilho ease-in-out 2s both;
-      }
-    }
-  }
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  height: 28px;
+  --_g: no-repeat radial-gradient(farthest-side, #000 94%, #0000);
+  background:
+    var(--_g) 50% 0,
+    var(--_g) 100% 0;
+  background-size: 12px 12px;
+  position: relative;
+  animation: l23-0 1.5s linear infinite;
 }
-@keyframes scale-up-top {
-  0% {
-    transform: scale(0.5);
-    transform-origin: 50% 0%;
+.loader:before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #292331;
+  left: 0;
+  top: 0;
+  animation:
+    l23-1 1.5s linear infinite,
+    l23-2 0.5s cubic-bezier(0, 200, 0.8, 200) infinite;
+}
+@keyframes l23-0 {
+  0%,
+  31% {
+    background-position:
+      50% 0,
+      100% 0;
+  }
+  33% {
+    background-position:
+      50% 100%,
+      100% 0;
+  }
+  43%,
+  64% {
+    background-position:
+      50% 0,
+      100% 0;
+  }
+  66% {
+    background-position:
+      50% 0,
+      100% 100%;
+  }
+  79% {
+    background-position:
+      50% 0,
+      100% 0;
   }
   100% {
-    transform: scale(1);
-    transform-origin: 50% 0%;
+    transform: translateX(calc(-100% / 3));
   }
 }
-@keyframes amadurecendo {
-  0% {
-    fill: #68b07b;
-  }
+@keyframes l23-1 {
   100% {
-    fill: #292331;
+    left: calc(100% + 7px);
   }
 }
-@keyframes brilho {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0;
-  }
+@keyframes l23-2 {
   100% {
-    opacity: 1;
-  }
-}
-@keyframes jello-horizontal {
-  0% {
-    transform: scale3d(1, 1, 1);
-  }
-  30% {
-    transform: scale3d(1.25, 0.75, 1);
-  }
-  40% {
-    transform: scale3d(0.75, 1.25, 1);
-  }
-  50% {
-    transform: scale3d(1.15, 0.85, 1);
-  }
-  65% {
-    transform: scale3d(0.95, 1.05, 1);
-  }
-  75% {
-    transform: scale3d(1.05, 0.95, 1);
-  }
-  100% {
-    transform: scale3d(1, 1, 1);
+    top: -0.1px;
   }
 }

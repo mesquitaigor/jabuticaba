@@ -36,6 +36,9 @@ import { EmptyFn } from '@jbt-types/empty-fn';
   ],
   templateUrl: './grocery-list.component.html',
   styleUrl: './grocery-list.component.scss',
+  host: {
+    class: 'w-full inline-block h-[100dvh]',
+  },
 })
 export class GroceryListComponent implements OnInit {
   private readonly groceryItemService: GroceryItemService =
@@ -112,7 +115,7 @@ export class GroceryListComponent implements OnInit {
         .getAll()
         .pipe(
           delay(this.loadDelay),
-          finalize(() => (this.loading = false)),
+          //finalize(() => (this.loading = false)),
         )
         .subscribe({
           error: () => {
