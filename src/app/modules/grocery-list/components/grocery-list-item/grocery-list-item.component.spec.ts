@@ -24,7 +24,7 @@ import GroceryItemServiceMocker from '../../../../tests/mocks/grocery-item.servi
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import TemplateGroceryItemMapper from '../../resources/template-grocery-item.mapper';
 
-fdescribe(GroceryListItemComponent.name, () => {
+describe(GroceryListItemComponent.name, () => {
   let component: GroceryListItemComponent;
   let fixture: ComponentFixture<GroceryListItemComponent>;
   let mockSignal = signal<GroceryItemModel[]>([]);
@@ -153,7 +153,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
     //     const items = DataTestIdHelper.queryAll(
     //       fixture.debugElement,
-    //       DataTestId.GroceryList.Item,
+    //       DataTestId.GroceryListItemComponent.Item,
     //     );
     //     expect(items.length).toBe(0);
     //   });
@@ -174,7 +174,7 @@ fdescribe(GroceryListItemComponent.name, () => {
       });
     }));
   });
-  fdescribe('quando o usuário clica no item da lista', () => {
+  describe('quando o usuário clica no item da lista', () => {
     it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = setInput.item({ missing: false });
@@ -188,7 +188,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
         tick(1);
@@ -211,7 +211,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
         tick(1);
@@ -236,7 +236,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
         fixture.detectChanges();
@@ -259,7 +259,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
         tick(1);
@@ -272,10 +272,9 @@ fdescribe(GroceryListItemComponent.name, () => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
         fixture.componentRef.setInput('item', mockItem);
-
         let missingValueWhenServiceCalled: boolean | undefined;
         groceryItemService.updateMissing.and.callFake((item) => {
-          missingValueWhenServiceCalled = component.item().missing;
+          missingValueWhenServiceCalled = item.missing;
           return of(
             createGroceryItemModelMock({ ...item, missing: true }),
           ).pipe(delay(50));
@@ -287,10 +286,9 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
-
         expect(missingValueWhenServiceCalled).toBe(true);
       });
     }));
@@ -309,7 +307,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
         tick(1);
@@ -334,7 +332,7 @@ fdescribe(GroceryListItemComponent.name, () => {
 
         const itemElement = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         itemElement.nativeElement.click();
         fixture.detectChanges();
@@ -377,7 +375,7 @@ fdescribe(GroceryListItemComponent.name, () => {
         fixture.detectChanges();
         const itemDebug = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         expect(itemDebug).toBeTruthy();
         const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
@@ -393,7 +391,7 @@ fdescribe(GroceryListItemComponent.name, () => {
         fixture.detectChanges();
         const itemDebug = DataTestIdHelper.queryOrFail(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         const icon = itemDebug?.nativeElement.querySelector('i.pi-eye-slash');
         expect(icon).toBeFalsy();
@@ -518,7 +516,7 @@ fdescribe(GroceryListItemComponent.name, () => {
         // Busca o item
         const itemDebug = DataTestIdHelper.query(
           fixture.debugElement,
-          DataTestId.GroceryList.Item,
+          DataTestId.GroceryListItemComponent.Item,
         );
         if (!itemDebug) {
           fail(
