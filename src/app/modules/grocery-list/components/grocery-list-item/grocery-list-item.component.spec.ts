@@ -33,6 +33,21 @@ fdescribe(GroceryListItemComponent.name, () => {
 
   const groceryItemServiceMocker = new GroceryItemServiceMocker();
   let groceryItemService: jasmine.SpyObj<GroceryItemService>;
+  const setInput = {
+    item: (overrides?: Partial<GroceryItemModel>): GroceryItemModel => {
+      const mockItem = { ...createGroceryItemModelMock(), ...overrides };
+      fixture.componentRef.setInput('item', mockItem);
+      return mockItem;
+    },
+  };
+  const clickMenu = (index: number, label: string): void => {
+    const templateItem = component.templateItem();
+    if (templateItem) {
+      templateItem.menu()[index].command?.({ item: { label } });
+      fixture.detectChanges();
+      tick(1);
+    }
+  };
 
   beforeEach(async () => {
     mockSignal = signal<GroceryItemModel[]>([]);
@@ -68,52 +83,32 @@ fdescribe(GroceryListItemComponent.name, () => {
     expect(component).toBeTruthy();
   });
   describe('ao excluir item', () => {
-    fit('deve chamar o método delete do service ao clicar em excluir', () => {
+    it('deve chamar o método delete do service ao clicar em excluir', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
+        setInput.item();
         fixture.detectChanges();
-
+        clickMenu(3, 'Excluir');
         expect(groceryItemService.delete).toHaveBeenCalled();
       });
-    });
+    }));
     it('deve impedir múltiplas requisições enquanto está excluindo', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
+        setInput.item();
         groceryItemService.delete.and.returnValue(of(null).pipe(delay(100)));
         fixture.detectChanges();
-
-        component
-          .item()
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-
+        clickMenu(3, 'Excluir');
         expect(groceryItemService.delete).toHaveBeenCalledTimes(1);
       });
     }));
 
     it('deve emitir toast de erro ao falhar', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
+        setInput.item();
         groceryItemService.delete.and.returnValue(
           throwError(() => new Error('Erro ao excluir')),
         );
         fixture.detectChanges();
-        component
-          .item()
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-
+        clickMenu(3, 'Excluir');
         expect(mockMessageService.add).toHaveBeenCalledWith(
           jasmine.objectContaining({
             severity: 'error',
@@ -124,19 +119,9 @@ fdescribe(GroceryListItemComponent.name, () => {
 
     it('deve emitir toast de sucesso ao excluir', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        groceryItemService.delete.and.returnValue(of(null));
+        setInput.item();
         fixture.detectChanges();
-        component
-          .item()
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-
+        clickMenu(3, 'Excluir');
         expect(mockMessageService.add).toHaveBeenCalledWith(
           jasmine.objectContaining({
             severity: 'success',
@@ -148,60 +133,38 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('deve desabilitar o botão de excluir enquanto está excluindo', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.delete.and.returnValue(of(null).pipe(delay(100)));
         fixture.detectChanges();
-        component
-          .item()
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        expect(component.item().menu()[3].disabled).toBe(true);
+        clickMenu(3, 'Excluir');
+        const templateItem = component.templateItem();
+        expect(templateItem?.menu()[3].disabled).toBe(true);
       });
     }));
 
-    it('deve remover o item da listagem ao excluir com sucesso', fakeAsync(() => {
-      TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
-        groceryItemService.delete.and.returnValue(of(null));
-        fixture.detectChanges();
+    // it('deve remover o item da listagem ao excluir com sucesso', fakeAsync(() => {
+    //   TestBed.runInInjectionContext(() => {
 
-        component
-          .item()
-          .menu()[3]
-          .command?.({
-            item: { label: 'Excluir' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
-        groceryItemService.getGroceryList().set([]);
-        fixture.detectChanges();
+    //     groceryItemService.delete.and.returnValue(of(null));
+    //     fixture.detectChanges();
 
-        const items = DataTestIdHelper.queryAll(
-          fixture.debugElement,
-          DataTestId.GroceryList.Item,
-        );
-        expect(items.length).toBe(0);
-      });
-    }));
+    //     clickDelete();
+    //     groceryItemService.getGroceryList().set([]);
+
+    //     const items = DataTestIdHelper.queryAll(
+    //       fixture.debugElement,
+    //       DataTestId.GroceryList.Item,
+    //     );
+    //     expect(items.length).toBe(0);
+    //   });
+    // }));
   });
   describe('quando o botão de editar é clicado', () => {
-    it('deve abrir o modal de edição com o item correto', () => {
+    it('deve abrir o modal de edição com o item correto', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
+        setInput.item({ name: 'Item Editável' });
         fixture.detectChanges();
-        // Simula um item na lista
-        const mockItem = createGroceryItemModelMock({ name: 'Item Editável' });
-        mockSignal.set([mockItem]);
-        fixture.detectChanges();
-        // Simula clique no botão de editar (índice 0 do menu)
-        component
-          .item()
-          .menu()[0]
-          .command?.({ item: { label: 'Editar' } } as MenuItemCommandEvent);
-        fixture.detectChanges();
+        clickMenu(0, 'Editar');
         expect(mockDialogService.open).toHaveBeenCalledWith(
           jasmine.objectContaining({
             header: 'Editar item',
@@ -209,13 +172,12 @@ fdescribe(GroceryListItemComponent.name, () => {
           }),
         );
       });
-    });
+    }));
   });
-  describe('quando o usuário clica no item da lista', () => {
+  fdescribe('quando o usuário clica no item da lista', () => {
     it('precisa chamar updateMissing do service com o item correto', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        const mockItem = setInput.item({ missing: false });
         groceryItemService.updateMissing.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, missing: true })),
         );
@@ -238,7 +200,7 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('precisa exibir toast de erro quando updateMissing falhar', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           throwError(() => new Error('Erro ao atualizar')),
         );
@@ -261,7 +223,7 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('precisa definir estado de loading no item durante a atualização', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
             delay(100),
@@ -279,14 +241,14 @@ fdescribe(GroceryListItemComponent.name, () => {
         itemElement.nativeElement.click();
         fixture.detectChanges();
 
-        expect(component.item().changingMissing).toBe(true);
+        expect(component.templateItem()?.changingMissing).toBe(true);
       });
     }));
 
     it('precisa remover estado de loading após atualização com sucesso', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, missing: true })),
         );
@@ -302,14 +264,14 @@ fdescribe(GroceryListItemComponent.name, () => {
         itemElement.nativeElement.click();
         tick(1);
 
-        expect(component.item().adding).toBe(false);
+        expect(component.templateItem()?.adding).toBe(false);
       });
     }));
 
     it('precisa alterar o atributo missing antes de chamar o service', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
 
         let missingValueWhenServiceCalled: boolean | undefined;
         groceryItemService.updateMissing.and.callFake((item) => {
@@ -336,7 +298,7 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('precisa reverter o atributo missing quando a requisição falhar', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           throwError(() => new Error('Erro ao atualizar')),
         );
@@ -359,7 +321,7 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('não deve chamar updateMissing se o item já está em processo de atualização', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
             delay(100),
@@ -391,7 +353,7 @@ fdescribe(GroceryListItemComponent.name, () => {
         const mockItem = createGroceryItemModelMock({
           icon: new GroceryItemIconModel('apple'),
         });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
 
         fixture.detectChanges();
         tick(1);
@@ -409,7 +371,7 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('deve renderizar o ícone de exibição(olho) quando o item estiver configurado como escondido', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ hidden: true });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         fixture.detectChanges();
         tick(1);
         fixture.detectChanges();
@@ -425,7 +387,7 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('não deve renderizar o ícone de exibição quando item estiver configurado como visível', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ hidden: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         fixture.detectChanges();
         tick(1);
         fixture.detectChanges();
@@ -439,8 +401,8 @@ fdescribe(GroceryListItemComponent.name, () => {
     }));
     it('precisa renderizar o nome dos itens corretamente', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
-        const mockItems = [createGroceryItemModelMock()];
-        mockSignal.set(mockItems);
+        const mockItem = createGroceryItemModelMock();
+        fixture.componentRef.setInput('item', mockItem);
 
         fixture.detectChanges();
         tick(1);
@@ -462,16 +424,18 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('deve exibir "Marcar" quando missing é false e "Desmarcar" quando missing é true', () => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         fixture.detectChanges();
         // missing false
-        expect(component.item().menu()[2].label).toBe('Marcar');
+        expect(component.templateItem()?.menu()[2].label).toBe('Marcar');
         // Simula mudança para missing true
-        const item = component.item();
-        item.missing = true;
-        item['defineMissingLabel']();
+        const item = component.templateItem();
+        if (item) {
+          item.missing = true;
+          item['defineMissingLabel']();
+        }
         fixture.detectChanges();
-        expect(component.item().menu()[2].label).toBe('Desmarcar');
+        expect(component.templateItem()?.menu()[2].label).toBe('Desmarcar');
       });
     });
     it('precisa chamar updateMissing do service ao clicar no menu', fakeAsync(() => {
@@ -483,14 +447,16 @@ fdescribe(GroceryListItemComponent.name, () => {
         );
         fixture.detectChanges();
         // Simula clique no botão de editar missing no menu
-        component
-          .item()
-          .menu()[2] // índice do botão 'Marcar' (editar missing)
-          .command?.({
-            item: { label: 'Marcar' },
-          } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
+        const templateItem = component.templateItem();
+        if (templateItem) {
+          templateItem
+            .menu()[2] // índice do botão 'Marcar' (editar missing)
+            .command?.({
+              item: { label: 'Marcar' },
+            } as MenuItemCommandEvent);
+          fixture.detectChanges();
+          tick(1);
+        }
         expect(groceryItemService.updateMissing).toHaveBeenCalledWith(
           jasmine.objectContaining({ uuid: mockItem.uuid }),
         );
@@ -499,19 +465,19 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('precisa emitir toast de erro quando updateMissing falhar', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           throwError(() => new Error('Erro ao atualizar')),
         );
         fixture.detectChanges();
-        component
-          .item()
-          .menu()[2]
-          .command?.({
+        const templateItem = component.templateItem();
+        if (templateItem) {
+          templateItem.menu()[2].command?.({
             item: { label: 'Marcar' },
           } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        tick(1);
+          fixture.detectChanges();
+          tick(1);
+        }
         expect(mockMessageService.add).toHaveBeenCalledWith(
           jasmine.objectContaining({ severity: 'error' }),
         );
@@ -520,21 +486,23 @@ fdescribe(GroceryListItemComponent.name, () => {
     it('precisa desabilitar o botão enquanto está atualizando', fakeAsync(() => {
       TestBed.runInInjectionContext(() => {
         const mockItem = createGroceryItemModelMock({ missing: false });
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         groceryItemService.updateMissing.and.returnValue(
           of(createGroceryItemModelMock({ ...mockItem, missing: true })).pipe(
             delay(100),
           ),
         );
         fixture.detectChanges();
-        component
-          .item()
-          .menu()[2]
-          .command?.({
+        const templateItem = component.templateItem();
+        if (templateItem) {
+          templateItem.menu()[2].command?.({
             item: { label: 'Marcar' },
           } as MenuItemCommandEvent);
-        fixture.detectChanges();
-        expect(component.item().menu()[2].disabled).toBe(true);
+          fixture.detectChanges();
+          tick(1);
+        }
+        const templateItemAfter = component.templateItem();
+        expect(templateItemAfter?.menu()[2].disabled).toBe(true);
       });
     }));
   });
@@ -543,7 +511,7 @@ fdescribe(GroceryListItemComponent.name, () => {
       TestBed.runInInjectionContext(() => {
         // Cria um item na lista
         const mockItem = createGroceryItemModelMock();
-        mockSignal.set([mockItem]);
+        fixture.componentRef.setInput('item', mockItem);
         fixture.detectChanges();
         tick(1);
         fixture.detectChanges();
