@@ -17,4 +17,16 @@ export class GroceryItemStorageService {
       return false;
     }
   }
+  public recover(): GroceryItemModel[] {
+    const data = localStorage.getItem(this.storageKey);
+    if (data) {
+      try {
+        return JSON.parse(data) as GroceryItemModel[];
+      } catch (error) {
+        Debug.error('Error parsing grocery items from localStorage', error);
+        return [];
+      }
+    }
+    return [];
+  }
 }
