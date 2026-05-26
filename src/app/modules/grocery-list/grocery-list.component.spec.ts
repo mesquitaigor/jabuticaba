@@ -11,14 +11,14 @@ import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.mod
 import { Component, signal } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
-import { createMessageServiceMock } from '../../tests/mocks/message.service.mock.spec';
 import { ToastModule } from 'primeng/toast';
 import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../shared/directives/data-testid';
 import { Button } from 'primeng/button';
 import { GroceryItemService } from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
-import GroceryItemServiceMocker from '../../tests/mocks/grocery-item.service.mock.spec';
+import GroceryItemServiceMocker from '../../tests/spys/grocery-item.service.mock.spec';
+import { createMessageServiceMock } from '../../tests/spys/message.service.mock.spec';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

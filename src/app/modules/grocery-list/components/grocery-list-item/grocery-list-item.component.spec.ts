@@ -15,14 +15,14 @@ import {
   GroceryItemService,
 } from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
-import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 import { delay, of, throwError } from 'rxjs';
 import { DataTestIdHelper } from '../../../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '@directives/data-testid';
 import { Menu } from 'primeng/menu';
-import GroceryItemServiceMocker from '../../../../tests/mocks/grocery-item.service.mock.spec';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import TemplateGroceryItemMapper from '../../resources/template-grocery-item.mapper';
+import GroceryItemServiceMocker from '../../../../tests/spys/grocery-item.service.mock.spec';
+import { createMessageServiceMock } from '../../../../tests/spys/message.service.mock.spec';
 
 describe(GroceryListItemComponent.name, () => {
   let component: GroceryListItemComponent;

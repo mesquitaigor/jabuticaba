@@ -50,8 +50,8 @@ export class GroceryListComponent implements OnInit {
   private readonly loadDelay = 2000;
   constructor() {
     effect(() => {
-      const items = this.groceryItemService.getGroceryList()();
-      this.setListItems(items);
+      const items = this.groceryItemService.getGroceryList();
+      this.setListItems(items());
     });
   }
 

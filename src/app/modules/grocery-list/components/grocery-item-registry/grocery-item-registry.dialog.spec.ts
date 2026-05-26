@@ -14,13 +14,13 @@ import { createGroceryItemModelMock } from '../../../../tests/mocks/GroceryItemM
 import { signal } from '@angular/core';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { MessageService } from 'primeng/api';
-import { createMessageServiceMock } from '../../../../tests/mocks/message.service.mock.spec';
 import {
   GroceryItemIconModel,
   GroceryItemService,
 } from '@models/grocery-items';
-import { DialogServiceMock } from '../../../../tests/mocks/dialog.service.mock.spec';
 import { DialogService } from '@layout/dialog';
+import { DialogServiceMock } from '../../../../tests/spys/dialog.service.mock.spec';
+import { createMessageServiceMock } from '../../../../tests/spys/message.service.mock.spec';
 
 describe(GroceryItemRegistryDialog.name, () => {
   let component: GroceryItemRegistryDialog;

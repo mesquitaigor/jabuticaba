@@ -3,11 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GroceryIconListSelectionDialog } from './grocery-icon-list-selection.dialog';
 import { DataTestIdHelper } from '../../../../tests/helpers/data-testid.helper.spec';
 import { GroceryItemIconModel } from '@models/grocery-items';
-import { DialogServiceMock } from '../../../../tests/mocks/dialog.service.mock.spec';
 import { DialogService } from '@layout/dialog';
 import ButtonHelper from '../../../../tests/helpers/button.helper.spec';
 import { DataTestId } from '@directives/data-testid';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
+import { DialogServiceMock } from '../../../../tests/spys/dialog.service.mock.spec';
 
 describe(GroceryIconListSelectionDialog.name, () => {
   let component: GroceryIconListSelectionDialog;

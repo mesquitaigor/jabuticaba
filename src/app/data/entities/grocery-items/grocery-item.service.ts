@@ -46,7 +46,6 @@ export class GroceryItemService {
     return this.groceryItems$;
   }
   public getAll(): Observable<GroceryItem[]> {
-    // Only load from API if BehaviorSubject is empty
     const currentItems = this.groceryItems$();
     if (currentItems.length > 0) {
       return of(currentItems);

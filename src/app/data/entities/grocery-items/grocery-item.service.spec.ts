@@ -9,9 +9,9 @@ import {
   nameTestValue,
 } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
-import { GroceryItemApiServiceMock } from '../../../tests/mocks/grocery-item.api.service.mock.spec';
 import { GroceryItemIconModel } from './grocery-item-icon.model';
 import GroceryItemModel from './grocery-item.model';
+import { GroceryItemApiServiceMock } from '../../../tests/spys/grocery-item.api.service.mock.spec';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;

@@ -1,9 +1,9 @@
 import { GroceryItemService } from '@models/grocery-items';
 import { of } from 'rxjs';
 import Mocker from './mocker.spec';
-import { createGroceryItemModelMock } from './GroceryItemModel.mock.spec';
 import { signal } from '@angular/core';
 import GroceryItemModel from '@models/grocery-items/grocery-item.model';
+import { createGroceryItemModelMock } from '../mocks/GroceryItemModel.mock.spec';
 
 export default class GroceryItemServiceMocker extends Mocker<GroceryItemService> {
   protected override readonly token = GroceryItemService;
