@@ -121,41 +121,34 @@ describe(GroceryListComponent.name, () => {
     });
 
     it('não precisa exibir estado de loading quando há itens armazenados', () => {
-      runInContext(() => {
-        groceryItemServiceMocker.itemList = [createGroceryItemModelMock()];
+      groceryItemServiceMocker.itemList = [createGroceryItemModelMock()];
 
-        component.loadItems();
+      component.loadItems();
 
-        expect(component.loading).toBeFalse();
-      });
+      expect(component.loading).toBeFalse();
     });
 
     it('precisa exibir tarja de atualização quando há itens armazenados', fakeAsync(() => {
-      runInContext(() => {
-        groceryItemServiceMocker.itemList = [createGroceryItemModelMock()];
-        groceryItemService.getAll.and.returnValue(
-          of([]).pipe(delay(loadDelay)),
-        );
+      groceryItemServiceMocker.itemList = [createGroceryItemModelMock()];
+      groceryItemService.getAll.and.returnValue(of([]));
 
-        fixture.detectChanges();
-        component.loadItems();
-        fixture.detectChanges();
+      fixture.detectChanges();
+      fixture.detectChanges();
 
-        const banner = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.RefreshingBanner,
-        );
-        expect(banner).toBeTruthy();
+      const banner = DataTestIdHelper.query(
+        fixture.debugElement,
+        DataTestId.GroceryList.RefreshingBanner,
+      );
+      expect(banner).toBeTruthy();
 
-        tick(loadDelay);
-        fixture.detectChanges();
+      tick(loadDelay);
+      fixture.detectChanges();
 
-        const bannerAfter = DataTestIdHelper.query(
-          fixture.debugElement,
-          DataTestId.GroceryList.RefreshingBanner,
-        );
-        expect(bannerAfter).toBeFalsy();
-      });
+      const bannerAfter = DataTestIdHelper.query(
+        fixture.debugElement,
+        DataTestId.GroceryList.RefreshingBanner,
+      );
+      expect(bannerAfter).toBeFalsy();
     }));
 
     it('precisa listar os itens na interface', fakeAsync(() => {
