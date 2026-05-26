@@ -1,7 +1,7 @@
 import { GroceryItemApiService } from '@models/grocery-items/grocery-item.api.service';
-import Mocker from './mocker.spec';
+import Spy from './spy.spec';
 
-export class GroceryItemApiServiceMock extends Mocker<GroceryItemApiService> {
+export class GroceryItemApiServiceMock extends Spy<GroceryItemApiService> {
   protected override readonly token = GroceryItemApiService;
   public create(): jasmine.SpyObj<GroceryItemApiService> {
     this.spy = jasmine.createSpyObj(GroceryItemApiService.name, [

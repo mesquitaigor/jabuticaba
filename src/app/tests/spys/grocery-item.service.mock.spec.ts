@@ -1,11 +1,11 @@
 import { GroceryItemService } from '@models/grocery-items';
 import { of } from 'rxjs';
-import Mocker from './mocker.spec';
+import Spy from './spy.spec';
 import { signal } from '@angular/core';
 import GroceryItemModel from '@models/grocery-items/grocery-item.model';
 import { createGroceryItemModelMock } from '../mocks/GroceryItemModel.mock.spec';
 
-export default class GroceryItemServiceMocker extends Mocker<GroceryItemService> {
+export default class GroceryItemServiceMocker extends Spy<GroceryItemService> {
   protected override readonly token = GroceryItemService;
   public mockSignal = signal<GroceryItemModel[]>([]);
   public override create(): jasmine.SpyObj<GroceryItemService> {

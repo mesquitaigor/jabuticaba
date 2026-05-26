@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-export default abstract class Mocker<T> {
+export default abstract class Spy<T> {
   public spy?: jasmine.SpyObj<T>;
   protected abstract readonly token: Type<T>;
   public abstract create(): jasmine.SpyObj<T>;

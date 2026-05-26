@@ -1,7 +1,7 @@
-import Mocker from './mocker.spec';
+import Spy from './spy.spec';
 import { DialogService } from '@layout/dialog';
 
-export class DialogServiceMock extends Mocker<DialogService> {
+export class DialogServiceMock extends Spy<DialogService> {
   protected override readonly token = DialogService;
   public create(): jasmine.SpyObj<DialogService> {
     this.spy = jasmine.createSpyObj(DialogService.name, [
