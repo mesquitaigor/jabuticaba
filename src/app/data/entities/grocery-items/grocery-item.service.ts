@@ -1,18 +1,32 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { map, Observable, tap, of } from 'rxjs';
 import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
 import GroceryItem from './grocery-item.model';
 import GroceryItemModel from './grocery-item.model';
 import { IGroceryItemApi } from './grocery-item.dto';
+import { GroceryItemStorageService } from './grocery-item.storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GroceryItemService {
   private readonly api: GroceryItemApiService = inject(GroceryItemApiService);
-
+  private readonly storage: GroceryItemStorageService = inject(
+    GroceryItemStorageService,
+  );
   private readonly list$ = signal<GroceryItem[]>([]);
+  constructor() {
+    effect(() => {
+      this.storage.save(this.list$());
+    });
+  }
   public create(groceryItem: GroceryItemModel): Observable<GroceryItem | null> {
     if (
       !groceryItem?.name ||

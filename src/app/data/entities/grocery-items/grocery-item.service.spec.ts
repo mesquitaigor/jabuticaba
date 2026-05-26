@@ -161,7 +161,7 @@ describe(GroceryItemService.name, () => {
     it('não deve chamar API quando signal já tem dados', (done) => {
       // Given - First populate the signal
       const mockItem = createGroceryItemModelMock();
-      service['groceryItems$'].set([mockItem]);
+      service['list$'].set([mockItem]);
       mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
 
       // When
@@ -176,7 +176,7 @@ describe(GroceryItemService.name, () => {
 
     it('deve chamar API apenas quando signal está vazio', (done) => {
       // Given - Ensure signal is empty
-      service['groceryItems$'].set([]);
+      service['list$'].set([]);
       mockGroceryItemApiService.getAll.and.returnValue(of([mockApiResponse]));
 
       // When
@@ -196,7 +196,7 @@ describe(GroceryItemService.name, () => {
         icon: new GroceryItemIconModel('test-icon'),
       });
       // First populate the signal
-      service['groceryItems$'].set([mockItem]);
+      service['list$'].set([mockItem]);
       mockGroceryItemApiService.updateRecord.and.returnValue(
         of([mockApiResponse]),
       );
@@ -224,7 +224,7 @@ describe(GroceryItemService.name, () => {
       // Given
       const mockItem = createGroceryItemModelMock();
       // First populate the signal
-      service['groceryItems$'].set([mockItem]);
+      service['list$'].set([mockItem]);
       mockGroceryItemApiService.updateRecord.and.returnValue(
         of([mockApiResponse]),
       );
@@ -305,7 +305,7 @@ describe(GroceryItemService.name, () => {
       const uuid = 'test-uuid';
       const mockItem = createGroceryItemModelMock({ uuid });
       // First populate the signal
-      service['groceryItems$'].set([mockItem]);
+      service['list$'].set([mockItem]);
       mockGroceryItemApiService.deleteRecord.and.returnValue(of(null));
 
       // When

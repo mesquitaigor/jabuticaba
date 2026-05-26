@@ -35,7 +35,7 @@ describe(GroceryItemRegistryDialog.name, () => {
     mockSignal = signal<GroceryItemModel[]>([]);
     mockGroceryItemService = jasmine.createSpyObj(GroceryItemService.name, [
       'getAll',
-      'getGroceryList',
+      'getList',
       'create',
       'updateMissing',
       'delete',

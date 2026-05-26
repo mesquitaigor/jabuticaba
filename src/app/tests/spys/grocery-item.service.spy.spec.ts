@@ -15,7 +15,7 @@ export default class GroceryItemServiceSpy extends Spy<GroceryItemService> {
       'updateName',
       'updateMissing',
       'delete',
-      'getGroceryList',
+      'getList',
       'create',
     ]) as jasmine.SpyObj<GroceryItemService>;
 
