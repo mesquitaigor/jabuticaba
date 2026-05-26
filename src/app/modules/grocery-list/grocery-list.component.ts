@@ -32,7 +32,7 @@ import { GroceryListItemComponent } from './components/grocery-list-item/grocery
     GroceryListItemComponent,
   ],
   templateUrl: './grocery-list.component.html',
-  styleUrl: './grocery-list.component.scss',
+  styleUrl: './grocery-list.component.css',
   host: {
     class: 'w-full inline-block h-[100dvh]',
   },
