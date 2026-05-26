@@ -42,7 +42,7 @@ describe(GroceryItemRegistryDialog.name, () => {
     ]);
     mockGroceryItemService.delete.and.returnValue(of(null));
 
-    mockGroceryItemService.getGroceryList.and.returnValue(mockSignal);
+    mockGroceryItemService.getList.and.returnValue(mockSignal);
     mockGroceryItemService.getAll.and.returnValue(of([]));
     mockGroceryItemService.create.and.returnValue(
       of(createGroceryItemModelMock()),

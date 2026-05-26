@@ -57,7 +57,7 @@ describe(GroceryItemService.name, () => {
       item.name = itemName;
       item.icon = new GroceryItemIconModel('test-icon');
       service.create(item).subscribe(() => {
-        const groceryList = service.getGroceryList();
+        const groceryList = service.getList();
         expect(groceryList().length)
           .withContext(
             'A lista de itens do signal deve conter 1 item após a criação',
@@ -123,7 +123,7 @@ describe(GroceryItemService.name, () => {
         expect(result[0].name).toBe(nameTestValue);
 
         // Verify signal is updated
-        const groceryList = service.getGroceryList();
+        const groceryList = service.getList();
         expect(groceryList().length).toBe(1);
         expect(groceryList()[0].uuid).toBe(uuidTestValue);
         done();
@@ -140,7 +140,7 @@ describe(GroceryItemService.name, () => {
         expect(result).toEqual([]);
 
         // Verify signal is updated
-        const groceryList = service.getGroceryList();
+        const groceryList = service.getList();
         expect(groceryList()).toEqual([]);
         done();
       });
@@ -212,7 +212,7 @@ describe(GroceryItemService.name, () => {
         );
 
         // Verify signal is updated
-        const groceryList = service.getGroceryList();
+        const groceryList = service.getList();
         expect(groceryList().length).toBe(1);
         expect(groceryList()[0].uuid).toBe(uuidTestValue);
         done();
@@ -240,7 +240,7 @@ describe(GroceryItemService.name, () => {
         );
 
         // Verify signal is updated
-        const groceryList = service.getGroceryList();
+        const groceryList = service.getList();
         expect(groceryList().length).toBe(1);
         expect(groceryList()[0].uuid).toBe(uuidTestValue);
         done();
@@ -317,7 +317,7 @@ describe(GroceryItemService.name, () => {
         );
 
         // Verify signal is updated (item removed)
-        const groceryList = service.getGroceryList();
+        const groceryList = service.getList();
         expect(groceryList().length).toBe(0);
         done();
       });

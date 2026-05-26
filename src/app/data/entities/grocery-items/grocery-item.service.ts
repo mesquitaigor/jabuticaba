@@ -10,11 +10,9 @@ import { IGroceryItemApi } from './grocery-item.dto';
   providedIn: 'root',
 })
 export class GroceryItemService {
-  private readonly groceryItemApiService: GroceryItemApiService = inject(
-    GroceryItemApiService,
-  );
+  private readonly api: GroceryItemApiService = inject(GroceryItemApiService);
 
-  private readonly groceryItems$ = signal<GroceryItem[]>([]);
+  private readonly list$ = signal<GroceryItem[]>([]);
   public create(groceryItem: GroceryItemModel): Observable<GroceryItem | null> {
     if (
       !groceryItem?.name ||
@@ -23,7 +21,7 @@ export class GroceryItemService {
     ) {
       return of(null);
     }
-    return this.groceryItemApiService
+    return this.api
       .create({ name: groceryItem.name, icon: groceryItem.icon.name })
       .pipe(
         map((response) => {
@@ -36,22 +34,22 @@ export class GroceryItemService {
         }),
         tap((newItem) => {
           if (newItem) {
-            const currentItems = this.groceryItems$();
-            this.groceryItems$.set([...currentItems, newItem]);
+            const currentItems = this.list$();
+            this.list$.set([...currentItems, newItem]);
           }
         }),
       );
   }
-  public getGroceryList(): WritableSignal<GroceryItem[]> {
-    return this.groceryItems$;
+  public getList(): WritableSignal<GroceryItem[]> {
+    return this.list$;
   }
   public getAll(): Observable<GroceryItem[]> {
-    const currentItems = this.groceryItems$();
+    const currentItems = this.list$();
     if (currentItems.length > 0) {
       return of(currentItems);
     }
 
-    return this.groceryItemApiService.getAll().pipe(
+    return this.api.getAll().pipe(
       map((response) => {
         if (response?.length) {
           return response.map((data) => {
@@ -61,7 +59,7 @@ export class GroceryItemService {
         return [];
       }),
       tap((items) => {
-        this.groceryItems$.set(items);
+        this.list$.set(items);
       }),
     );
   }
@@ -84,7 +82,7 @@ export class GroceryItemService {
     uuid: string,
     model: Partial<IGroceryItemApi>,
   ): Observable<GroceryItem | null> {
-    return this.groceryItemApiService.updateRecord(uuid, model).pipe(
+    return this.api.updateRecord(uuid, model).pipe(
       map((response) => {
         if (response?.length) {
           return response.map((data) => {
@@ -95,21 +93,21 @@ export class GroceryItemService {
       }),
       tap((updatedItem) => {
         if (updatedItem) {
-          const currentItems = this.groceryItems$();
+          const currentItems = this.list$();
           const updatedItems = currentItems.map((item) =>
             item.uuid === updatedItem.uuid ? updatedItem : item,
           );
-          this.groceryItems$.set(updatedItems);
+          this.list$.set(updatedItems);
         }
       }),
     );
   }
   public delete(uuid: string): Observable<null> {
-    return this.groceryItemApiService.deleteRecord(uuid).pipe(
+    return this.api.deleteRecord(uuid).pipe(
       tap(() => {
-        const currentItems = this.groceryItems$();
+        const currentItems = this.list$();
         const filteredItems = currentItems.filter((item) => item.uuid !== uuid);
-        this.groceryItems$.set(filteredItems);
+        this.list$.set(filteredItems);
       }),
     );
   }

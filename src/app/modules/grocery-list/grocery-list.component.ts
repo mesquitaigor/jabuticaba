@@ -50,13 +50,13 @@ export class GroceryListComponent implements OnInit {
   private readonly loadDelay = 2000;
   constructor() {
     effect(() => {
-      const items = this.groceryItemService.getGroceryList();
+      const items = this.groceryItemService.getList();
       this.setListItems(items());
     });
   }
 
   ngOnInit(): void {
-    this.groceryItemService.getGroceryList();
+    this.groceryItemService.getList();
     this.loadItems();
   }
 

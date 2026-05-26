@@ -19,7 +19,7 @@ export default class GroceryItemServiceSpy extends Spy<GroceryItemService> {
       'create',
     ]) as jasmine.SpyObj<GroceryItemService>;
 
-    this.spy.getGroceryList.and.returnValue(this.mockSignal);
+    this.spy.getList.and.returnValue(this.mockSignal);
     this.spy.updateName.and.returnValue(of(null));
     this.spy.delete.and.returnValue(of(null));
     this.spy.getAll.and.returnValue(of([]));
