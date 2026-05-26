@@ -23,6 +23,7 @@ export class GroceryItemService {
   );
   private readonly list$ = signal<GroceryItem[]>([]);
   constructor() {
+    this.list$.set(this.storage.recover());
     effect(() => {
       this.storage.save(this.list$());
     });

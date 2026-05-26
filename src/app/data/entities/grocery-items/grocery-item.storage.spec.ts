@@ -2,6 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { GroceryItemStorageService } from './grocery-item.storage.service';
 import { createGroceryItemModelMock } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { safeStringify } from '../../../shared/utils/serialize';
+import { GroceryItemIconModel } from './grocery-item-icon.model';
+import GroceryItemModel from './grocery-item.model';
 
 describe(GroceryItemStorageService.name, () => {
   let service: GroceryItemStorageService;
@@ -45,7 +47,11 @@ describe(GroceryItemStorageService.name, () => {
 
   describe('ao recuperar a lista do storage', () => {
     it('precisa retornar a lista de itens quando o storage tem dados', () => {
-      const list = [createGroceryItemModelMock()];
+      const list = [
+        createGroceryItemModelMock({
+          icon: new GroceryItemIconModel('test-icon'),
+        }),
+      ];
       (localStorage.getItem as jasmine.Spy).and.returnValue(
         safeStringify(list),
       );
@@ -55,6 +61,9 @@ describe(GroceryItemStorageService.name, () => {
       expect(localStorage.getItem).toHaveBeenCalledWith(storeKey);
       expect(result.length).toBe(1);
       expect(result[0].uuid).toBe(list[0].uuid);
+      expect(result[0]).toBeInstanceOf(GroceryItemModel);
+      expect(result[0].icon).toBeInstanceOf(GroceryItemIconModel);
+      expect(result[0].icon?.name).toBe('test-icon');
     });
 
     it('precisa retornar array vazio quando o storage está vazio', () => {

@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import GroceryItemModel from './grocery-item.model';
 import { safeStringify } from '../../../shared/utils/serialize';
 import Debug from '../../../shared/utils/Debug';
+import { IGroceryItemApi } from './grocery-item.dto';
+import GroceryItemMapper from './grocery-item.mapper';
+
+type StoredGroceryItem = Omit<IGroceryItemApi, 'icon'> & {
+  icon?: { name: string } | null;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -19,14 +25,18 @@ export class GroceryItemStorageService {
   }
   public recover(): GroceryItemModel[] {
     const data = localStorage.getItem(this.storageKey);
-    if (data) {
-      try {
-        return JSON.parse(data) as GroceryItemModel[];
-      } catch (error) {
-        Debug.error('Error parsing grocery items from localStorage', error);
-        return [];
-      }
+    if (!data) return [];
+    try {
+      const parsed = JSON.parse(data) as StoredGroceryItem[];
+      return parsed.map((item) =>
+        GroceryItemMapper.apiToModel({
+          ...item,
+          icon: item.icon?.name ?? null,
+        }),
+      );
+    } catch (error) {
+      Debug.error('Error parsing grocery items from localStorage', error);
+      return [];
     }
-    return [];
   }
 }

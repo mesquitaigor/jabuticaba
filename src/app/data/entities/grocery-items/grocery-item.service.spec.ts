@@ -39,6 +39,28 @@ describe(GroceryItemService.name, () => {
     mockStorageService = groceryItemStorageServiceMock.getSpy();
   });
 
+  describe('ao inicializar o service', () => {
+    it('precisa carregar a lista do storage', () => {
+      expect(mockStorageService.recover).toHaveBeenCalled();
+      expect(service.getList()()).toEqual([]);
+    });
+
+    it('precisa popular o signal com os itens salvos no storage', () => {
+      const storedList = [createGroceryItemModelMock()];
+      groceryItemStorageServiceMock.spy!.recover.and.returnValue(storedList);
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          groceryItemApiServiceMock.getProvider(),
+          groceryItemStorageServiceMock.getProvider(),
+        ],
+      });
+      const freshService = TestBed.inject(GroceryItemService);
+
+      expect(freshService.getList()()).toEqual(storedList);
+    });
+  });
+
   describe('ao persistir a lista no storage', () => {
     it('precisa salvar a lista vazia ao inicializar o service', () => {
       TestBed.flushEffects();

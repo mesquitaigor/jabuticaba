@@ -8,6 +8,7 @@ export class GroceryItemsStorageServiceSpy extends Spy<GroceryItemStorageService
       'save',
       'recover',
     ]) as jasmine.SpyObj<GroceryItemStorageService>;
+    this.spy.recover.and.returnValue([]);
     return this.spy;
   }
 }
