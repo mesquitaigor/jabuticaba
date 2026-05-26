@@ -1,7 +1,7 @@
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 
-export function createMessageServiceMock(): jasmine.SpyObj<MessageService> {
+export function createMessageServiceSpy(): jasmine.SpyObj<MessageService> {
   const messageObserver = new Subject();
 
   const mock = jasmine.createSpyObj('MessageService', [

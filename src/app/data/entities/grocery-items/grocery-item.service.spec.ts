@@ -11,13 +11,13 @@ import {
 import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
 import { GroceryItemIconModel } from './grocery-item-icon.model';
 import GroceryItemModel from './grocery-item.model';
-import { GroceryItemApiServiceMock } from '../../../tests/spys/grocery-item.api.service.mock.spec';
+import { GroceryItemApiServiceSpy } from '../../../tests/spys/grocery-item.api.service.spy.spec';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;
   let mockGroceryItemApiService: jasmine.SpyObj<GroceryItemApiService>;
   let mockApiResponse: IGroceryItemApi = GroceryItemApiResponseMock.create();
-  const groceryItemApiServiceMock = new GroceryItemApiServiceMock();
+  const groceryItemApiServiceMock = new GroceryItemApiServiceSpy();
   beforeEach(() => {
     mockApiResponse = GroceryItemApiResponseMock.create();
     groceryItemApiServiceMock.create();

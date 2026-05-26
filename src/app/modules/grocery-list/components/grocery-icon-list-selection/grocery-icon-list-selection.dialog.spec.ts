@@ -7,12 +7,12 @@ import { DialogService } from '@layout/dialog';
 import ButtonHelper from '../../../../tests/helpers/button.helper.spec';
 import { DataTestId } from '@directives/data-testid';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
-import { DialogServiceMock } from '../../../../tests/spys/dialog.service.mock.spec';
+import { DialogServiceSpy } from '../../../../tests/spys/dialog.service.spy.spec';
 
 describe(GroceryIconListSelectionDialog.name, () => {
   let component: GroceryIconListSelectionDialog;
   let fixture: ComponentFixture<GroceryIconListSelectionDialog>;
-  const dialogServiceMock = new DialogServiceMock();
+  const dialogServiceMock = new DialogServiceSpy();
   let dialogServiceSpy: jasmine.SpyObj<DialogService>;
   beforeEach(async () => {
     dialogServiceMock.create();

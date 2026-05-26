@@ -19,8 +19,8 @@ import {
   GroceryItemService,
 } from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
-import { DialogServiceMock } from '../../../../tests/spys/dialog.service.mock.spec';
-import { createMessageServiceMock } from '../../../../tests/spys/message.service.mock.spec';
+import { DialogServiceSpy } from '../../../../tests/spys/dialog.service.spy.spec';
+import { createMessageServiceSpy } from '../../../../tests/spys/message.service.spy.spec';
 
 describe(GroceryItemRegistryDialog.name, () => {
   let component: GroceryItemRegistryDialog;
@@ -28,7 +28,7 @@ describe(GroceryItemRegistryDialog.name, () => {
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockSignal = signal<GroceryItemModel[]>([]);
   let mockMessageService: jasmine.SpyObj<MessageService>;
-  const dialogServiceMocker = new DialogServiceMock();
+  const dialogServiceMocker = new DialogServiceSpy();
   let dialogServiceSpy: jasmine.SpyObj<DialogService>;
   beforeEach(async () => {
     dialogServiceMocker.create();
@@ -50,7 +50,7 @@ describe(GroceryItemRegistryDialog.name, () => {
     mockGroceryItemService.updateMissing.and.returnValue(
       of(createGroceryItemModelMock()),
     );
-    mockMessageService = createMessageServiceMock();
+    mockMessageService = createMessageServiceSpy();
     await TestBed.configureTestingModule({
       providers: [
         provideAnimationsAsync(),

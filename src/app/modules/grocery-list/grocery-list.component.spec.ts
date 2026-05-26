@@ -17,8 +17,8 @@ import { DataTestId } from '../../shared/directives/data-testid';
 import { Button } from 'primeng/button';
 import { GroceryItemService } from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
-import GroceryItemServiceMocker from '../../tests/spys/grocery-item.service.mock.spec';
-import { createMessageServiceMock } from '../../tests/spys/message.service.mock.spec';
+import GroceryItemServiceSpy from '../../tests/spys/grocery-item.service.spy.spec';
+import { createMessageServiceSpy } from '../../tests/spys/message.service.spy.spec';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -31,7 +31,7 @@ class MockToastComponent {}
 describe(GroceryListComponent.name, () => {
   let component: GroceryListComponent;
   let fixture: ComponentFixture<GroceryListComponent>;
-  const groceryItemServiceMocker = new GroceryItemServiceMocker();
+  const groceryItemServiceMocker = new GroceryItemServiceSpy();
   let groceryItemService: jasmine.SpyObj<GroceryItemService>;
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockDialogService: jasmine.SpyObj<DialogService>;
@@ -46,7 +46,7 @@ describe(GroceryListComponent.name, () => {
   beforeEach(async () => {
     mockSignal = signal<GroceryItemModel[]>([]);
     groceryItemServiceMocker.create();
-    mockMessageService = createMessageServiceMock();
+    mockMessageService = createMessageServiceSpy();
     mockDialogService = jasmine.createSpyObj('DialogService', [
       'open',
       'close',

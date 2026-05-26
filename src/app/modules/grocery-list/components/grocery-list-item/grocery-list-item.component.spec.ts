@@ -21,8 +21,8 @@ import { DataTestId } from '@directives/data-testid';
 import { Menu } from 'primeng/menu';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import TemplateGroceryItemMapper from '../../resources/template-grocery-item.mapper';
-import GroceryItemServiceMocker from '../../../../tests/spys/grocery-item.service.mock.spec';
-import { createMessageServiceMock } from '../../../../tests/spys/message.service.mock.spec';
+import GroceryItemServiceSpy from '../../../../tests/spys/grocery-item.service.spy.spec';
+import { createMessageServiceSpy } from '../../../../tests/spys/message.service.spy.spec';
 
 describe(GroceryListItemComponent.name, () => {
   let component: GroceryListItemComponent;
@@ -31,7 +31,7 @@ describe(GroceryListItemComponent.name, () => {
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockDialogService: jasmine.SpyObj<DialogService>;
 
-  const groceryItemServiceMocker = new GroceryItemServiceMocker();
+  const groceryItemServiceMocker = new GroceryItemServiceSpy();
   let groceryItemService: jasmine.SpyObj<GroceryItemService>;
   const setInput = {
     item: (overrides?: Partial<GroceryItemModel>): GroceryItemModel => {
@@ -52,7 +52,7 @@ describe(GroceryListItemComponent.name, () => {
   beforeEach(async () => {
     mockSignal = signal<GroceryItemModel[]>([]);
     groceryItemServiceMocker.create();
-    mockMessageService = createMessageServiceMock();
+    mockMessageService = createMessageServiceSpy();
     mockDialogService = jasmine.createSpyObj('DialogService', [
       'open',
       'close',
