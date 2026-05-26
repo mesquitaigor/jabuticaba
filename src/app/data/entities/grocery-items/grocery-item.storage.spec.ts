@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { GroceryItemsStorageService } from './grocery-items.storage.service';
+import { GroceryItemStorageService } from './grocery-item.storage.service';
 import { createGroceryItemModelMock } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { safeStringify } from '../../../shared/utils/serialize';
 
-describe(GroceryItemsStorageService.name, () => {
-  let service: GroceryItemsStorageService;
+describe(GroceryItemStorageService.name, () => {
+  let service: GroceryItemStorageService;
   let storeKey: string;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GroceryItemsStorageService);
+    service = TestBed.inject(GroceryItemStorageService);
     storeKey = service['storageKey'];
     spyOn(localStorage, 'setItem');
   });

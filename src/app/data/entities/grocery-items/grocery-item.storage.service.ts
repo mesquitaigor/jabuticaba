@@ -6,7 +6,7 @@ import Debug from '../../../shared/utils/Debug';
 @Injectable({
   providedIn: 'root',
 })
-export class GroceryItemsStorageService {
+export class GroceryItemStorageService {
   private readonly storageKey = 'groceryItems';
   public save(list: GroceryItemModel[]): boolean {
     try {
