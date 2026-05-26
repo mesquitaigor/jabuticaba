@@ -12,22 +12,56 @@ import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-ap
 import { GroceryItemIconModel } from './grocery-item-icon.model';
 import GroceryItemModel from './grocery-item.model';
 import { GroceryItemApiServiceSpy } from '../../../tests/spys/grocery-item.api.service.spy.spec';
+import { GroceryItemsStorageServiceSpy } from '../../../tests/spys/grocery-item.storage.service.spy.spec';
+import { GroceryItemStorageService } from './grocery-item.storage.service';
 
 describe(GroceryItemService.name, () => {
   let service: GroceryItemService;
   let mockGroceryItemApiService: jasmine.SpyObj<GroceryItemApiService>;
+  let mockStorageService: jasmine.SpyObj<GroceryItemStorageService>;
   let mockApiResponse: IGroceryItemApi = GroceryItemApiResponseMock.create();
   const groceryItemApiServiceMock = new GroceryItemApiServiceSpy();
+  const groceryItemStorageServiceMock = new GroceryItemsStorageServiceSpy();
   beforeEach(() => {
     mockApiResponse = GroceryItemApiResponseMock.create();
     groceryItemApiServiceMock.create();
+    groceryItemStorageServiceMock.create();
 
     TestBed.configureTestingModule({
-      providers: [groceryItemApiServiceMock.getProvider()],
+      providers: [
+        groceryItemApiServiceMock.getProvider(),
+        groceryItemStorageServiceMock.getProvider(),
+      ],
     });
 
     service = TestBed.inject(GroceryItemService);
     mockGroceryItemApiService = groceryItemApiServiceMock.getSpy();
+    mockStorageService = groceryItemStorageServiceMock.getSpy();
+  });
+
+  describe('ao persistir a lista no storage', () => {
+    it('precisa salvar a lista vazia ao inicializar o service', () => {
+      TestBed.flushEffects();
+
+      expect(mockStorageService.save).toHaveBeenCalledWith([]);
+    });
+
+    it('precisa salvar a lista atualizada quando o signal muda', (done) => {
+      mockGroceryItemApiService.create.and.returnValue(
+        of([GroceryItemApiResponseMock.create()]),
+      );
+      const item = new GroceryItemModel();
+      item.name = 'New Item';
+      item.icon = new GroceryItemIconModel('test-icon');
+
+      service.create(item).subscribe(() => {
+        TestBed.flushEffects();
+
+        const lastCall = mockStorageService.save.calls.mostRecent();
+        expect(lastCall.args[0].length).toBe(1);
+        done();
+      });
+    });
   });
 
   describe('ao criar um item da lista', () => {
