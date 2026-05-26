@@ -25,7 +25,6 @@ import { GroceryItemRegistryDialog } from '../grocery-item-registry/grocery-item
     MenuModule,
   ],
   templateUrl: './grocery-list-item.component.html',
-  styleUrl: './grocery-list-item.component.scss',
 })
 export class GroceryListItemComponent {
   public readonly item = input.required<GroceryItemModel>();
