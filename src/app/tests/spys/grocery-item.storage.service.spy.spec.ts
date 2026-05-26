@@ -6,6 +6,7 @@ export class GroceryItemsStorageServiceSpy extends Spy<GroceryItemStorageService
   public create(): jasmine.SpyObj<GroceryItemStorageService> {
     this.spy = jasmine.createSpyObj(GroceryItemStorageService.name, [
       'save',
+      'recover',
     ]) as jasmine.SpyObj<GroceryItemStorageService>;
     return this.spy;
   }
