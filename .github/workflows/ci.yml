@@ -26,3 +26,7 @@ jobs:
 
       - name: Build do Projeto
         run: npm run build -- --configuration production
+
+      - name: Report status
+        if: always()
+        run: echo "✅ CI Pipeline completed"
