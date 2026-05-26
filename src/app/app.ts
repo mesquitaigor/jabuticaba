@@ -23,7 +23,7 @@ import { SupabaseService } from '@api/supabase.service';
   ],
   providers: [MessageService],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  styleUrl: './app.css',
 })
 export class AppComponent implements OnInit {
   private readonly supabaseService = inject(SupabaseService);
