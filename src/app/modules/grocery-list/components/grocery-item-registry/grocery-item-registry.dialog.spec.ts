@@ -11,7 +11,6 @@ import { DataTestId } from '../../../../shared/directives/data-testid';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { delay, of, throwError } from 'rxjs';
 import { createGroceryItemModelMock } from '../../../../tests/mocks/GroceryItemModel.mock.spec';
-import { signal } from '@angular/core';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { MessageService } from 'primeng/api';
 import {
@@ -26,13 +25,13 @@ describe(GroceryItemRegistryDialog.name, () => {
   let component: GroceryItemRegistryDialog;
   let fixture: ComponentFixture<GroceryItemRegistryDialog>;
   let mockGroceryItemService: jasmine.SpyObj<GroceryItemService>;
-  let mockSignal = signal<GroceryItemModel[]>([]);
+  let itemList: GroceryItemModel[] = [];
   let mockMessageService: jasmine.SpyObj<MessageService>;
   const dialogServiceMocker = new DialogServiceSpy();
   let dialogServiceSpy: jasmine.SpyObj<DialogService>;
   beforeEach(async () => {
     dialogServiceMocker.create();
-    mockSignal = signal<GroceryItemModel[]>([]);
+    itemList = [];
     mockGroceryItemService = jasmine.createSpyObj(GroceryItemService.name, [
       'getAll',
       'getList',
@@ -42,7 +41,7 @@ describe(GroceryItemRegistryDialog.name, () => {
     ]);
     mockGroceryItemService.delete.and.returnValue(of(null));
 
-    mockGroceryItemService.getList.and.returnValue(mockSignal);
+    mockGroceryItemService.getList.and.returnValue(itemList);
     mockGroceryItemService.getAll.and.returnValue(of([]));
     mockGroceryItemService.create.and.returnValue(
       of(createGroceryItemModelMock()),

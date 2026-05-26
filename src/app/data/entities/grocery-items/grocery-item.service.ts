@@ -1,10 +1,4 @@
-import {
-  effect,
-  inject,
-  Injectable,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { map, Observable, tap, of } from 'rxjs';
 import { GroceryItemApiService } from './grocery-item.api.service';
 import ShoppingListItemMapper from './grocery-item.mapper';
@@ -55,8 +49,8 @@ export class GroceryItemService {
         }),
       );
   }
-  public getList(): WritableSignal<GroceryItem[]> {
-    return this.list$;
+  public getList(): GroceryItem[] {
+    return this.list$();
   }
   public getAll(): Observable<GroceryItem[]> {
     const currentItems = this.list$();

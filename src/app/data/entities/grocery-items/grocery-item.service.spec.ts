@@ -42,7 +42,7 @@ describe(GroceryItemService.name, () => {
   describe('ao inicializar o service', () => {
     it('precisa carregar a lista do storage', () => {
       expect(mockStorageService.recover).toHaveBeenCalled();
-      expect(service.getList()()).toEqual([]);
+      expect(service.getList()).toEqual([]);
     });
 
     it('precisa popular o signal com os itens salvos no storage', () => {
@@ -57,7 +57,7 @@ describe(GroceryItemService.name, () => {
       });
       const freshService = TestBed.inject(GroceryItemService);
 
-      expect(freshService.getList()()).toEqual(storedList);
+      expect(freshService.getList()).toEqual(storedList);
     });
   });
 
@@ -114,17 +114,17 @@ describe(GroceryItemService.name, () => {
       item.icon = new GroceryItemIconModel('test-icon');
       service.create(item).subscribe(() => {
         const groceryList = service.getList();
-        expect(groceryList().length)
+        expect(groceryList.length)
           .withContext(
             'A lista de itens do signal deve conter 1 item após a criação',
           )
           .toBe(1);
-        expect(groceryList()[0].uuid)
+        expect(groceryList[0].uuid)
           .withContext(
             'O UUID do item na lista deve corresponder ao UUID do item criado',
           )
           .toBe(uuidTestValue);
-        expect(groceryList()[0].name)
+        expect(groceryList[0].name)
           .withContext(
             'O nome do item na lista deve corresponder ao nome do item criado',
           )
@@ -180,8 +180,8 @@ describe(GroceryItemService.name, () => {
 
         // Verify signal is updated
         const groceryList = service.getList();
-        expect(groceryList().length).toBe(1);
-        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        expect(groceryList.length).toBe(1);
+        expect(groceryList[0].uuid).toBe(uuidTestValue);
         done();
       });
     });
@@ -197,7 +197,7 @@ describe(GroceryItemService.name, () => {
 
         // Verify signal is updated
         const groceryList = service.getList();
-        expect(groceryList()).toEqual([]);
+        expect(groceryList).toEqual([]);
         done();
       });
     });
@@ -269,8 +269,8 @@ describe(GroceryItemService.name, () => {
 
         // Verify signal is updated
         const groceryList = service.getList();
-        expect(groceryList().length).toBe(1);
-        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        expect(groceryList.length).toBe(1);
+        expect(groceryList[0].uuid).toBe(uuidTestValue);
         done();
       });
     });
@@ -297,8 +297,8 @@ describe(GroceryItemService.name, () => {
 
         // Verify signal is updated
         const groceryList = service.getList();
-        expect(groceryList().length).toBe(1);
-        expect(groceryList()[0].uuid).toBe(uuidTestValue);
+        expect(groceryList.length).toBe(1);
+        expect(groceryList[0].uuid).toBe(uuidTestValue);
         done();
       });
     });
@@ -374,7 +374,7 @@ describe(GroceryItemService.name, () => {
 
         // Verify signal is updated (item removed)
         const groceryList = service.getList();
-        expect(groceryList().length).toBe(0);
+        expect(groceryList.length).toBe(0);
         done();
       });
     });

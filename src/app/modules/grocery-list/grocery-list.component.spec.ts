@@ -122,7 +122,7 @@ describe(GroceryListComponent.name, () => {
 
     it('não precisa exibir estado de loading quando há itens armazenados', () => {
       runInContext(() => {
-        groceryItemServiceMocker.mockSignal.set([createGroceryItemModelMock()]);
+        groceryItemServiceMocker.itemList = [createGroceryItemModelMock()];
 
         component.loadItems();
 
@@ -132,7 +132,7 @@ describe(GroceryListComponent.name, () => {
 
     it('precisa exibir tarja de atualização quando há itens armazenados', fakeAsync(() => {
       runInContext(() => {
-        groceryItemServiceMocker.mockSignal.set([createGroceryItemModelMock()]);
+        groceryItemServiceMocker.itemList = [createGroceryItemModelMock()];
         groceryItemService.getAll.and.returnValue(
           of([]).pipe(delay(loadDelay)),
         );

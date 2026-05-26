@@ -52,7 +52,7 @@ export class GroceryListComponent implements OnInit {
   constructor() {
     effect(() => {
       const items = this.groceryItemService.getList();
-      this.setListItems(items());
+      this.setListItems(items);
     });
   }
 
@@ -63,7 +63,7 @@ export class GroceryListComponent implements OnInit {
 
   public loadItems(): void {
     if (!this.loading) {
-      const hasCachedItems = this.groceryItemService.getList()().length > 0;
+      const hasCachedItems = this.groceryItemService.getList().length > 0;
       this.loading = !hasCachedItems;
       this.isRefreshing = hasCachedItems;
       this.groceryItemService
