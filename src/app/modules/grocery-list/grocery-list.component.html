@@ -20,6 +20,15 @@
     class="bg-white rounded-lg absolute w-full left-0 px-4"
     [class.fade-in]="!loading"
   >
+    @if (isRefreshing) {
+      <div
+        [jbtDataTestid]="testIds.RefreshingBanner"
+        class="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 border border-blue-200 rounded-md px-3 py-2 mb-3"
+      >
+        <i class="pi pi-sync pi-spin"></i>
+        <span>Atualizando dados...</span>
+      </div>
+    }
     @for (item of groceryItems(); track item.uuid) {
       @if (!loading) {
         <jbt-grocery-list-item

@@ -14,6 +14,7 @@ export const DataTestId = {
     ErrorState: createTestId('grocery-list', 'error-state'),
     EmptyState: createTestId('grocery-list', 'empty-state'),
     VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
+    RefreshingBanner: createTestId('grocery-list', 'refreshing-banner'),
   },
   GroceryListItemComponent: {
     Item: createTestId('grocery-list-item', 'item'),

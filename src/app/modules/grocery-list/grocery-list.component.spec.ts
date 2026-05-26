@@ -120,6 +120,44 @@ describe(GroceryListComponent.name, () => {
       });
     });
 
+    it('não precisa exibir estado de loading quando há itens armazenados', () => {
+      runInContext(() => {
+        groceryItemServiceMocker.mockSignal.set([createGroceryItemModelMock()]);
+
+        component.loadItems();
+
+        expect(component.loading).toBeFalse();
+      });
+    });
+
+    it('precisa exibir tarja de atualização quando há itens armazenados', fakeAsync(() => {
+      runInContext(() => {
+        groceryItemServiceMocker.mockSignal.set([createGroceryItemModelMock()]);
+        groceryItemService.getAll.and.returnValue(
+          of([]).pipe(delay(loadDelay)),
+        );
+
+        fixture.detectChanges();
+        component.loadItems();
+        fixture.detectChanges();
+
+        const banner = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.RefreshingBanner,
+        );
+        expect(banner).toBeTruthy();
+
+        tick(loadDelay);
+        fixture.detectChanges();
+
+        const bannerAfter = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.RefreshingBanner,
+        );
+        expect(bannerAfter).toBeFalsy();
+      });
+    }));
+
     it('precisa listar os itens na interface', fakeAsync(() => {
       runInContext(async () => {
         const mockItems = [

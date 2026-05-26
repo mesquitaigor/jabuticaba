@@ -45,6 +45,7 @@ export class GroceryListComponent implements OnInit {
   public groceryItems = signal<GroceryItemModel[]>([]);
   public hasError = false;
   public loading = false;
+  public isRefreshing = false;
   public readonly testIds = DataTestId.GroceryList;
   public showAllItems = signal(false);
   private readonly loadDelay = 2000;
@@ -62,12 +63,17 @@ export class GroceryListComponent implements OnInit {
 
   public loadItems(): void {
     if (!this.loading) {
-      this.loading = true;
+      const hasCachedItems = this.groceryItemService.getList()().length > 0;
+      this.loading = !hasCachedItems;
+      this.isRefreshing = hasCachedItems;
       this.groceryItemService
         .getAll()
         .pipe(
           delay(this.loadDelay),
-          finalize(() => (this.loading = false)),
+          finalize(() => {
+            this.loading = false;
+            this.isRefreshing = false;
+          }),
         )
         .subscribe({
           error: () => {
