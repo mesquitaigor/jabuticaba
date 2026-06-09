@@ -1,21 +1,23 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ToastModule } from 'primeng/toast';
-import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
-import { delay, finalize } from 'rxjs';
-import { TemplateGroceryItem } from './resources/template-grocery-item.model';
-import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
-import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
-import { GroceryItemRegistryDialog } from './components/grocery-item-registry/grocery-item-registry.dialog';
-import { GroceryItemService } from '@models/grocery-items';
-import { DataTestId, DataTestidDirective } from '@directives/data-testid';
-import { DialogService } from '@layout/dialog';
-import { LoadingComponent } from '@atoms/loading';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import { delay, finalize } from 'rxjs';
+
+import { CommonModule } from '@angular/common';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { EmptyListStateComponent } from '@atoms/empty-list-state';
 import { ErrorListStateComponent } from '@atoms/error-list-state';
+import { LoadingComponent } from '@atoms/loading';
+import { DataTestId, DataTestidDirective } from '@directives/data-testid';
+import { DialogService } from '@layout/dialog';
+import { GroceryItemService } from '@models/grocery-items';
+
+import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
+import { GroceryItemRegistryDialog } from './components/grocery-item-registry/grocery-item-registry.dialog';
 import { GroceryListItemComponent } from './components/grocery-list-item/grocery-list-item.component';
+import { TemplateGroceryItem } from './resources/template-grocery-item.model';
 
 @Component({
   selector: 'jbt-grocery-list',
