@@ -58,4 +58,15 @@
     }
   </div>
 </div>
+@if (hasMissingItems()) {
+  <div class="fixed bottom-6 left-4 right-4">
+    <p-button
+      label="Modo compras"
+      icon="pi pi-shopping-cart"
+      severity="primary"
+      styleClass="w-full !rounded-lg"
+      (onClick)="onOpenShoppingMode()"
+    />
+  </div>
+}
 <p-toast />
