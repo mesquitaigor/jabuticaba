@@ -5,7 +5,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { of, throwError } from 'rxjs';
+import { delay, of, throwError } from 'rxjs';
 import { MessageService } from 'primeng/api';
 
 import { GroceryItemService } from '@models/grocery-items';
@@ -176,13 +176,41 @@ describe(ShoppingModeDialog.name, () => {
       expect(mockGroceryItemService.updateMissing).not.toHaveBeenCalled();
     });
 
-    it('precisa fechar o dialog', () => {
+    it('precisa fechar o dialog imediatamente quando nenhum item foi alterado', () => {
       component.items = [];
 
       component.confirm();
 
       expect(dialogServiceSpy.close).toHaveBeenCalled();
     });
+
+    it('não deve fechar o dialog antes das requisições completarem', fakeAsync(() => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+      mockGroceryItemService.updateMissing.and.returnValue(
+        of(createGroceryItemModelMock()).pipe(delay(100)),
+      );
+
+      component.confirm();
+
+      expect(dialogServiceSpy.close).not.toHaveBeenCalled();
+
+      tick(100);
+
+      expect(dialogServiceSpy.close).toHaveBeenCalled();
+    }));
+
+    it('precisa fechar o dialog após as requisições completarem', fakeAsync(() => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+
+      component.confirm();
+      tick();
+
+      expect(dialogServiceSpy.close).toHaveBeenCalled();
+    }));
 
     it('precisa atualizar item.missing de acordo com o estado marcado', () => {
       const item = createGroceryItemModelMock({
@@ -233,6 +261,20 @@ describe(ShoppingModeDialog.name, () => {
         summary: 'Erro',
         detail: 'Não foi possível atualizar o item',
       });
+    }));
+
+    it('precisa fechar o dialog mesmo quando updateMissing retorna erro', fakeAsync(() => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+      mockGroceryItemService.updateMissing.and.returnValue(
+        throwError(() => new Error('Erro de rede')),
+      );
+
+      component.confirm();
+      tick();
+
+      expect(dialogServiceSpy.close).toHaveBeenCalled();
     }));
   });
 });

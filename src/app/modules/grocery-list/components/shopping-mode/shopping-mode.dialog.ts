@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
+import { catchError, finalize, forkJoin, of } from 'rxjs';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import { ShoppingModeDialogInput } from './shopping-mode.dialog.types';
@@ -50,21 +51,32 @@ export class ShoppingModeDialog
       (item) => item.uuid && checked.has(item.uuid) !== item.missing,
     );
 
+    if (changedItems.length === 0) {
+      this.dialogService.close();
+      return;
+    }
+
     changedItems.forEach((item) => {
       item.missing = checked.has(item.uuid!);
-      this.groceryItemService.updateMissing(item).subscribe({
-        error: () => {
+    });
+
+    const requests = changedItems.map((item) =>
+      this.groceryItemService.updateMissing(item).pipe(
+        catchError(() => {
           item.missing = !item.missing;
           this.messageService.add({
             severity: 'error',
             summary: 'Erro',
             detail: 'Não foi possível atualizar o item',
           });
-        },
-      });
-    });
+          return of(null);
+        }),
+      ),
+    );
 
-    this.dialogService.close();
+    forkJoin(requests)
+      .pipe(finalize(() => this.dialogService.close()))
+      .subscribe();
   }
 
   private toggleChecked(uuid: string, checked: boolean): void {
