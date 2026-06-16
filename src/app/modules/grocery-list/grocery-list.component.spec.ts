@@ -295,14 +295,14 @@ describe(GroceryListComponent.name, () => {
     });
   });
 
-  describe('hasMissingItems', () => {
+  describe('hasItemsToBuy', () => {
     it('retorna true quando há pelo menos um item com missing=false', () => {
       runInContext(() => {
         fixture.detectChanges();
         component.groceryItems.set([
           createGroceryItemModelMock({ missing: false }),
         ]);
-        expect(component.hasMissingItems()).toBe(true);
+        expect(component.hasItemsToBuy()).toBe(true);
       });
     });
 
@@ -312,7 +312,7 @@ describe(GroceryListComponent.name, () => {
         component.groceryItems.set([
           createGroceryItemModelMock({ missing: true }),
         ]);
-        expect(component.hasMissingItems()).toBe(false);
+        expect(component.hasItemsToBuy()).toBe(false);
       });
     });
 
@@ -320,7 +320,7 @@ describe(GroceryListComponent.name, () => {
       runInContext(() => {
         fixture.detectChanges();
         component.groceryItems.set([]);
-        expect(component.hasMissingItems()).toBe(false);
+        expect(component.hasItemsToBuy()).toBe(false);
       });
     });
   });

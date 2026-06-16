@@ -52,7 +52,7 @@ export class GroceryListComponent implements OnInit {
   public isRefreshing = false;
   public readonly testIds = DataTestId.GroceryList;
   public showAllItems = signal(false);
-  public readonly hasMissingItems = computed(() =>
+  public readonly hasItemsToBuy = computed(() =>
     this.groceryItems().some((item) => !item.missing),
   );
   private readonly loadDelay = 2000;
@@ -136,12 +136,12 @@ export class GroceryListComponent implements OnInit {
   }
 
   public onOpenShoppingMode(): void {
-    const missingItems = this.groceryItems().filter((item) => !item.missing);
+    const itemsToBuy = this.groceryItems().filter((item) => !item.missing);
     this.dialogService.open<ShoppingModeDialog, ShoppingModeDialogInput>({
       component: ShoppingModeDialog,
       header: 'Modo compras',
       width: '90%',
-      data: { items: missingItems },
+      data: { items: itemsToBuy },
     });
   }
 }
