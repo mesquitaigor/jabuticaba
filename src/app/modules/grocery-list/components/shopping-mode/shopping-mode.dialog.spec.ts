@@ -176,6 +176,44 @@ describe(ShoppingModeDialog.name, () => {
       expect(mockGroceryItemService.updateMissing).not.toHaveBeenCalled();
     });
 
+    it('precisa definir confirming como true ao iniciar as requisições', () => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+      mockGroceryItemService.updateMissing.and.returnValue(
+        of(createGroceryItemModelMock()).pipe(delay(100)),
+      );
+
+      component.confirm();
+
+      expect(component.confirming()).toBe(true);
+    });
+
+    it('precisa definir confirming como false após as requisições completarem', fakeAsync(() => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+
+      component.confirm();
+      tick();
+
+      expect(component.confirming()).toBe(false);
+    }));
+
+    it('precisa definir confirming como false mesmo quando updateMissing retorna erro', fakeAsync(() => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+      mockGroceryItemService.updateMissing.and.returnValue(
+        throwError(() => new Error('Erro de rede')),
+      );
+
+      component.confirm();
+      tick();
+
+      expect(component.confirming()).toBe(false);
+    }));
+
     it('precisa fechar o dialog imediatamente quando nenhum item foi alterado', () => {
       component.items = [];
 

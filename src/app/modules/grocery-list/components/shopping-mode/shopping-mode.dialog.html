@@ -28,5 +28,11 @@
   }
 </div>
 <div class="flex justify-end mt-6">
-  <p-button label="Confirmar" severity="primary" (onClick)="confirm()" />
+  <p-button
+    label="Confirmar"
+    severity="primary"
+    [loading]="confirming()"
+    [disabled]="confirming()"
+    (onClick)="confirm()"
+  />
 </div>

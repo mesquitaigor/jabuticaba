@@ -24,6 +24,7 @@ export class ShoppingModeDialog
   public dialogData?: dialogData<ShoppingModeDialogInput>;
 
   public readonly checkedItems = signal<Set<string>>(new Set());
+  public readonly confirming = signal(false);
 
   public ngOnInit(): void {
     this.items = [...(this.dialogData?.items ?? [])];
@@ -56,6 +57,8 @@ export class ShoppingModeDialog
       return;
     }
 
+    this.confirming.set(true);
+
     changedItems.forEach((item) => {
       item.missing = checked.has(item.uuid!);
     });
@@ -75,7 +78,12 @@ export class ShoppingModeDialog
     );
 
     forkJoin(requests)
-      .pipe(finalize(() => this.dialogService.close()))
+      .pipe(
+        finalize(() => {
+          this.confirming.set(false);
+          this.dialogService.close();
+        }),
+      )
       .subscribe();
   }
 
