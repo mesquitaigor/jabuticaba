@@ -325,6 +325,40 @@ describe(GroceryListComponent.name, () => {
     });
   });
 
+  describe('botão de modo compras', () => {
+    it('precisa ser exibido quando há itens a comprar', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([
+          createGroceryItemModelMock({ missing: false }),
+        ]);
+        fixture.detectChanges();
+
+        const button = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.ShoppingModeButton,
+        );
+        expect(button).toBeTruthy();
+      });
+    });
+
+    it('não deve ser exibido quando todos os itens já foram comprados', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([
+          createGroceryItemModelMock({ missing: true }),
+        ]);
+        fixture.detectChanges();
+
+        const button = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.ShoppingModeButton,
+        );
+        expect(button).toBeNull();
+      });
+    });
+  });
+
   describe('quando o botão de modo compras é clicado', () => {
     it('precisa chamar dialogService.open com o componente e configuração corretos', () => {
       runInContext(() => {
