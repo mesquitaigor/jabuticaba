@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import { catchError, finalize, forkJoin, of } from 'rxjs';
+import { catchError, finalize, forkJoin, map, of } from 'rxjs';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
 import { GroceryItemIconComponent } from '../grocery-item-icon/grocery-item-icon.component';
 import { ShoppingModeDialogInput } from './shopping-mode.dialog.types';
@@ -65,15 +65,8 @@ export class ShoppingModeDialog
 
     const requests = changedItems.map((item) =>
       this.groceryItemService.updateMissing(item).pipe(
-        catchError(() => {
-          item.missing = !item.missing;
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Não foi possível atualizar o item',
-          });
-          return of(null);
-        }),
+        map(() => null as GroceryItemModel | null),
+        catchError(() => of(item)),
       ),
     );
 
@@ -84,7 +77,25 @@ export class ShoppingModeDialog
           this.dialogService.close();
         }),
       )
-      .subscribe();
+      .subscribe((results) => {
+        const failedItems = results.filter(
+          (r): r is GroceryItemModel => r !== null,
+        );
+        if (failedItems.length === 0) return;
+
+        failedItems.forEach((item) => {
+          item.missing = !item.missing;
+        });
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail:
+            failedItems.length === 1
+              ? 'Não foi possível atualizar o item'
+              : `Não foi possível atualizar ${failedItems.length} itens`,
+        });
+      });
   }
 
   private toggleChecked(uuid: string, checked: boolean): void {

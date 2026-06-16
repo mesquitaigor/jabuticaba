@@ -314,5 +314,53 @@ describe(ShoppingModeDialog.name, () => {
 
       expect(dialogServiceSpy.close).toHaveBeenCalled();
     }));
+
+    it('reverte apenas os itens que falharam quando há múltiplos itens', fakeAsync(() => {
+      const failingItem = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      const successItem = createGroceryItemModelMock({ uuid: 'item-2', missing: false });
+      component.items = [failingItem, successItem];
+      component.checkedItems.set(new Set(['item-1', 'item-2']));
+      mockGroceryItemService.updateMissing.and.callFake((item: GroceryItemModel) =>
+        item.uuid === 'item-1'
+          ? throwError(() => new Error('Erro'))
+          : of(createGroceryItemModelMock()),
+      );
+
+      component.confirm();
+      tick();
+
+      expect(failingItem.missing).toBe(false);
+      expect(successItem.missing).toBe(true);
+    }));
+
+    it('exibe um único toast com contagem quando múltiplos itens falham', fakeAsync(() => {
+      const item1 = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      const item2 = createGroceryItemModelMock({ uuid: 'item-2', missing: false });
+      component.items = [item1, item2];
+      component.checkedItems.set(new Set(['item-1', 'item-2']));
+      mockGroceryItemService.updateMissing.and.returnValue(
+        throwError(() => new Error('Erro de rede')),
+      );
+
+      component.confirm();
+      tick();
+
+      expect(mockMessageService.add).toHaveBeenCalledOnceWith({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível atualizar 2 itens',
+      });
+    }));
+
+    it('não exibe toast quando todas as requisições têm sucesso', fakeAsync(() => {
+      const item = createGroceryItemModelMock({ uuid: 'item-1', missing: false });
+      component.items = [item];
+      component.checkedItems.set(new Set(['item-1']));
+
+      component.confirm();
+      tick();
+
+      expect(mockMessageService.add).not.toHaveBeenCalled();
+    }));
   });
 });
