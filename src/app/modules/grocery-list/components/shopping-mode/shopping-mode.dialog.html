@@ -1,0 +1,38 @@
+<div class="flex flex-col">
+  @for (item of items; track item.uuid) {
+    @let checked = isChecked(item.uuid);
+    <div
+      class="flex items-center gap-4 py-3 border-b border-gray-100 last:border-0 transition-opacity"
+      [class.opacity-50]="checked"
+    >
+      <div
+        class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center shrink-0"
+      >
+        <jbt-grocery-item-icon [iconName]="item.icon"></jbt-grocery-item-icon>
+      </div>
+      <span
+        class="flex-1 text-gray-800"
+        [class.line-through]="checked"
+        >{{ item.name }}</span
+      >
+      <p-button
+        [icon]="checked ? 'pi pi-check-circle' : 'pi pi-circle'"
+        [severity]="checked ? 'success' : 'secondary'"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="onCheck(item)"
+      />
+    </div>
+  } @empty {
+    <p class="text-center text-gray-400 py-6">Nenhum item faltante</p>
+  }
+</div>
+<div class="flex justify-end mt-6">
+  <p-button
+    label="Confirmar"
+    severity="primary"
+    [loading]="confirming()"
+    [disabled]="confirming()"
+    (onClick)="confirm()"
+  />
+</div>

@@ -19,6 +19,7 @@ import { GroceryItemService } from '@models/grocery-items';
 import { DialogService } from '@layout/dialog';
 import GroceryItemServiceSpy from '../../tests/spys/grocery-item.service.spy.spec';
 import { createMessageServiceSpy } from '../../tests/spys/message.service.spy.spec';
+import { ShoppingModeDialog } from './components/shopping-mode/shopping-mode.dialog';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -288,6 +289,106 @@ describe(GroceryListComponent.name, () => {
           jasmine.objectContaining({
             header: 'Cadastrar item',
             width: '90%',
+          }),
+        );
+      });
+    });
+  });
+
+  describe('hasItemsToBuy', () => {
+    it('retorna true quando há pelo menos um item com missing=false', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([
+          createGroceryItemModelMock({ missing: false }),
+        ]);
+        expect(component.hasItemsToBuy()).toBe(true);
+      });
+    });
+
+    it('retorna false quando todos os itens têm missing=true', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([
+          createGroceryItemModelMock({ missing: true }),
+        ]);
+        expect(component.hasItemsToBuy()).toBe(false);
+      });
+    });
+
+    it('retorna false quando a lista está vazia', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([]);
+        expect(component.hasItemsToBuy()).toBe(false);
+      });
+    });
+  });
+
+  describe('botão de modo compras', () => {
+    it('precisa ser exibido quando há itens a comprar', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([
+          createGroceryItemModelMock({ missing: false }),
+        ]);
+        fixture.detectChanges();
+
+        const button = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.ShoppingModeButton,
+        );
+        expect(button).toBeTruthy();
+      });
+    });
+
+    it('não deve ser exibido quando todos os itens já foram comprados', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.groceryItems.set([
+          createGroceryItemModelMock({ missing: true }),
+        ]);
+        fixture.detectChanges();
+
+        const button = DataTestIdHelper.query(
+          fixture.debugElement,
+          DataTestId.GroceryList.ShoppingModeButton,
+        );
+        expect(button).toBeNull();
+      });
+    });
+  });
+
+  describe('quando o botão de modo compras é clicado', () => {
+    it('precisa chamar dialogService.open com o componente e configuração corretos', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        component.onOpenShoppingMode();
+        expect(mockDialogService.open).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            component: ShoppingModeDialog,
+            header: 'Modo compras',
+            width: '90%',
+          }),
+        );
+      });
+    });
+
+    it('precisa passar apenas itens com missing=false para o dialog', () => {
+      runInContext(() => {
+        fixture.detectChanges();
+        const missingItem = createGroceryItemModelMock({ missing: true });
+        const notMissingItem = createGroceryItemModelMock({
+          uuid: 'other-uuid',
+          missing: false,
+        });
+        component.groceryItems.set([missingItem, notMissingItem]);
+
+        component.onOpenShoppingMode();
+
+        expect(mockDialogService.open).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            data: { items: [notMissingItem] },
           }),
         );
       });

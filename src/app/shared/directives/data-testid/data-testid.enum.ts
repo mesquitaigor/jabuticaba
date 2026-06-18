@@ -15,6 +15,7 @@ export const DataTestId = {
     EmptyState: createTestId('grocery-list', 'empty-state'),
     VisibilityOffIcon: createTestId('grocery-list', 'visibility-off-icon'),
     RefreshingBanner: createTestId('grocery-list', 'refreshing-banner'),
+    ShoppingModeButton: createTestId('grocery-list', 'shopping-mode-button'),
   },
   GroceryListItemComponent: {
     Item: createTestId('grocery-list-item', 'item'),

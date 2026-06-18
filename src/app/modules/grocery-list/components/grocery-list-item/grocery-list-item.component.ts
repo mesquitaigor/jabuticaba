@@ -74,6 +74,7 @@ export class GroceryListItemComponent {
       data: { item },
     });
   }
+
   private changeVisibility(item: TemplateGroceryItem, stop?: () => void): void {
     this.groceryItemService
       .updateHidden(item)
