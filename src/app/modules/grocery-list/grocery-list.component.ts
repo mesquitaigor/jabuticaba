@@ -5,7 +5,14 @@ import { ToastModule } from 'primeng/toast';
 import { delay, finalize } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EmptyListStateComponent } from '@atoms/empty-list-state';
 import { ErrorListStateComponent } from '@atoms/error-list-state';
@@ -63,7 +70,7 @@ export class GroceryListComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.groceryItemService.getList();
     this.loadItems();
   }
