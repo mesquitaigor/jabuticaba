@@ -1,4 +1,4 @@
-import { GroceryItemIconModel } from './grocery-item-icon.model';
+import { GroceryItemIconModel } from '../gocery-item-icon/grocery-item-icon.model';
 import { IGroceryItemApi } from './grocery-item.dto';
 import GroceryItem from './grocery-item.model';
 

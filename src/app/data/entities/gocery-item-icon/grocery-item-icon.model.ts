@@ -2,13 +2,15 @@ export enum GroceryItemIcons {
   Alvejante = 'alvejante',
   DefaultIcon = 'default-icon',
   Ketchup = 'ketchup',
+  Avocado = 'avocado',
+  Pote = 'pote',
   RiceSack = 'rice-sack',
   Picles = 'picles',
   Oleo = 'oleo',
 }
 export const iconDictionary = new Map<GroceryItemIcons, string>([
-  [GroceryItemIcons.Alvejante, 'Alvejante'],
-  [GroceryItemIcons.Ketchup, 'Ketchup'],
+  [GroceryItemIcons.Avocado, 'Avocado'],
+  [GroceryItemIcons.Pote, 'Pote'],
 ]);
 export const getIconsList = (): GroceryItemIcons[] =>
   Object.values(GroceryItemIcons);

@@ -1,0 +1,58 @@
+---
+description: Obsidian CLI + vault Jabuticaba-Web para organização de tarefas (TaskNotes)
+alwaysApply: true
+---
+
+# Obsidian — Tarefas do Jabuticaba
+
+Para tarefas, planejamento e acompanhamento deste projeto, use o **Obsidian CLI** no vault **`Jabuticaba-Web`**. Não use `obs-jabuticaba` (é outro projeto).
+
+## Pré-requisitos
+
+- App Obsidian precisa estar aberto (o CLI fala com a instância rodando).
+- No Windows o binário é `Obsidian.com` (não `obsidian`).
+- Sempre passe `vault=Jabuticaba-Web` como **primeiro** argumento.
+
+## Organização do vault
+
+| Pasta | Uso |
+| --- | --- |
+| `TaskNotes/Tasks/` | Uma nota Markdown por tarefa (fonte da verdade) |
+| `TaskNotes/Views/` | Views Bases (lista, agenda, kanban, calendário) — não editar à toa |
+| `TaskNotes/Start Here.md` | Onboarding TaskNotes — não usar como inbox de tarefas |
+
+Tarefas são arquivos em `TaskNotes/Tasks/` com frontmatter TaskNotes, tipicamente:
+
+- `status`: `open` | (outros statuses do plugin)
+- `priority`: `normal` (default)
+- `scheduled`: `YYYY-MM-DD` (default: hoje)
+- `tags`: sempre incluir `task`; features do app usam também `feature`
+
+Tags conhecidas: `#task`, `#feature`, `#admin`, `#planning`.
+
+## Comandos úteis
+
+```powershell
+# Listar / inspecionar
+Obsidian.com vault=Jabuticaba-Web files
+Obsidian.com vault=Jabuticaba-Web files folder=TaskNotes/Tasks
+Obsidian.com vault=Jabuticaba-Web tasks todo
+Obsidian.com vault=Jabuticaba-Web search query="login"
+
+# Criar tarefa (preferir TaskNotes, não create genérico)
+Obsidian.com vault=Jabuticaba-Web tasknotes:capture title="Implementar formulário de login" tags=task,feature priority=normal scheduled=2026-08-03
+Obsidian.com vault=Jabuticaba-Web tasknotes:capture text="Revisar PR da Carteira amanhã #planning"
+
+# Ler / atualizar propriedades
+Obsidian.com vault=Jabuticaba-Web read path="TaskNotes/Tasks/Página de login.md"
+Obsidian.com vault=Jabuticaba-Web property:set path="TaskNotes/Tasks/Página de login.md" name=status value=open
+```
+
+## Regras para o agente
+
+1. **Antes de criar tarefas**, liste `TaskNotes/Tasks/` ou busque com `search` para evitar duplicatas.
+2. **Crie tarefas só via** `tasknotes:capture` — assim o plugin gera o frontmatter e coloca o arquivo na pasta certa.
+3. **Não edite** `.base` em `TaskNotes/Views/` nem configs em `.obsidian/` salvo pedido explícito.
+4. Títulos de tarefa em **português**, curtos e acionáveis (ex.: `Página de login`, não `TODO login stuff`).
+5. Relacione tarefas ao domínio do app quando fizer sentido (`#feature` + módulo: login, supermercado, carteira, etc.).
+6. Se o CLI falhar, verifique se o Obsidian está aberto e se o vault `Jabuticaba-Web` aparece em `Obsidian.com vaults`.

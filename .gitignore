@@ -29,6 +29,14 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
+# Cursor
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
+# graphify
+/graphify-out/
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/

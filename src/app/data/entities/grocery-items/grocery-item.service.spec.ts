@@ -9,7 +9,7 @@ import {
   nameTestValue,
 } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { GroceryItemApiResponseMock } from '../../../tests/mocks/grocery-item-api-response.mock.spec';
-import { GroceryItemIconModel } from './grocery-item-icon.model';
+import { GroceryItemIconModel } from '../gocery-item-icon/grocery-item-icon.model';
 import GroceryItemModel from './grocery-item.model';
 import { GroceryItemApiServiceSpy } from '../../../tests/spys/grocery-item.api.service.spy.spec';
 import { GroceryItemsStorageServiceSpy } from '../../../tests/spys/grocery-item.storage.service.spy.spec';

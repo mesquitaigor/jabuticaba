@@ -29,4 +29,9 @@ export const routes: Routes = [
         (m) => m.BillingAndAccountsComponent,
       ),
   },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./modules/login/login.component').then((m) => m.LoginComponent),
+  },
 ];

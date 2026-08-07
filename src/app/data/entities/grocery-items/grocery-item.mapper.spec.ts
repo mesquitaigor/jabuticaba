@@ -1,7 +1,7 @@
 import { IGroceryItemApi } from './grocery-item.dto';
 import GroceryItem from './grocery-item.model';
 import GroceryItemMapper from './grocery-item.mapper';
-import { GroceryItemIconModel } from './grocery-item-icon.model';
+import { GroceryItemIconModel } from '../gocery-item-icon/grocery-item-icon.model';
 
 describe(GroceryItemMapper.name, () => {
   const mockApiData: () => IGroceryItemApi = () => ({

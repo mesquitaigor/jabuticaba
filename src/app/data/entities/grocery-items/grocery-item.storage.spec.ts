@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { GroceryItemStorageService } from './grocery-item.storage.service';
 import { createGroceryItemModelMock } from '../../../tests/mocks/GroceryItemModel.mock.spec';
 import { safeStringify } from '../../../shared/utils/serialize';
-import { GroceryItemIconModel } from './grocery-item-icon.model';
+import { GroceryItemIconModel } from '../gocery-item-icon/grocery-item-icon.model';
 import GroceryItemModel from './grocery-item.model';
 
 describe(GroceryItemStorageService.name, () => {

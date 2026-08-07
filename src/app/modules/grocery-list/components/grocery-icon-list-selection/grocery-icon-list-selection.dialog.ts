@@ -31,6 +31,8 @@ export class GroceryIconListSelectionDialog
     new GroceryItemIconModel('alvejante'),
     new GroceryItemIconModel('default-icon'),
     new GroceryItemIconModel('ketchup'),
+    new GroceryItemIconModel('avocado'),
+    new GroceryItemIconModel('pote'),
     new GroceryItemIconModel('rice-sack'),
     new GroceryItemIconModel('picles'),
     new GroceryItemIconModel('oleo'),

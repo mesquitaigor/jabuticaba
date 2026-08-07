@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroceryItemIconComponent } from './grocery-item-icon.component';
-import { GroceryItemIconModel } from '@models/grocery-items/grocery-item-icon.model';
+import { GroceryItemIconModel } from '@models/gocery-item-icon/grocery-item-icon.model';
 
 describe(GroceryItemIconComponent.name, () => {
   let component: GroceryItemIconComponent;
