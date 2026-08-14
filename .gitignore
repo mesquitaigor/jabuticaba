@@ -11,7 +11,6 @@
 npm-debug.log
 yarn-error.log
 
-
 # IDEs and editors
 .idea/
 .project
@@ -30,9 +29,7 @@ yarn-error.log
 .history/*
 
 # Cursor
-.cursor/*
-!.cursor/rules/
-!.cursor/rules/**
+.cursor/
 
 # graphify
 /graphify-out/
