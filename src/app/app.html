@@ -1,4 +1,6 @@
-<jbt-header></jbt-header>
-<jbt-sidebar></jbt-sidebar>
+@if (isAuthenticated()) {
+  <jbt-header></jbt-header>
+  <jbt-sidebar></jbt-sidebar>
+}
 <router-outlet />
 <jbt-dialog />

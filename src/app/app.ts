@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { HeaderComponent } from '@layout/header';
 import { DialogComponent } from '@layout/dialog';
 import { SupabaseService } from '@api/supabase.service';
+import AuthService from './core/auth/auth.service';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -26,9 +27,9 @@ import { SupabaseService } from '@api/supabase.service';
   styleUrl: './app.css',
 })
 export class AppComponent implements OnInit {
+  private readonly authService = inject(AuthService);
   private readonly supabaseService = inject(SupabaseService);
-  public itemName = '';
-  public visibleShoppingDrawer = false;
+  public readonly isAuthenticated = this.authService.isAuthenticated;
   ngOnInit(): void {
     this.supabaseService.init();
   }
