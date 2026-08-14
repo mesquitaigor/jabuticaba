@@ -9,7 +9,6 @@ import { delay, of, throwError } from 'rxjs';
 import { createGroceryItemModelMock } from '../../tests/mocks/GroceryItemModel.mock.spec';
 import GroceryItemModel from '../../data/entities/grocery-items/grocery-item.model';
 import { Component, signal } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DataTestIdHelper } from '../../tests/helpers/data-testid.helper.spec';
@@ -56,7 +55,6 @@ describe(GroceryListComponent.name, () => {
     await TestBed.configureTestingModule({
       imports: [GroceryListComponent, MockToastComponent],
       providers: [
-        provideAnimationsAsync(),
         groceryItemServiceMocker.getProvider(),
         { provide: MessageService, useValue: mockMessageService },
         { provide: DialogService, useValue: mockDialogService },

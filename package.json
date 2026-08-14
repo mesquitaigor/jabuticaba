@@ -26,36 +26,36 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^20.3.15",
-    "@angular/common": "^20.1.0",
-    "@angular/compiler": "^20.1.0",
-    "@angular/core": "^20.1.0",
-    "@angular/forms": "^20.1.0",
-    "@angular/platform-browser": "^20.1.0",
-    "@angular/router": "^20.1.0",
-    "@primeuix/themes": "^2.0.2",
+    "@angular/cdk": "^21.2.14",
+    "@angular/common": "^21.2.20",
+    "@angular/compiler": "^21.2.20",
+    "@angular/core": "^21.2.20",
+    "@angular/forms": "^21.2.20",
+    "@angular/platform-browser": "^21.2.20",
+    "@angular/router": "^21.2.20",
+    "@primeuix/themes": "^2.0.3",
     "@supabase/supabase-js": "2.89.0",
     "@tailwindcss/postcss": "^4.1.18",
     "date-fns": "4.1.0",
     "primeicons": "^7.0.0",
-    "primeng": "^20.4.0",
+    "primeng": "^21.1.9",
     "rxjs": "~7.8.0",
     "tailwindcss-primeui": "^0.6.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.1.5",
-    "@angular/cli": "^20.1.5",
-    "@angular/compiler-cli": "^20.1.0",
+    "@angular/build": "^21.2.21",
+    "@angular/cli": "^21.2.21",
+    "@angular/compiler-cli": "^21.2.20",
     "@commitlint/cli": "20.3.0",
     "@commitlint/config-conventional": "20.3.0",
     "@types/jasmine": "~5.1.0",
-    "angular-eslint": "19.8.1",
+    "angular-eslint": "21.4.0",
     "autoprefixer": "^10.4.23",
     "commitizen": "4.3.1",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^9.39.2",
+    "eslint": "^9.28.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.4",
     "husky": "9.1.7",
@@ -69,18 +69,13 @@
     "postcss": "^8.5.6",
     "prettier": "3.7.4",
     "tailwindcss": "^4.1.18",
-    "typescript": "~5.8.2",
-    "typescript-eslint": "^8.52.0"
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.33.1"
   },
   "prepare": "husky || true",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "overrides": {
-    "primeng": {
-      "@angular/cdk": "19.2.10"
     }
   }
 }

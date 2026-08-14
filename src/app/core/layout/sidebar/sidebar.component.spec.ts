@@ -9,7 +9,6 @@ import { ButtonModule } from 'primeng/button';
 import { LogoComponent } from '../../../shared/components/atoms/logo/logo.component';
 import { RouterModule } from '@angular/router';
 import { GroceryListComponent } from '../../../modules/grocery-list/grocery-list.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 describe(SidebarComponent.name, () => {
   let component: SidebarComponent;
@@ -26,7 +25,7 @@ describe(SidebarComponent.name, () => {
         LogoComponent,
         RouterModule.forRoot([{ path: '', component: GroceryListComponent }]),
       ],
-      providers: [SidebarService, NavigationService, provideAnimationsAsync()],
+      providers: [SidebarService, NavigationService],
     }).compileComponents();
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
