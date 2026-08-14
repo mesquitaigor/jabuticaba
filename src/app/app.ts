@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly supabaseService = inject(SupabaseService);
   public readonly isAuthenticated = this.authService.isAuthenticated;
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.supabaseService.init();
   }
 }

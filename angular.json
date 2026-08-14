@@ -74,7 +74,8 @@
               "buildTarget": "jabuticaba:build:production"
             },
             "development": {
-              "buildTarget": "jabuticaba:build:development"
+              "buildTarget": "jabuticaba:build:development",
+              "hmr": false
             }
           },
           "defaultConfiguration": "development"

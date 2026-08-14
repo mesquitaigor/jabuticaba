@@ -1,1 +1,15 @@
-<button pButton (click)="login()">Entrar</button>
+<div class="flex flex-col items-center justify-center h-screen gap-4">
+  <h1>Login</h1>
+  <jbt-logo data-testid="header-logo" />
+  <form class="flex flex-col gap-6 mt-8">
+    <p-floatlabel>
+      <input id="username" pInputText type="text" formControlName="username" />
+      <label for="username">Usuário</label>
+    </p-floatlabel>
+    <p-floatlabel class="mt-2">
+      <input id="password" pInputText type="password" formControlName="password" />
+      <label for="password">Senha</label>
+    </p-floatlabel>
+    <button pButton (click)="login()">Entrar</button>
+  </form>
+</div>
