@@ -8,7 +8,6 @@ import {
 import { GroceryItemRegistryDialog } from './grocery-item-registry.dialog';
 import { DataTestIdHelper } from '../../../../tests/helpers/data-testid.helper.spec';
 import { DataTestId } from '../../../../shared/directives/data-testid';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { delay, of, throwError } from 'rxjs';
 import { createGroceryItemModelMock } from '../../../../tests/mocks/GroceryItemModel.mock.spec';
 import GroceryItemModel from '../../../../data/entities/grocery-items/grocery-item.model';
@@ -52,7 +51,6 @@ describe(GroceryItemRegistryDialog.name, () => {
     mockMessageService = createMessageServiceSpy();
     await TestBed.configureTestingModule({
       providers: [
-        provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
         { provide: MessageService, useValue: mockMessageService },
         dialogServiceMocker.getProvider(),

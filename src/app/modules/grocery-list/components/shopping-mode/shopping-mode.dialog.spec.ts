@@ -4,7 +4,6 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { delay, of, throwError } from 'rxjs';
 import { MessageService } from 'primeng/api';
 
@@ -37,7 +36,6 @@ describe(ShoppingModeDialog.name, () => {
     await TestBed.configureTestingModule({
       imports: [ShoppingModeDialog],
       providers: [
-        provideAnimationsAsync(),
         { provide: GroceryItemService, useValue: mockGroceryItemService },
         { provide: MessageService, useValue: mockMessageService },
         dialogServiceMocker.getProvider(),
